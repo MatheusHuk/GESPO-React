@@ -24,11 +24,10 @@ export const ButtonContainer = styled.div`
     right: 1VW;
     display: flex;
     position: absolute;
-    justify-content: space-between;
+    justify-content: right;
 `;
 
 export const Button = styled.div`
-    display: flex;
     height: 7.5VH;
     width: 15VW;
     float: right;

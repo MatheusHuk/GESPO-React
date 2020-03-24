@@ -7,6 +7,7 @@ export default function Routes(){
         <BrowserRouter>
             <Switch>
                 <Route path="/" render={(props) => <Pages.Home />} exact />
+                <Route path="/foda" render={(props) => <Pages.Home />} exact />
             </Switch>
         </BrowserRouter>
     );

@@ -1,0 +1,53 @@
+.title{
+    display: flex;
+    position: absolute;
+    width: auto;
+    height: 10VH;
+    font-size: 10VH;
+    color: #3C3C3C;
+    margin-top: 3VH;
+    margin-left: 3VW;
+    padding: 0;
+}
+
+.subtitle{
+    display: flex;
+    position: absolute;
+    width: auto;
+    height: 10VH;
+    font-size: 5VH;
+    color: #3C3C3C;
+    margin-top: 15VH;
+    margin-left: 3VW;
+    padding: 0;
+}
+
+.container{
+    display: block;
+    position: absolute;
+    top: 25VH;
+    left: 18.5VW;
+    width: 43VW;
+    height: 60VH;
+}
+
+.subcontainer{
+    display: flex;
+    justify-content: space-around;
+    width: 43VW;
+    height: 25VH;
+    padding-top: 2.5VH;
+    padding-bottom: 2.5VH;
+}
+
+.component{
+    float: left;
+    background-color: #1F1462;
+    width: 19VW;
+    height: 25VH;
+    border-radius: 10px;
+    color: white;
+    font-size: 5VH;
+    text-align: center;
+    line-height: 25VH;
+}
