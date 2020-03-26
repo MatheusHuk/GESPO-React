@@ -15,8 +15,8 @@ function App() {
 
   return (
     <>
-      <Comp.Menu />
-      <Comp.SideMenu route={route}/>
+      <Comp.Menu goto={goTo} />
+      <Comp.SideMenu route={route} goto={goTo}/>
       <div class="todo">
         <Routes goto={goTo}/>
       </div>

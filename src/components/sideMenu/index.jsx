@@ -1,7 +1,8 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import * as Style from './style'
 
-export default function SideMenu({route}){
+export default function SideMenu({ route, goto }){
 
     return(
         <Style.SideMenu>
