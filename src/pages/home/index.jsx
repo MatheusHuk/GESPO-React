@@ -1,29 +1,29 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom'
 import './index.css'
 
-export default class Home extends React.Component{
+export default function Home({ goto }){
 
-    constructor(props){
-        super(props);
-        this.props = props;
+    const history = useHistory();
+
+    function changePage(route){
+        goto(route);
+        history.push(route);
     }
-
-    render(){
-        return(
-            <>
-                <div class="title">GESPO</div>
-                <div class="subtitle">Gestão de custos e projetos</div>
-                <div class="container">
-                    <div class="subcontainer">
-                        <div class="component">Rota 1</div>
-                        <div class="component">Rota 2</div>
-                    </div>
-                    <div class="subcontainer">
-                        <div class="component">Rota 3</div>
-                        <div class="component">Rota 4</div>
-                    </div>
+    return(
+        <>
+            <div class="title">GESPO</div>
+            <div class="subtitle">Gestão de custos e projetos</div>
+            <div class="container">
+                <div class="subcontainer">
+                    <div class="component" onClick={() => changePage("/one") }>Rota 1</div>
+                    <div class="component" onClick={() => changePage("/two") }>Rota 2</div>
                 </div>
-            </>
-        );
-    }
+                <div class="subcontainer">
+                    <div class="component" onClick={() => changePage("/three") }>Rota 3</div>
+                    <div class="component" onClick={() => changePage("/four") }>Rota 4</div>
+                </div>
+            </div>
+        </>
+    );
 }

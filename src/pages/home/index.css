@@ -50,4 +50,11 @@
     font-size: 5VH;
     text-align: center;
     line-height: 25VH;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.component:hover{
+    background-color: #0C043D;
+    transition: all 0.5s;
 }
