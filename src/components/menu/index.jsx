@@ -1,21 +1,18 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import * as Style from './style'
 
-export default class Menu extends React.Component{
-    constructor(props){
-        super(props);
-        this.props = props;
-    }
+export default function Menu(){
 
-    render(){
-        return(
-            <Style.Menu>
-                <Style.Empresa />
-                <Style.ButtonContainer>
-                    <Style.Button>Inicio</Style.Button>
-                    <Style.Button>Sair</Style.Button>
-                </Style.ButtonContainer>
-            </Style.Menu>
-        )
-    }
+    const history = useHistory();
+
+    return(
+        <Style.Menu>
+            <Style.Empresa />
+            <Style.ButtonContainer>
+                <Style.Button onClick={() => history.push("/")}>Inicio</Style.Button>
+                <Style.Button>Sair</Style.Button>
+            </Style.ButtonContainer>
+        </Style.Menu>
+    )
 }
