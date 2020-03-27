@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react'
+import Viewer from '../../Layout/Viewer'
 
-export default function Two({ goto }){
-
-    useEffect(() => {
-        goto("/two")
-    }, []);
+export default function Two(){
 
     return(
         <>
-            <div>Two</div>
+            <Viewer>
+                <div>Two</div>
+            </Viewer>
         </>
     );
 }

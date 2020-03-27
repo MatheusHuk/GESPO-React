@@ -1,0 +1,8 @@
+.todo {
+    display: flex;
+    position: fixed;
+    top: 7.5VH;
+    left: 20VW;
+    width: 80VW;
+    height: 92.5VH;
+  }
