@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import History from '../../utils/useHistory'
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
+import UserService from '../../services/userService'
 import './index.css'
 
 export default class Login extends React.Component{
@@ -8,23 +10,43 @@ export default class Login extends React.Component{
         super(props);
         this.props = props;
         this.state = {
-            login: "",
-            senha: ""
+            cpf: "",
+            password: ""
         }
+        this.login = this.login.bind(this);
+    }
+
+    componentDidMount(){
+        console.log("Props: ",this.props);
+        this.props.setLoad(false);
     }
 
     handleLogin(e){
-        console.log("Val: ",e.target.value);
         this.setState({
-            login: e.target.value
+            cpf: e.target.value
         });
     }
 
     handlePass(e){
-        console.log("Val: ",e.target.value);
         this.setState({
-            senha: e.target.value
+            password: e.target.value
         });
+    }
+
+    async login(){
+        this.props.setLoad(true);
+        UserService.login("/user/login", 
+            [["cpf", this.state.cpf], ["password", this.state.password]])
+            .then((res) => {
+                alert("Logado");
+                History.push("/");
+            })
+            .catch((error) => {
+                alert("Res: "+error.status);
+            })
+            .finally(() => {
+                this.props.setLoad(false);
+            });
     }
 
     render(){
@@ -53,7 +75,7 @@ export default class Login extends React.Component{
                         />
                     </InputGroup>
                     <div class="button_box">
-                        <Button variant="light">Login</Button>
+                        <Button onClick={() => {this.login()}} variant="light">Login</Button>
                     </div>
                 </div>
             </div>

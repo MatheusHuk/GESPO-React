@@ -22,10 +22,10 @@
 }
 
 .box {
-    top: 22.5VH;
+    top: 25VH;
     position: relative;
-    width: 45VW;
-    height: 45VH;
+    width: 50VW;
+    height: 50VH;
     background-color: #2b47aa;
     border-radius: 20px;
     color: white;
@@ -38,6 +38,7 @@
     top: 1%;
     left: 25%;
     width: 50% !important;
+    height: 10% !important;
 }
 
 .pass {
