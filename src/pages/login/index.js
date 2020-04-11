@@ -1,85 +1,108 @@
-import React, { useState } from 'react'
-import History from '../../utils/useHistory'
+import React, { useState, useEffect } from 'react'
+import { Toast } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 import UserService from '../../services/userService'
+import Toaster from '../../utils/Toaster'
 import './index.css'
 
-export default class Login extends React.Component{
+export default function Login({ setLoad, logged, setLogged }) {
 
-    constructor(props){
-        super(props);
-        this.props = props;
-        this.state = {
-            cpf: "",
-            password: ""
-        }
-        this.login = this.login.bind(this);
+    const history = useHistory();
+
+    const [state, setState] = useState({
+        cpf: "",
+        password: ""
+    });
+
+    const [toaster, setToaster] = useState({
+        header: "Header",
+        body: "Body"
+    });
+
+    const [show, setShow] = useState(false);
+
+    const resetToaster = () => {
+        setTimeout(() => {
+            setShow(false)
+        }, 5000);
     }
 
-    componentDidMount(){
-        console.log("Props: ",this.props);
-        this.props.setLoad(false);
-    }
+    useEffect(() => {
+        setLoad(false);
+    }, []);
 
-    handleLogin(e){
-        this.setState({
+    function handleLogin(e) {
+        setState({
+            ...state,
             cpf: e.target.value
         });
     }
 
-    handlePass(e){
-        this.setState({
+    function handlePass(e) {
+        setState({
+            ...state,
             password: e.target.value
         });
     }
 
-    async login(){
-        this.props.setLoad(true);
-        UserService.login("/user/login", 
-            [["cpf", this.state.cpf], ["password", this.state.password]])
+    async function login() {
+        setLoad(true);
+        UserService.login([["cpf", state.cpf], ["password", state.password]])
             .then((res) => {
-                alert("Logado");
-                History.push("/");
+                setLogged(res);
+                history.push("/");
             })
             .catch((error) => {
-                alert("Res: "+error.status);
+                setToaster({
+                    header: "Erro",
+                    body: "E-mail ou senha inválidos"
+                });
+                setShow(true);
+                resetToaster();
             })
             .finally(() => {
-                this.props.setLoad(false);
+                setLoad(false);
             });
     }
 
-    render(){
-        return(
+    return (
+        <>
+            <Toaster 
+                show={show}
+                setShowToaster={(sit) => {setShow(sit)}}
+                header={toaster.header}
+                body={toaster.body}
+            />
             <div class="page">
                 <div class="box">
                     <div class="gespo">GESPO</div>
                     <div class="label">Login</div>
                     <InputGroup className="text">
                         <FormControl
-                        id="log"
-                        aria-label="Default"
-                        aria-describedby="inputGroup-sizing-default"
-                        onChange={(event) => {this.handleLogin(event)}}
-                        type="text"
+                            id="log"
+                            aria-label="Default"
+                            aria-describedby="inputGroup-sizing-default"
+                            onChange={(event) => { handleLogin(event) }}
+                            type="text"
                         />
                     </InputGroup>
                     <div class="label">Senha</div>
                     <InputGroup className="text">
                         <FormControl
-                        id="log"
-                        aria-label="Default"
-                        aria-describedby="inputGroup-sizing-default"
-                        onChange={(event) => {this.handlePass(event)}}
-                        type="password"
+                            id="log"
+                            aria-label="Default"
+                            aria-describedby="inputGroup-sizing-default"
+                            onChange={(event) => { handlePass(event) }}
+                            type="password"
                         />
                     </InputGroup>
                     <div class="button_box">
-                        <Button onClick={() => {this.login()}} variant="light">Login</Button>
+                        <Button onClick={() => { login() }} variant="light">Login</Button>
                     </div>
                 </div>
             </div>
-        );
-    }
-    
+        </>
+    );
+
 }
