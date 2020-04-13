@@ -9,7 +9,7 @@ export default class UserService{
                     if(res.status >= 200 && res.status < 300){
                         resolve(res.data);
                     }else{
-                        reject(res);
+                        reject(res.status);
                     }
                 });
         });

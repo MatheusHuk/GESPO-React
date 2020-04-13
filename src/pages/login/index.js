@@ -54,9 +54,18 @@ export default function Login({ setLoad, logged, setLogged }) {
                 history.push("/");
             })
             .catch((error) => {
+                let erro = "";
+                switch(error){
+                    case 403:
+                        erro = "Cpf ou senha inválidos";break;
+                    case 404:
+                        erro = "Cpf ou senha inválidos";break;
+                    case 500:
+                        erro = "Erro interno do servidor";break;
+                }
                 setToaster({
                     header: "Erro",
-                    body: "E-mail ou senha inválidos"
+                    body: erro
                 });
                 setShow(true);
                 resetToaster();
