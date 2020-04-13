@@ -6,8 +6,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  console.log("ENV: ",process.env);
   const setLoad = (l) => {
     setLoading(l);
   }

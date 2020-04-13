@@ -18,7 +18,8 @@ export default class Api {
 
     static get(path, body) {
         if (body)
-            path = "http://localhost:8080" + this.buildParams(path, body);
+            path = process.env.REACT_APP_API_URL + this.buildParams(path, body);
+        console.log("REACT_APP_API_URL: ",process.env.REACT_APP_API_URL);
         return axios.get(path)
             .then(res => {
                 return res;
