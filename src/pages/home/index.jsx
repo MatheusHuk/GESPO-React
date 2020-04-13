@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom'
 import Viewer from '../../Layout/Viewer'
 import './index.css'
 
-export default function Home({ setLoad }){
+export default function Home({ setLoad, logged, setLogged }){
 
     const history = useHistory();
     
+    useEffect(() => {
+        setLoad(true);
+        if(logged == null) history.push("/login");
+        setLoad(false);
+    }, [])
+
     return(
         <>
             <Viewer>

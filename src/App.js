@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Routes from './routes'
 import { Loading } from './components'
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  console.log("ENV: ",process.env);
   const setLoad = (l) => {
     setLoading(l);
   }
