@@ -29,7 +29,7 @@ export default function Login({ setLoad, logged, setLogged }) {
 
     useEffect(() => {
         setLoad(false);
-    });
+    }, []);
 
     function handleLogin(e) {
         setState({

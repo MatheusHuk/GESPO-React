@@ -6,7 +6,7 @@ export default function One({ setLoad }){
     useEffect(() => {
         setLoad(true);
         setTimeout(() => l(), 5000);
-    });
+    }, []);
 
     function l(){
         setLoad(false);
