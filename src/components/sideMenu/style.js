@@ -33,7 +33,6 @@ export const Button = styled.div`
     line-height: 9.5VH;
     padding: 0 0 0 1VW;
     border-radius: 50px 0 0 50px;
-    transition: all 0.5s;
     cursor: pointer;
 
     :hover{

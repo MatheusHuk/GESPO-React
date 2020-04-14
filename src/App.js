@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom'
-import Form from './components/Form'
 import Routes from './routes'
-import * as Comp from './components'
+import { Loading } from './components'
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
-  const [route, setRoute] = useState("/");
+  const [loading, setLoading] = useState(true);
 
-  const goTo = (r) => {
-    setRoute(r);
+  console.log("ENV: ",process.env);
+  const setLoad = (l) => {
+    setLoading(l);
   }
-
   return (
     <>
-      <Comp.Menu goto={goTo} />
-      <Comp.SideMenu route={route} goto={goTo}/>
-      <div class="todo">
-        <Routes goto={goTo}/>
-      </div>
+        <Loading load={loading} />
+        <Routes setLoad={setLoad}/>
     </>
   );
 }
