@@ -1,14 +1,21 @@
 import React, { useEffect } from 'react'
+import Viewer from '../../Layout/Viewer'
 
-export default function One({ goto }){
+export default function One({ setLoad }){
 
     useEffect(() => {
-        goto("/one")
-    }, []);
+        setLoad(true);
+        setTimeout(() => l(), 5000);
+    });
 
+    function l(){
+        setLoad(false);
+    }
     return(
         <>
-            <div>One</div>
+            <Viewer>
+                <div>One</div>
+            </Viewer>
         </>
     );
 }
