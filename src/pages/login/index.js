@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Toast } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 import UserService from '../../services/userService'
@@ -30,7 +29,7 @@ export default function Login({ setLoad, logged, setLogged }) {
 
     useEffect(() => {
         setLoad(false);
-    }, []);
+    });
 
     function handleLogin(e) {
         setState({
@@ -62,6 +61,8 @@ export default function Login({ setLoad, logged, setLogged }) {
                         erro = "Cpf ou senha inválidos";break;
                     case 500:
                         erro = "Erro interno do servidor";break;
+                    default:
+                        erro = "Erro";break;
                 }
                 setToaster({
                     header: "Erro",

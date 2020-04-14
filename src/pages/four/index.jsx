@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Viewer from '../../Layout/Viewer'
 
 export default function Four(){

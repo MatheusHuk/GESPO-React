@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Viewer from '../../Layout/Viewer'
 
 export default function One({ setLoad }){
@@ -6,7 +6,7 @@ export default function One({ setLoad }){
     useEffect(() => {
         setLoad(true);
         setTimeout(() => l(), 5000);
-    }, []);
+    });
 
     function l(){
         setLoad(false);

@@ -9,7 +9,7 @@ export default function Loading({ load }){
             {
                 load ?
                 <div class="loading">
-                    <img src={ring} />
+                    <img src={ring} alt="loading"/>
                 </div> :
                 null
 
