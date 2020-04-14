@@ -11,7 +11,7 @@ export default function Home({ setLoad, logged, setLogged }){
         setLoad(true);
         if(logged == null) history.push("/login");
         setLoad(false);
-    }, [])
+    })
 
     return(
         <>

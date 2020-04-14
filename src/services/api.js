@@ -1,11 +1,6 @@
-import fetch from 'node-fetch';
 import axios from 'axios';
 
 export default class Api {
-
-    constructor() {
-        const api_url = "localhost:8080";
-    }
 
     static buildParams(path, body) {
         path += "?";
