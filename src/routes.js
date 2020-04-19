@@ -18,7 +18,7 @@ export default function Routes({ setLoad }){
                     <Pages.Login setLoad={setLoad}
                                  logged={logged} 
                                  setLogged={setLogged} />} exact />
-                <Route path="/one" render={(props) => <Pages.One setLoad={setLoad} />} exact />
+                <Route path="/time-entry" render={(props) => <Pages.TimeEntry setLoad={setLoad} />} exact />
                 <Route path="/two" render={(props) => <Pages.Two setLoad={setLoad} />} exact />
                 <Route path="/three" render={(props) => <Pages.Three setLoad={setLoad} />} exact />
                 <Route path="/four" render={(props) => <Pages.Four setLoad={setLoad} />} exact />

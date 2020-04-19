@@ -9,7 +9,7 @@ export default function Home({ setLoad, logged, setLogged }){
     
     useEffect(() => {
         setLoad(true);
-        if(logged == null) history.push("/login");
+        //if(logged == null) history.push("/login");
         setLoad(false);
     }, [])
 
@@ -20,7 +20,7 @@ export default function Home({ setLoad, logged, setLogged }){
                 <div class="subtitle">Gestão de custos e projetos</div>
                 <div class="container">
                     <div class="subcontainer">
-                        <div class="component" onClick={() => history.push("/one") }>Rota 1</div>
+                        <div class="component" onClick={() => history.push("/time-entry") }>Rota 1</div>
                         <div class="component" onClick={() => history.push("/two") }>Rota 2</div>
                     </div>
                     <div class="subcontainer">
