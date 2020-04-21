@@ -8,7 +8,7 @@ export default function TimeEntry({ setLoad }) {
 
     const [sel, setSel] = useState(false);
 
-    const [showFiltros, setShowFiltros] = useState(false);
+    const [showFiltros, setShowFiltros] = useState(true);
     const [showApontamento, setShowApontamento] = useState(false);
 
     const [dados, setDados] = useState(
@@ -18,7 +18,217 @@ export default function TimeEntry({ setLoad }) {
                 obs: "fdfdfdf",
                 data: "0101/2020",
                 horas: "00:00"
-            }
+            },
+            {
+                projeto: "B",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "C ",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "D",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "E",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "F",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "G",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "H",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "I",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "J",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "BK",
+                obs: "fdfdff",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "L",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "A",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "B",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "C ",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "D",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "E",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "F",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "G",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "H",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "I",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "J",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "BK",
+                obs: "fdfdff",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "L",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "A",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "B",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "C ",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "D",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "E",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "F",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "G",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "H",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "I",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "J",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "BK",
+                obs: "fdfdff",
+                data: "0101/2020",
+                horas: "00:00"
+            },
+            {
+                projeto: "L",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            },
         ]
     );
 
@@ -97,7 +307,33 @@ export default function TimeEntry({ setLoad }) {
                             </Style.FFooter>
                         </Style.Filtros>
                         <Style.Apontamento>
-
+                            <Style.AHeader>Apontamentos</Style.AHeader>
+                            <Style.Table>
+                                <Style.THeader>
+                                    <Style.TRHeader>
+                                        <Style.Th>Projeto</Style.Th>
+                                        <Style.Th>Observações</Style.Th>
+                                        <Style.Th>Data</Style.Th>
+                                        <Style.Th>Horas</Style.Th>
+                                        <Style.THSmall>Ações</Style.THSmall>
+                                    </Style.TRHeader>
+                                </Style.THeader>
+                                <Style.TData>
+                                    {
+                                        dados.map((data, i) => {
+                                            return (
+                                                <Style.Tr>
+                                                    <Style.Td key={i}>{data.projeto}</Style.Td>
+                                                    <Style.Td key={i}>{data.obs}</Style.Td>
+                                                    <Style.Td key={i}>{data.data}</Style.Td>
+                                                    <Style.Td key={i}>{data.horas}</Style.Td>
+                                                    <Style.TDSmall>*ícones*</Style.TDSmall>
+                                                </Style.Tr>
+                                            )
+                                        })
+                                    }
+                                </Style.TData>
+                            </Style.Table>
                         </Style.Apontamento>
                     </Style.Container>
                     :
