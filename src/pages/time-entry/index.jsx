@@ -8,8 +8,19 @@ export default function TimeEntry({ setLoad }) {
 
     const [sel, setSel] = useState(false);
 
-    const [showFiltros, setShowFiltros] = useState(true);
+    const [showFiltros, setShowFiltros] = useState(false);
     const [showApontamento, setShowApontamento] = useState(false);
+
+    const [dados, setDados] = useState(
+        [
+            {
+                projeto: "A",
+                obs: "fdfdfdf",
+                data: "0101/2020",
+                horas: "00:00"
+            }
+        ]
+    );
 
     useEffect(() => {
         setLoad(true);
@@ -85,6 +96,12 @@ export default function TimeEntry({ setLoad }) {
                                 <Button className="but">Filtrar</Button>
                             </Style.FFooter>
                         </Style.Filtros>
+                        <Style.Apontamento>
+
+                        </Style.Apontamento>
+                    </Style.Container>
+                    :
+                    <Style.Container>
                         <Style.Dados>
                             <Style.DHeader>Novo Apontamento</Style.DHeader>
                             <Style.DBody>
@@ -92,7 +109,7 @@ export default function TimeEntry({ setLoad }) {
                                     <Style.DBigBox>
                                         <Style.BoxHeader>
                                             Projeto
-                                        </Style.BoxHeader>
+                                    </Style.BoxHeader>
                                         <Dropdown>
                                             <Dropdown.Toggle className="drop-down">
                                                 {
@@ -111,7 +128,7 @@ export default function TimeEntry({ setLoad }) {
                                     <Style.DBox>
                                         <Style.BoxHeader>
                                             Data
-                                        </Style.BoxHeader>
+                                    </Style.BoxHeader>
                                         <InputGroup className="text-box">
                                             <FormControl
                                                 id="log"
@@ -124,7 +141,7 @@ export default function TimeEntry({ setLoad }) {
                                     <Style.DSmallBox>
                                         <Style.BoxHeader>
                                             Horas
-                                        </Style.BoxHeader>
+                                    </Style.BoxHeader>
                                         <InputGroup className="text-box">
                                             <FormControl
                                                 id="log"
@@ -137,7 +154,7 @@ export default function TimeEntry({ setLoad }) {
                                     <Style.DSmallBox>
                                         <Style.BoxHeader>
                                             Minutos
-                                        </Style.BoxHeader>
+                                    </Style.BoxHeader>
                                         <InputGroup className="text-box">
                                             <FormControl
                                                 id="log"
@@ -150,7 +167,7 @@ export default function TimeEntry({ setLoad }) {
                                     <Style.DBox>
                                         <Style.BoxHeader>
                                             Gerente do Projeto
-                                        </Style.BoxHeader>
+                                    </Style.BoxHeader>
                                         <InputGroup className="text-box">
                                             <FormControl
                                                 id="log"
@@ -165,7 +182,7 @@ export default function TimeEntry({ setLoad }) {
                                     <Style.DBigBox>
                                         <Style.BoxHeader>
                                             Observações
-                                        </Style.BoxHeader>
+                                    </Style.BoxHeader>
                                         <InputGroup className="text-box">
                                             <FormControl
                                                 id="log"
@@ -181,10 +198,6 @@ export default function TimeEntry({ setLoad }) {
                                 <Button className="but">Gravar</Button>
                             </Style.DFooter>
                         </Style.Dados>
-                    </Style.Container>
-                    :
-                    <Style.Container>
-                        <Style.Filtros />
                     </Style.Container>
                 }
             </Viewer>
