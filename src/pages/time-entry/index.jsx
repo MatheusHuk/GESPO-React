@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dropdown, Button } from 'react-bootstrap'
+import { Dropdown, Button, InputGroup, FormControl } from 'react-bootstrap'
 import Viewer from '../../Layout/Viewer'
 import * as Style from './style'
 import './index.css'
@@ -24,7 +24,7 @@ export default function TimeEntry({ setLoad }) {
                         <Style.Filtros>
                             <Style.FHeader>Filtros</Style.FHeader>
                             <Style.FBody>
-                                <Style.BoxBody>
+                                <Style.FBoxBody>
                                     <Style.Box>
                                         <Style.BoxHeader>
                                             Time
@@ -36,7 +36,7 @@ export default function TimeEntry({ setLoad }) {
                                                 }
                                             </Dropdown.Toggle>
 
-                                            <Dropdown.Menu>
+                                            <Dropdown.Menu className="drop-down-menu">
                                                 <Dropdown.Item onClick={() => { setSel("1") }}>Action</Dropdown.Item>
                                                 <Dropdown.Item onClick={() => { setSel("2") }}>Another action</Dropdown.Item>
                                                 <Dropdown.Item onClick={() => { setSel("3") }}>Something else</Dropdown.Item>
@@ -54,7 +54,7 @@ export default function TimeEntry({ setLoad }) {
                                                 }
                                             </Dropdown.Toggle>
 
-                                            <Dropdown.Menu>
+                                            <Dropdown.Menu className="drop-down-menu">
                                                 <Dropdown.Item onClick={() => { setSel("1") }}>Action</Dropdown.Item>
                                                 <Dropdown.Item onClick={() => { setSel("2") }}>Another action</Dropdown.Item>
                                                 <Dropdown.Item onClick={() => { setSel("3") }}>Something else</Dropdown.Item>
@@ -72,14 +72,14 @@ export default function TimeEntry({ setLoad }) {
                                                 }
                                             </Dropdown.Toggle>
 
-                                            <Dropdown.Menu>
+                                            <Dropdown.Menu className="drop-down-menu">
                                                 <Dropdown.Item onClick={() => { setSel("1") }}>Action</Dropdown.Item>
                                                 <Dropdown.Item onClick={() => { setSel("2") }}>Another action</Dropdown.Item>
                                                 <Dropdown.Item onClick={() => { setSel("3") }}>Something else</Dropdown.Item>
                                             </Dropdown.Menu>
                                         </Dropdown>
                                     </Style.Box>
-                                </Style.BoxBody>
+                                </Style.FBoxBody>
                             </Style.FBody>
                             <Style.FFooter>
                                 <Button className="but">Filtrar</Button>
@@ -87,7 +87,96 @@ export default function TimeEntry({ setLoad }) {
                         </Style.Filtros>
                         <Style.Dados>
                             <Style.DHeader>Novo Apontamento</Style.DHeader>
-                            <Style.DBody></Style.DBody>
+                            <Style.DBody>
+                                <Style.DBoxBody>
+                                    <Style.DBigBox>
+                                        <Style.BoxHeader>
+                                            Projeto
+                                        </Style.BoxHeader>
+                                        <Dropdown>
+                                            <Dropdown.Toggle className="drop-down">
+                                                {
+                                                    sel ? sel : "Select"
+                                                }
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu className="drop-down-menu">
+                                                <Dropdown.Item onClick={() => { setSel("1") }}>Action</Dropdown.Item>
+                                                <Dropdown.Item onClick={() => { setSel("2") }}>Another action</Dropdown.Item>
+                                                <Dropdown.Item onClick={() => { setSel("3") }}>Something else</Dropdown.Item>
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                    </Style.DBigBox>
+                                </Style.DBoxBody>
+                                <Style.DBoxBody>
+                                    <Style.DBox>
+                                        <Style.BoxHeader>
+                                            Data
+                                        </Style.BoxHeader>
+                                        <InputGroup className="text-box">
+                                            <FormControl
+                                                id="log"
+                                                aria-label="Default"
+                                                aria-describedby="inputGroup-sizing-default"
+                                                type="text"
+                                            />
+                                        </InputGroup>
+                                    </Style.DBox>
+                                    <Style.DSmallBox>
+                                        <Style.BoxHeader>
+                                            Horas
+                                        </Style.BoxHeader>
+                                        <InputGroup className="text-box">
+                                            <FormControl
+                                                id="log"
+                                                aria-label="Default"
+                                                aria-describedby="inputGroup-sizing-default"
+                                                type="text"
+                                            />
+                                        </InputGroup>
+                                    </Style.DSmallBox>
+                                    <Style.DSmallBox>
+                                        <Style.BoxHeader>
+                                            Minutos
+                                        </Style.BoxHeader>
+                                        <InputGroup className="text-box">
+                                            <FormControl
+                                                id="log"
+                                                aria-label="Default"
+                                                aria-describedby="inputGroup-sizing-default"
+                                                type="text"
+                                            />
+                                        </InputGroup>
+                                    </Style.DSmallBox>
+                                    <Style.DBox>
+                                        <Style.BoxHeader>
+                                            Gerente do Projeto
+                                        </Style.BoxHeader>
+                                        <InputGroup className="text-box">
+                                            <FormControl
+                                                id="log"
+                                                aria-label="Default"
+                                                aria-describedby="inputGroup-sizing-default"
+                                                type="text"
+                                            />
+                                        </InputGroup>
+                                    </Style.DBox>
+                                </Style.DBoxBody>
+                                <Style.DBoxBody>
+                                    <Style.DBigBox>
+                                        <Style.BoxHeader>
+                                            Observações
+                                        </Style.BoxHeader>
+                                        <InputGroup className="text-box">
+                                            <FormControl
+                                                id="log"
+                                                aria-label="Default"
+                                                aria-describedby="inputGroup-sizing-default"
+                                                type="text"
+                                            />
+                                        </InputGroup>
+                                    </Style.DBigBox>
+                                </Style.DBoxBody>
+                            </Style.DBody>
                             <Style.DFooter>
                                 <Button className="but">Gravar</Button>
                             </Style.DFooter>

@@ -56,33 +56,32 @@ export const FFooter = styled.div`
     height: 3VH;
     display: flex;
     justify-content: right;
+    z-index: -1;
 `;
 
-export const BoxBody = styled.div`
+export const FBoxBody = styled.div`
+    padding: 1VH 2VW 0 2VW;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
     width: 100%;
     height: 80%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 `;
 
 export const BoxHeader = styled.div`
-    font-size: 80%;
-    overflow: Hidden;
+    font-size: 3VH;
     width: 100%;
     height: 50%;
     color: white;
-    line-height: 2;
+    vertical-align: middle;
 `;
 
 export const Box = styled.div`
-    display: inline-block;
     position: relative;
-    top: 10%;
     width: 25%;
-    height: 60%;
+    height: 10VH;
 `;
 
 export const Dados = styled.div`
@@ -116,8 +115,8 @@ export const DBody = styled.div`
     width: 100%;
     height: calc(100% - 6VH);
     display: flex;
-    background-color: green;
     justify-content: space-around;
+    flex-wrap: wrap;
 `;
 
 export const DFooter = styled.div`
@@ -126,4 +125,41 @@ export const DFooter = styled.div`
     height: 3VH;
     display: flex;
     justify-content: right;
+`;
+
+export const DBoxBody = styled.div`
+    padding: 1VH 2VW 0 2VW;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: space-between;
+`;
+
+export const DBoxHeader = styled.div`
+    font-size: 3VH;
+    width: 100%;
+    height: 50%;
+    color: white;
+    vertical-align: middle;
+`;
+
+export const DBigBox = styled.div`
+    position: relative;
+    width: 100%;
+    height: 10VH;
+`;
+
+export const DBox = styled.div`
+    position: relative;
+    width: 30%;
+    height: 10VH;
+`;
+
+export const DSmallBox = styled.div`
+    position: relative;
+    width: 15%;
+    height: 10VH;
 `;
