@@ -16,7 +16,7 @@ export const Container = styled.div`
     animation: ${entranceAnimation} 0.5s;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-direction: column;
 `;
 
@@ -88,8 +88,6 @@ export const Box = styled.div`
 
 export const Dados = styled.div`
     padding: 2%;
-    left: 50%;
-    transform: translateX(-50%);
     position: relative;
     height: 60%;
     width: 100%;
@@ -166,6 +164,17 @@ export const DSmallBox = styled.div`
     height: 10VH;
 `;
 
+export const ApontamentoSmall = styled.div`
+    padding: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    height: 35%;
+    width: 100%;
+    border-radius: 17px;
+    background-color: #2B47AA;
+`;
+
 export const Apontamento = styled.div`
     padding: 2%;
     left: 50%;
@@ -200,7 +209,8 @@ export const Table = styled.table`
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    font-size: 2VH;
+    font-size: ${props => props.size == 1 ? '1.5VH' : '2VH'};
+    border-spacing: 0px;
 `;
 
 export const THeader = styled.thead`
@@ -228,6 +238,7 @@ export const TRHeader = styled.tr`
 `;
 
 export const Tr = styled.tr`
+    padding: 0;
     display: inline-block;
     position: relative;
     width: 100%;
@@ -235,6 +246,7 @@ export const Tr = styled.tr`
 `;
 
 export const Th = styled.th`
+    padding: 0;
     display: inline-block;
     position: relative;
     width: 23%;
@@ -245,12 +257,12 @@ export const Th = styled.th`
 `;
 
 export const Td = styled.td`
+    padding: 0;
     display: inline-block;
     position: relative;
     width: 23%;
     height: 100%;
     background-color: white;
-    vertical-align: middle;
     border: 1px solid black;
 `;
 
