@@ -251,9 +251,9 @@ export default class TimeEntry extends React.Component {
                                                     }
                                                 </Dropdown.Toggle>
                                                 <Dropdown.Menu className="drop-down-menu">
-                                                    <Dropdown.Item onClick={() => { this.handleProjeto("P1") }}>Action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.handleProjeto("P2") }}>Another action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.handleProjeto("P3") }}>Something else</Dropdown.Item>
+                                                    <Dropdown.Item onClick={() => { this.handleProjeto("Projeto 1") }}>Projeto 1</Dropdown.Item>
+                                                    <Dropdown.Item onClick={() => { this.handleProjeto("Projeto 2") }}>Projeto 2</Dropdown.Item>
+                                                    <Dropdown.Item onClick={() => { this.handleProjeto("Projeto 3") }}>Projeto 3</Dropdown.Item>
                                                 </Dropdown.Menu>
                                             </Dropdown>
                                         </Style.DBigBox>
