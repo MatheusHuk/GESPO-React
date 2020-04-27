@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 import Viewer from '../../Layout/Viewer'
 
 export default function One({ setLoad }){
