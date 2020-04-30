@@ -13,8 +13,11 @@ export const Container = styled.div`
     position: relative;
     width: 100VW;
     height: 100%;
-    left: 0%;
     animation: ${entranceAnimation} 0.5s;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column;
 `;
 
 export const Filtros = styled.div`
@@ -26,7 +29,6 @@ export const Filtros = styled.div`
     width: 100%;
     border-radius: 17px;
     background-color: #2B47AA;
-    margin-bottom: 4%;
 `;
 
 export const FHeader = styled.div`
@@ -55,7 +57,7 @@ export const FFooter = styled.div`
     width: 100%;
     height: 3VH;
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
     z-index: -1;
 `;
 
@@ -86,8 +88,6 @@ export const Box = styled.div`
 
 export const Dados = styled.div`
     padding: 2%;
-    left: 50%;
-    transform: translateX(-50%);
     position: relative;
     height: 60%;
     width: 100%;
@@ -124,7 +124,7 @@ export const DFooter = styled.div`
     width: 100%;
     height: 3VH;
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
 `;
 
 export const DBoxBody = styled.div`
@@ -164,12 +164,23 @@ export const DSmallBox = styled.div`
     height: 10VH;
 `;
 
+export const ApontamentoSmall = styled.div`
+    padding: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    height: 35%;
+    width: 100%;
+    border-radius: 17px;
+    background-color: #2B47AA;
+`;
+
 export const Apontamento = styled.div`
     padding: 2%;
     left: 50%;
     transform: translateX(-50%);
     position: relative;
-    height: 60%;
+    height: 65%;
     width: 100%;
     border-radius: 17px;
     background-color: #2B47AA;
@@ -188,21 +199,89 @@ export const AHeader = styled.div`
     font-size: 2.5VH;
 `;
 
-export const ABody = styled.div`
+export const Table = styled.table`
+    border: 1;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
     width: 100%;
-    height: calc(100% - 6VH);
+    height: calc(100% - 3VH);
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    font-size: ${props => props.size == 1 ? '1.5VH' : '2VH'};
+    border-spacing: 0px;
 `;
 
-export const AFooter = styled.div`
+export const THeader = styled.thead`
     position: relative;
     width: 100%;
-    height: 3VH;
-    display: flex;
-    justify-content: right;
+    height: 10%;
+`;
+
+export const TData = styled.tbody`
+    position: relative;
+    width: 100%;
+    height: 90%;
+    overflow-y: scroll;
+    -moz-overflow-style: none;
+    ::-webkit-scrollbar{
+        display: none;
+    }
+`;
+
+export const TRHeader = styled.tr`
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+`;
+
+export const Tr = styled.tr`
+    padding: 0;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    height: 10%;
+`;
+
+export const Th = styled.th`
+    padding: 0;
+    display: inline-block;
+    position: relative;
+    width: 23%;
+    height: 100%;
+    background-color: white;
+    vertical-align: middle;
+    border: 1px solid black;
+`;
+
+export const Td = styled.td`
+    padding: 0;
+    display: inline-block;
+    position: relative;
+    width: 23%;
+    height: 100%;
+    background-color: white;
+    border: 1px solid black;
+`;
+
+export const THSmall = styled.th`
+    display: inline-block;
+    position: relative;
+    width: 8%;
+    height: 100%;
+    background-color: white;
+    vertical-align: middle;
+    border: 1px solid black;
+`;
+
+export const TDSmall = styled.td`
+    display: inline-block;
+    position: relative;
+    width: 8%;
+    height: 100%;
+    background-color: white;
+    vertical-align: middle;
+    border: 1px solid black;
 `;
