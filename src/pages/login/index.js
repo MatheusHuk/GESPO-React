@@ -21,12 +21,6 @@ export default function Login({ setLoad, logged, setLogged }) {
 
     const [show, setShow] = useState(false);
 
-    const resetToaster = () => {
-        setTimeout(() => {
-            setShow(false)
-        }, 5000);
-    }
-
     useEffect(() => {
         setLoad(false);
     }, []);
@@ -69,7 +63,6 @@ export default function Login({ setLoad, logged, setLogged }) {
                     body: erro
                 });
                 setShow(true);
-                resetToaster();
             })
             .finally(() => {
                 setLoad(false);

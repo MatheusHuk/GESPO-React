@@ -133,7 +133,7 @@ export default class TimeEntry extends React.Component {
                 <Viewer>
                     <Toaster
                         show={this.state.showToaster}
-                        setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }) }}
+                        setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }); }}
                         header={this.state.toaster.header}
                         body={this.state.toaster.body}
                     />

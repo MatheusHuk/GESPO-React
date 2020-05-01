@@ -7,6 +7,18 @@ export default class Toaster extends React.Component {
         this.props = props;
     }
 
+    componentDidUpdate(){
+        if(this.props.show){
+            this.resetToaster();
+        }
+    }
+
+    resetToaster(){
+        setTimeout(() => {
+            this.props.setShowToaster(false)
+        }, 5000);
+    }
+
     render() {
         return (
             <Toast 
