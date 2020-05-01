@@ -20,6 +20,65 @@ export const Container = styled.div`
     flex-direction: column;
 `;
 
+export const MainContainer = styled.div`
+    padding-top: 1%;
+    width: 100%;
+    height: 95%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column;
+`;
+
+export const HeaderContainer = styled.div`
+    width: auto;
+    height: 5%;
+    display: flex;
+    flex-wrap: wrap;
+`;
+
+export const HeaderBackButton = styled.div`
+    width: 10%;
+    height: 100%;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+`;
+
+export const ButtonContainer = styled.div`
+    height: 100%;
+    width: 90%;
+`;
+
+export const HeaderButton = styled.div`
+    width: 50%;
+    height: 100%;
+    background-color: ${props => props.selected ? '#2B47AA' : "white"};
+    color: ${props => props.selected ? 'white' : "black"};
+    border: 1px solid black;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+    position: relative;
+    right: 0;
+    float: right;
+    cursor: pointer;
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+`;
+
 export const Filtros = styled.div`
     padding: 2%;
     left: 50%;

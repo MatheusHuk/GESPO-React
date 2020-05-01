@@ -12,7 +12,7 @@ export default class TimeEntry extends React.Component {
         this.props = props;
         this.state = {
             sel: false,
-            showFiltros: false,
+            showFiltros: true,
             showToaster: false,
             toaster: {
                 header: "Header",
@@ -154,153 +154,169 @@ export default class TimeEntry extends React.Component {
                         header={this.state.toaster.header}
                         body={this.state.toaster.body}
                     />
-                    {this.state.showFiltros ?
-                        <Style.Container selected={this.state.showFiltros}>
-                            <Style.Filtros>
-                                <Style.FHeader>Filtros</Style.FHeader>
-                                <Style.FBody>
-                                    <Form className="formulario">
-                                        <Form.Row className="formulario-row-center">
-                                            <Form.Group as={Col} controlId="formProjeto">
-                                                <Form.Label>Projeto</Form.Label>
-                                                <Form.Control as="select" value="Choose...">
-                                                    <option>Selecione...</option>
-                                                    <option>Gerente 1</option>
-                                                    <option>Gerente 2</option>
-                                                    <option>Gerente 3</option>
-                                                </Form.Control>
-                                            </Form.Group>
+                    <Style.Container>
+                        <Style.HeaderContainer>
+                            <Style.HeaderButton
+                                selected={this.state.showFiltros}
+                                onClick={() => { this.setState({ ...this.state, showFiltros: true }) }}
+                            >
+                                <p>Apontamentos</p>
+                            </Style.HeaderButton>
+                            <Style.HeaderButton
+                                selected={!this.state.showFiltros}
+                                onClick={() => { this.setState({ ...this.state, showFiltros: false }) }}
+                            >
+                                <p>Novo Apontamento</p>
+                            </Style.HeaderButton>
+                        </Style.HeaderContainer>
+                        {this.state.showFiltros ?
+                            <Style.MainContainer>
+                                <Style.Filtros>
+                                    <Style.FHeader>Filtros</Style.FHeader>
+                                    <Style.FBody>
+                                        <Form className="formulario">
+                                            <Form.Row className="formulario-row-center">
+                                                <Form.Group as={Col} controlId="formProjeto">
+                                                    <Form.Label>Projeto</Form.Label>
+                                                    <Form.Control as="select" value="Choose...">
+                                                        <option>Selecione...</option>
+                                                        <option>Gerente 1</option>
+                                                        <option>Gerente 2</option>
+                                                        <option>Gerente 3</option>
+                                                    </Form.Control>
+                                                </Form.Group>
 
-                                            <Form.Group as={Col} controlId="formFuncionario">
-                                                <Form.Label>Funcionário</Form.Label>
-                                                <Form.Control type="text" />
-                                            </Form.Group>
+                                                <Form.Group as={Col} controlId="formFuncionario">
+                                                    <Form.Label>Funcionário</Form.Label>
+                                                    <Form.Control type="text" />
+                                                </Form.Group>
 
-                                            <Form.Group as={Col} controlId="formData">
-                                                <Form.Label>Data</Form.Label>
-                                                <Form.Control type="date" />
-                                            </Form.Group>
+                                                <Form.Group as={Col} controlId="formData">
+                                                    <Form.Label>Data</Form.Label>
+                                                    <Form.Control type="date" />
+                                                </Form.Group>
 
-                                        </Form.Row>
-                                    </Form>
-                                </Style.FBody>
-                                <Style.FFooter>
-                                    <Button className="but">Filtrar</Button>
-                                </Style.FFooter>
-                            </Style.Filtros>
-                            <Style.Apontamento>
-                                <Style.AHeader>Apontamentos</Style.AHeader>
-                                <Style.Table>
-                                    <Style.THeader>
-                                        <Style.TRHeader>
-                                            <Style.Th>Projeto</Style.Th>
-                                            <Style.Th>Observações</Style.Th>
-                                            <Style.Th>Data</Style.Th>
-                                            <Style.Th>Horas</Style.Th>
-                                            <Style.THSmall>Ações</Style.THSmall>
-                                        </Style.TRHeader>
-                                    </Style.THeader>
-                                    <Style.TData>
-                                        {
-                                            this.state.dados.map((data, i) => {
-                                                return (
-                                                    <Style.Tr>
-                                                        <Style.Td key={i}>{data.projeto}</Style.Td>
-                                                        <Style.Td key={i}>{data.obs}</Style.Td>
-                                                        <Style.Td key={i}>{data.data}</Style.Td>
-                                                        <Style.Td key={i}>{data.horas}</Style.Td>
-                                                        <Style.TDSmall>*ícones*</Style.TDSmall>
-                                                    </Style.Tr>
-                                                )
-                                            })
-                                        }
-                                    </Style.TData>
-                                </Style.Table>
-                            </Style.Apontamento>
-                        </Style.Container>
-                        :
-                        <Style.Container>
-                            <Style.Dados>
-                                <Style.DHeader>Novo Apontamento</Style.DHeader>
-                                <Style.DBody>
-                                    <Form className="formulario">
-                                        <Form.Row className="formulario-row">
-                                            <Form.Group as={Col} controlId="formProjeto">
-                                                <Form.Label>Projeto</Form.Label>
-                                                <Form.Control as="select" onChange={(event) => { this.handleProjeto(event) }}>
-                                                    <option value="-1" >Selecione...</option>
-                                                    {
-                                                        this.state.selectDados.projetos.map((value, i) => {
-                                                            return (
-                                                                <option value={i} key={i}>{value.nome}</option>
-                                                            )
-                                                        })
-                                                    }
-                                                </Form.Control>
-                                            </Form.Group>
-                                        </Form.Row>
-                                        <Form.Row>
-                                            <Form.Group as={Col} controlId="formData">
-                                                <Form.Label>Data</Form.Label>
-                                                <Form.Control type="date" onChange={(event) => { this.handleData(event) }} />
-                                            </Form.Group>
-                                            <Form.Group as={Col} controlId="formHoras">
-                                                <Form.Label>Horas</Form.Label>
-                                                <Form.Control type="number" onChange={(event) => { this.handleHoras(event) }} />
-                                            </Form.Group>
-                                            <Form.Group as={Col} controlId="formMinutos">
-                                                <Form.Label>Minutos</Form.Label>
-                                                <Form.Control type="number" onChange={(event) => { this.handleMinutos(event) }} />
-                                            </Form.Group>
-                                            <Form.Group as={Col} controlId="formGerente">
-                                                <Form.Label>Gerente</Form.Label>
-                                                <Form.Control type="text" value={this.state.newDados.gerente} readOnly />
-                                            </Form.Group>
-                                        </Form.Row>
-                                        <Form.Row>
-                                            <Form.Group as={Col} controlId="formObs">
-                                                <Form.Label>Observações</Form.Label>
-                                                <Form.Control type="text" onChange={(event) => { this.handleObs(event) }} />
-                                            </Form.Group>
-                                        </Form.Row>
-                                    </Form>
-                                </Style.DBody>
-                                <Style.DFooter>
-                                    <Button className="but" onClick={() => { this.addDados() }}>Adicionar</Button>
-                                    <Button className="but" disabled={this.state.dadosList.length == 0} >Gravar tudo</Button>
-                                </Style.DFooter>
-                            </Style.Dados>
-                            <Style.ApontamentoSmall>
-                                <Style.AHeader>Apontamentos</Style.AHeader>
-                                <Style.Table size={1}>
-                                    <Style.THeader>
-                                        <Style.TRHeader>
-                                            <Style.Th>Projeto</Style.Th>
-                                            <Style.Th>Observações</Style.Th>
-                                            <Style.Th>Data</Style.Th>
-                                            <Style.Th>Horas</Style.Th>
-                                            <Style.THSmall>Ações</Style.THSmall>
-                                        </Style.TRHeader>
-                                    </Style.THeader>
-                                    <Style.TData>
-                                        {
-                                            this.state.dadosList.map((data, i) => {
-                                                return (
-                                                    <Style.Tr key={i}>
-                                                        <Style.Td>{data.projeto}</Style.Td>
-                                                        <Style.Td>{data.obs}</Style.Td>
-                                                        <Style.Td>{data.data}</Style.Td>
-                                                        <Style.Td>{data.horas}:{data.minutos}</Style.Td>
-                                                        <Style.TDSmall>*ícones*</Style.TDSmall>
-                                                    </Style.Tr>
-                                                )
-                                            })
-                                        }
-                                    </Style.TData>
-                                </Style.Table>
-                            </Style.ApontamentoSmall>
-                        </Style.Container>
-                    }
+                                            </Form.Row>
+                                        </Form>
+                                    </Style.FBody>
+                                    <Style.FFooter>
+                                        <Button className="but">Filtrar</Button>
+                                    </Style.FFooter>
+                                </Style.Filtros>
+                                <Style.Apontamento>
+                                    <Style.AHeader>Apontamentos</Style.AHeader>
+                                    <Style.Table>
+                                        <Style.THeader>
+                                            <Style.TRHeader>
+                                                <Style.Th>Projeto</Style.Th>
+                                                <Style.Th>Observações</Style.Th>
+                                                <Style.Th>Data</Style.Th>
+                                                <Style.Th>Horas</Style.Th>
+                                                <Style.THSmall>Ações</Style.THSmall>
+                                            </Style.TRHeader>
+                                        </Style.THeader>
+                                        <Style.TData>
+                                            {
+                                                this.state.dados.map((data, i) => {
+                                                    return (
+                                                        <Style.Tr>
+                                                            <Style.Td key={i}>{data.projeto}</Style.Td>
+                                                            <Style.Td key={i}>{data.obs}</Style.Td>
+                                                            <Style.Td key={i}>{data.data}</Style.Td>
+                                                            <Style.Td key={i}>{data.horas}</Style.Td>
+                                                            <Style.TDSmall>*ícones*</Style.TDSmall>
+                                                        </Style.Tr>
+                                                    )
+                                                })
+                                            }
+                                        </Style.TData>
+                                    </Style.Table>
+                                </Style.Apontamento>
+                            </Style.MainContainer>
+                            :
+                            <Style.MainContainer>
+                                <Style.Dados>
+                                    <Style.DHeader>Novo Apontamento</Style.DHeader>
+                                    <Style.DBody>
+                                        <Form className="formulario">
+                                            <Form.Row className="formulario-row">
+                                                <Form.Group as={Col} controlId="formProjeto">
+                                                    <Form.Label>Projeto</Form.Label>
+                                                    <Form.Control as="select" onChange={(event) => { this.handleProjeto(event) }}>
+                                                        <option value="-1" >Selecione...</option>
+                                                        {
+                                                            this.state.selectDados.projetos.map((value, i) => {
+                                                                return (
+                                                                    <option value={i} key={i}>{value.nome}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Form.Row>
+                                            <Form.Row>
+                                                <Form.Group as={Col} controlId="formData">
+                                                    <Form.Label>Data</Form.Label>
+                                                    <Form.Control type="date" onChange={(event) => { this.handleData(event) }} />
+                                                </Form.Group>
+                                                <Form.Group as={Col} controlId="formHoras">
+                                                    <Form.Label>Horas</Form.Label>
+                                                    <Form.Control type="number" onChange={(event) => { this.handleHoras(event) }} />
+                                                </Form.Group>
+                                                <Form.Group as={Col} controlId="formMinutos">
+                                                    <Form.Label>Minutos</Form.Label>
+                                                    <Form.Control type="number" onChange={(event) => { this.handleMinutos(event) }} />
+                                                </Form.Group>
+                                                <Form.Group as={Col} controlId="formGerente">
+                                                    <Form.Label>Gerente</Form.Label>
+                                                    <Form.Control type="text" value={this.state.newDados.gerente} readOnly />
+                                                </Form.Group>
+                                            </Form.Row>
+                                            <Form.Row>
+                                                <Form.Group as={Col} controlId="formObs">
+                                                    <Form.Label>Observações</Form.Label>
+                                                    <Form.Control type="text" onChange={(event) => { this.handleObs(event) }} />
+                                                </Form.Group>
+                                            </Form.Row>
+                                        </Form>
+                                    </Style.DBody>
+                                    <Style.DFooter>
+                                        <Button className="but" onClick={() => { this.addDados() }}>Adicionar</Button>
+                                        <Button className="but" disabled={this.state.dadosList.length == 0} >Gravar tudo</Button>
+                                    </Style.DFooter>
+                                </Style.Dados>
+                                <Style.ApontamentoSmall>
+                                    <Style.AHeader>Apontamentos</Style.AHeader>
+                                    <Style.Table size={1}>
+                                        <Style.THeader>
+                                            <Style.TRHeader>
+                                                <Style.Th>Projeto</Style.Th>
+                                                <Style.Th>Observações</Style.Th>
+                                                <Style.Th>Data</Style.Th>
+                                                <Style.Th>Horas</Style.Th>
+                                                <Style.THSmall>Ações</Style.THSmall>
+                                            </Style.TRHeader>
+                                        </Style.THeader>
+                                        <Style.TData>
+                                            {
+                                                this.state.dadosList.map((data, i) => {
+                                                    return (
+                                                        <Style.Tr key={i}>
+                                                            <Style.Td>{data.projeto}</Style.Td>
+                                                            <Style.Td>{data.obs}</Style.Td>
+                                                            <Style.Td>{data.data}</Style.Td>
+                                                            <Style.Td>{data.horas}:{data.minutos}</Style.Td>
+                                                            <Style.TDSmall>*ícones*</Style.TDSmall>
+                                                        </Style.Tr>
+                                                    )
+                                                })
+                                            }
+                                        </Style.TData>
+                                    </Style.Table>
+                                </Style.ApontamentoSmall>
+                            </Style.MainContainer>
+                        }
+                    </Style.Container>
                 </Viewer>
             </>
         );
