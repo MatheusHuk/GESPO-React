@@ -26,9 +26,10 @@ export const Filtros = styled.div`
     transform: translateX(-50%);
     position: relative;
     height: 30%;
-    width: 100%;
+    width: auto;
     border-radius: 17px;
     background-color: #2B47AA;
+    color: white;
 `;
 
 export const FHeader = styled.div`

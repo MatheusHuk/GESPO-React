@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dropdown, Button, InputGroup, FormControl } from 'react-bootstrap'
+import { Dropdown, Button, InputGroup, FormControl, Col, Form } from 'react-bootstrap'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
 import * as Style from './style'
@@ -12,7 +12,7 @@ export default class TimeEntry extends React.Component {
         this.props = props;
         this.state = {
             sel: false,
-            showFiltros: false,
+            showFiltros: true,
             showToaster: false,
             toaster: {
                 header: "Header",
@@ -142,62 +142,30 @@ export default class TimeEntry extends React.Component {
                             <Style.Filtros>
                                 <Style.FHeader>Filtros</Style.FHeader>
                                 <Style.FBody>
-                                    <Style.FBoxBody>
-                                        <Style.Box>
-                                            <Style.BoxHeader>
-                                                Time
-                                        </Style.BoxHeader>
-                                            <Dropdown>
-                                                <Dropdown.Toggle className="drop-down">
-                                                    {
-                                                        this.state.sel ? this.state.sel : "Select"
-                                                    }
-                                                </Dropdown.Toggle>
+                                    <Form className="formulario">
+                                        <Form.Row className="formulario-row">
+                                            <Form.Group as={Col} controlId="formProjeto">
+                                                <Form.Label>Projeto</Form.Label>
+                                                <Form.Control as="select" value="Choose...">
+                                                    <option>Selecione...</option>
+                                                    <option>Gerente 1</option>
+                                                    <option>Gerente 2</option>
+                                                    <option>Gerente 3</option>
+                                                </Form.Control>
+                                            </Form.Group>
 
-                                                <Dropdown.Menu className="drop-down-menu">
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "1" }) }}>Action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "2" }) }}>Another action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "3" }) }}>Something else</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Style.Box>
-                                        <Style.Box>
-                                            <Style.BoxHeader>
-                                                Centro de Custo
-                                        </Style.BoxHeader>
-                                            <Dropdown>
-                                                <Dropdown.Toggle className="drop-down">
-                                                    {
-                                                        this.state.sel ? this.state.sel : "Select"
-                                                    }
-                                                </Dropdown.Toggle>
+                                            <Form.Group as={Col} controlId="formFuncionario">
+                                                <Form.Label>Funcionário</Form.Label>
+                                                <Form.Control type="text" />
+                                            </Form.Group>
 
-                                                <Dropdown.Menu className="drop-down-menu">
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "1" }) }}>Action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "2" }) }}>Another action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "3" }) }}>Something else</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Style.Box>
-                                        <Style.Box>
-                                            <Style.BoxHeader>
-                                                Projeto
-                                        </Style.BoxHeader>
-                                            <Dropdown>
-                                                <Dropdown.Toggle className="drop-down">
-                                                    {
-                                                        this.state.sel ? this.state.sel : "Select"
-                                                    }
-                                                </Dropdown.Toggle>
+                                            <Form.Group as={Col} controlId="formGridGerente">
+                                                <Form.Label>Data</Form.Label>
+                                                <Form.Control type="date" />
+                                            </Form.Group>
 
-                                                <Dropdown.Menu className="drop-down-menu">
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "1" }) }}>Action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "2" }) }}>Another action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "3" }) }}>Something else</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Style.Box>
-                                    </Style.FBoxBody>
+                                        </Form.Row>
+                                    </Form>
                                 </Style.FBody>
                                 <Style.FFooter>
                                     <Button className="but">Filtrar</Button>

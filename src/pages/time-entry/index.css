@@ -32,3 +32,13 @@
 .text-box {
     width: 100% !important;
 }
+
+.formulario {
+    width: 90% !important;
+}
+
+.formulario-row{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
