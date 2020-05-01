@@ -118,6 +118,8 @@ export const DBody = styled.div`
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    color: white;
+    padding: 2% 0;
 `;
 
 export const DFooter = styled.div`

@@ -12,7 +12,7 @@ export default class TimeEntry extends React.Component {
         this.props = props;
         this.state = {
             sel: false,
-            showFiltros: true,
+            showFiltros: false,
             showToaster: false,
             toaster: {
                 header: "Header",
@@ -27,6 +27,18 @@ export default class TimeEntry extends React.Component {
                 gerente: "",
                 obs: ""
             },
+            selectDados: {
+                projetos: [
+                    {
+                        nome: "1",
+                        gerente: "A"
+                    },
+                    {
+                        nome: "2",
+                        gerente: "B"
+                    }
+                ]
+            },
             dados: [
                 {
                     projeto: "A",
@@ -38,14 +50,30 @@ export default class TimeEntry extends React.Component {
         }
     }
 
+    componentDidUpdate() {
+        console.log('State: ', this.state.newDados);
+    }
+
     handleProjeto(e) {
-        this.setState({
-            ...this.state,
-            newDados: {
-                ...this.state.newDados,
-                projeto: e
-            }
-        });
+        if (e.target.value < 0) {
+            this.setState({
+                ...this.state,
+                newDados: {
+                    ...this.state.newDados,
+                    projeto: "",
+                    gerente: ""
+                }
+            });
+        } else {
+            this.setState({
+                ...this.state,
+                newDados: {
+                    ...this.state.newDados,
+                    projeto: this.state.selectDados.projetos[e.target.value].nome,
+                    gerente: this.state.selectDados.projetos[e.target.value].gerente
+                }
+            });
+        }
     }
 
     handleData(e) {
@@ -78,16 +106,6 @@ export default class TimeEntry extends React.Component {
         });
     }
 
-    handleGerente(e) {
-        this.setState({
-            ...this.state,
-            newDados: {
-                ...this.state.newDados,
-                gerente: e.target.value
-            }
-        });
-    }
-
     handleObs(e) {
         this.setState({
             ...this.state,
@@ -112,7 +130,6 @@ export default class TimeEntry extends React.Component {
         }
         let list = this.state.dadosList;
         list.push(this.state.newDados);
-        console.log("LIST: ", list);
         this.setState({
             ...this.state,
             dadosList: list
@@ -143,7 +160,7 @@ export default class TimeEntry extends React.Component {
                                 <Style.FHeader>Filtros</Style.FHeader>
                                 <Style.FBody>
                                     <Form className="formulario">
-                                        <Form.Row className="formulario-row">
+                                        <Form.Row className="formulario-row-center">
                                             <Form.Group as={Col} controlId="formProjeto">
                                                 <Form.Label>Projeto</Form.Label>
                                                 <Form.Control as="select" value="Choose...">
@@ -159,7 +176,7 @@ export default class TimeEntry extends React.Component {
                                                 <Form.Control type="text" />
                                             </Form.Group>
 
-                                            <Form.Group as={Col} controlId="formGridGerente">
+                                            <Form.Group as={Col} controlId="formData">
                                                 <Form.Label>Data</Form.Label>
                                                 <Form.Control type="date" />
                                             </Form.Group>
@@ -206,99 +223,47 @@ export default class TimeEntry extends React.Component {
                             <Style.Dados>
                                 <Style.DHeader>Novo Apontamento</Style.DHeader>
                                 <Style.DBody>
-                                    <Style.DBoxBody>
-                                        <Style.DBigBox>
-                                            <Style.BoxHeader>
-                                                Projeto
-                                        </Style.BoxHeader>
-                                            <Dropdown>
-                                                <Dropdown.Toggle className="drop-down">
+                                    <Form className="formulario">
+                                        <Form.Row className="formulario-row">
+                                            <Form.Group as={Col} controlId="formProjeto">
+                                                <Form.Label>Projeto</Form.Label>
+                                                <Form.Control as="select" onChange={(event) => { this.handleProjeto(event) }}>
+                                                    <option value="-1" >Selecione...</option>
                                                     {
-                                                        this.state.newDados.projeto ? this.state.newDados.projeto : "Selecione"
+                                                        this.state.selectDados.projetos.map((value, i) => {
+                                                            return (
+                                                                <option value={i} key={i}>{value.nome}</option>
+                                                            )
+                                                        })
                                                     }
-                                                </Dropdown.Toggle>
-                                                <Dropdown.Menu className="drop-down-menu">
-                                                    <Dropdown.Item onClick={() => { this.handleProjeto("Projeto 1") }}>Projeto 1</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.handleProjeto("Projeto 2") }}>Projeto 2</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.handleProjeto("Projeto 3") }}>Projeto 3</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Style.DBigBox>
-                                    </Style.DBoxBody>
-                                    <Style.DBoxBody>
-                                        <Style.DBox>
-                                            <Style.BoxHeader>
-                                                Data
-                                        </Style.BoxHeader>
-                                            <InputGroup className="text-box">
-                                                <FormControl
-                                                    id="log"
-                                                    aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default"
-                                                    type="date"
-                                                    onChange={(event) => { this.handleData(event) }}
-                                                />
-                                            </InputGroup>
-                                        </Style.DBox>
-                                        <Style.DSmallBox>
-                                            <Style.BoxHeader>
-                                                Horas
-                                    </Style.BoxHeader>
-                                            <InputGroup className="text-box">
-                                                <FormControl
-                                                    id="log"
-                                                    aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default"
-                                                    type="number"
-                                                    onChange={(event) => { this.handleHoras(event) }}
-                                                />
-                                            </InputGroup>
-                                        </Style.DSmallBox>
-                                        <Style.DSmallBox>
-                                            <Style.BoxHeader>
-                                                Minutos
-                                    </Style.BoxHeader>
-                                            <InputGroup className="text-box">
-                                                <FormControl
-                                                    id="log"
-                                                    aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default"
-                                                    type="text"
-                                                    onChange={(event) => { this.handleMinutos(event) }}
-                                                />
-                                            </InputGroup>
-                                        </Style.DSmallBox>
-                                        <Style.DBox>
-                                            <Style.BoxHeader>
-                                                Gerente do Projeto
-                                    </Style.BoxHeader>
-                                            <InputGroup className="text-box">
-                                                <FormControl
-                                                    id="log"
-                                                    aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default"
-                                                    type="text"
-                                                    onChange={(event) => { this.handleGerente(event) }}
-                                                />
-                                            </InputGroup>
-                                        </Style.DBox>
-                                    </Style.DBoxBody>
-                                    <Style.DBoxBody>
-                                        <Style.DBigBox>
-                                            <Style.BoxHeader>
-                                                Observações
-                                    </Style.BoxHeader>
-                                            <InputGroup className="text-box">
-                                                <FormControl
-                                                    id="log"
-                                                    aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default"
-                                                    type="text"
-                                                    onChange={(event) => { this.handleObs(event) }}
-                                                />
-                                            </InputGroup>
-                                        </Style.DBigBox>
-                                    </Style.DBoxBody>
+                                                </Form.Control>
+                                            </Form.Group>
+                                        </Form.Row>
+                                        <Form.Row>
+                                            <Form.Group as={Col} controlId="formData">
+                                                <Form.Label>Data</Form.Label>
+                                                <Form.Control type="date" onChange={(event) => { this.handleData(event) }} />
+                                            </Form.Group>
+                                            <Form.Group as={Col} controlId="formHoras">
+                                                <Form.Label>Horas</Form.Label>
+                                                <Form.Control type="number" onChange={(event) => { this.handleHoras(event) }} />
+                                            </Form.Group>
+                                            <Form.Group as={Col} controlId="formMinutos">
+                                                <Form.Label>Minutos</Form.Label>
+                                                <Form.Control type="number" onChange={(event) => { this.handleMinutos(event) }} />
+                                            </Form.Group>
+                                            <Form.Group as={Col} controlId="formGerente">
+                                                <Form.Label>Gerente</Form.Label>
+                                                <Form.Control type="text" value={this.state.newDados.gerente} readOnly />
+                                            </Form.Group>
+                                        </Form.Row>
+                                        <Form.Row>
+                                            <Form.Group as={Col} controlId="formObs">
+                                                <Form.Label>Observações</Form.Label>
+                                                <Form.Control type="text" onChange={(event) => { this.handleObs(event) }} />
+                                            </Form.Group>
+                                        </Form.Row>
+                                    </Form>
                                 </Style.DBody>
                                 <Style.DFooter>
                                     <Button className="but" onClick={() => { this.addDados() }}>Adicionar</Button>
