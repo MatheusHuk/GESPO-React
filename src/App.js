@@ -8,7 +8,7 @@ function App() {
 
   const [loading, setLoading] = useState(true);
 
-  console.log("ENV: ",process.env);
+  //console.log("ENV: ",process.env);
   const setLoad = (l) => {
     setLoading(l);
   }

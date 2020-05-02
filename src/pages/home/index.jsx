@@ -9,7 +9,7 @@ export default function Home({ setLoad, logged, setLogged }){
     
     useEffect(() => {
         setLoad(true);
-        //if(logged == null) history.push("/login");
+        if(logged == null) history.push("/login");
         setLoad(false);
     }, [])
 

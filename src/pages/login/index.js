@@ -43,7 +43,10 @@ export default function Login({ setLoad, logged, setLogged }) {
         setLoad(true);
         UserService.login([["cpf", state.cpf], ["password", state.password]])
             .then((res) => {
-                setLogged(res);
+                let log = res.data;
+                //log.cookie = res.headers.get('set-cookie');
+                console.log('set-cookie', res.headers);
+                setLogged(log);
                 history.push("/");
             })
             .catch((error) => {

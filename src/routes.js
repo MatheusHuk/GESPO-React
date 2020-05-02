@@ -6,7 +6,6 @@ export default function Routes({ setLoad }){
     
     const [logged, setLogged] = useState();
 
-
     return(
         <BrowserRouter>
             <Switch>
@@ -18,7 +17,9 @@ export default function Routes({ setLoad }){
                     <Pages.Login setLoad={setLoad}
                                  logged={logged} 
                                  setLogged={setLogged} />} exact />
-                <Route path="/timeEntry" render={(props) => <Pages.TimeEntry setLoad={setLoad} />} exact />
+                <Route path="/timeEntry" render={(props) => 
+                    <Pages.TimeEntry setLoad={setLoad} 
+                                     logged={logged} />} exact />
                 <Route path="/dashboards" render={(props) => <Pages.Dashboards setLoad={setLoad} />} exact />
                 <Route path="/projectManagement" render={(props) => <Pages.ProjectManagement setLoad={setLoad} />} exact />
                 <Route path="/projectManagement/hoursProvisioning" render={(props) => <Pages.HoursProvisioning setLoad={setLoad} />} exact />
