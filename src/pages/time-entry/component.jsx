@@ -13,7 +13,7 @@ export default class TimeEntry extends React.Component {
         this.props = props;
         this.state = {
             sel: false,
-            showFiltros: false,
+            showFiltros: true,
             showToaster: false,
             toaster: {
                 header: "Header",
@@ -42,12 +42,17 @@ export default class TimeEntry extends React.Component {
                     }
                 ]
             },
-            dados: []
+            dados: [{
+                project: 0,
+                date: "2020-05-03",
+                amountHours: 3,
+                dsWork: "AAAAAAAAAAAAAAAsssss"
+            }]
         }
     }
 
     componentDidMount() {
-        //this.props.setLoad(false);
+        console.log("dddd: ",this.props.logged);
         this.props.setLoad(true);
         TimeEntryService.getAllByUser([["id", this.props.logged.id]])
             .then(res => {
@@ -156,6 +161,10 @@ export default class TimeEntry extends React.Component {
             seconds = "0" + seconds;
         }
         return hours + ":" + minutes;
+    }
+
+    formatDsWork(text){
+        return text.length > 15 ? text.substring(0,15) + "..." : text;
     }
 
     addDados() {
@@ -291,7 +300,7 @@ export default class TimeEntry extends React.Component {
                                                     return (
                                                         <Style.Tr>
                                                             <Style.Td key={i}>{data.project.name}</Style.Td>
-                                                            <Style.Td key={i}>{data.dsWork}</Style.Td>
+                                                            <Style.Td key={i}>{this.formatDsWork(data.dsWork)}</Style.Td>
                                                             <Style.Td key={i}>{data.date || ""}</Style.Td>
                                                             <Style.Td key={i}>{this.decryptHours(data.amountHours)}</Style.Td>
                                                             <Style.TDSmall>*ícones*</Style.TDSmall>

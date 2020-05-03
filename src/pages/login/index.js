@@ -27,6 +27,7 @@ export default function Login({ setLoad, logged, setLogged }) {
     const cookie = new Cookies();
 
     useEffect(() => {
+        setLoad(true);
         let loggedCookie = cookie.get("LOGGED")
         if(loggedCookie){
             setLogged(loggedCookie)
