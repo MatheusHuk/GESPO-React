@@ -74,7 +74,9 @@ export default function ResourcesAllocation(){
 
                             </Form.Row>
 
-                            
+                            <div className = "botaoForm">
+                            <Button className = "corBotao" variant="primary" type="submit">Gravar</Button>
+                            </div>
                         </Form>     
                         </Card.Body>
                             </Card>
