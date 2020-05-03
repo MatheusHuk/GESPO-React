@@ -49,6 +49,8 @@ export default function Login({ setLoad, logged, setLogged }) {
             .catch((error) => {
                 let erro = "";
                 switch(error){
+                    case 400:
+                        erro = "Cpf ou senha inválidos";break;
                     case 403:
                         erro = "Cpf ou senha inválidos";break;
                     case 404:

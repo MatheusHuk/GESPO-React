@@ -23,4 +23,14 @@ export default class Requests {
             });
     }
 
+    static post(path, body) {
+        return axios.post(path, body, {withCredentials : true})
+            .then(res => {
+                return res
+            })
+            .catch(error => {
+                return error.response ? error.response : { status: 500 };
+            });
+    }
+
 }

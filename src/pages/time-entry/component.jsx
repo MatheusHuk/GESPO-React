@@ -13,30 +13,32 @@ export default class TimeEntry extends React.Component {
         this.props = props;
         this.state = {
             sel: false,
-            showFiltros: true,
+            showFiltros: false,
             showToaster: false,
             toaster: {
                 header: "Header",
                 body: "Body"
             },
             dadosList: [],
+            aux: {
+                horas: 0,
+                minutos: 0
+            },
             newDados: {
-                projeto: "",
-                data: "",
-                horas: "",
-                minutos: "",
-                gerente: "",
-                obs: ""
+                project: -1,
+                date: "",
+                amountHours: 0,
+                dsWork: ""
             },
             selectDados: {
                 projetos: [
                     {
-                        nome: "1",
-                        gerente: "A"
+                        name: "1",
+                        manager: "A"
                     },
                     {
-                        nome: "2",
-                        gerente: "B"
+                        name: "2",
+                        manager: "B"
                     }
                 ]
             },
@@ -45,10 +47,10 @@ export default class TimeEntry extends React.Component {
     }
 
     componentDidMount() {
-        this.props.setLoad(true);
+        this.props.setLoad(false);
+        /* this.props.setLoad(true);
         TimeEntryService.getAllByUser([["id", this.props.logged.id]])
             .then(res => {
-                console.log("Resposta: ", res);
                 this.state.dados = res.data == "" ? [] : res.data;
             })
             .catch(error => {
@@ -56,21 +58,23 @@ export default class TimeEntry extends React.Component {
             })
             .finally(() => {
                 this.props.setLoad(false);
-            })
+            }) */
     }
 
     componentDidUpdate() {
         console.log('State: ', this.state.newDados);
+        console.log('Aux: ', this.state.aux);
     }
 
     handleProjeto(e) {
-        if (e.target.value < 0) {
+        let value = parseInt(e.target.value)
+        console.log('Val: ', value)
+        if (value < 0) {
             this.setState({
                 ...this.state,
                 newDados: {
                     ...this.state.newDados,
-                    projeto: "",
-                    gerente: ""
+                    project: -1
                 }
             });
         } else {
@@ -78,8 +82,7 @@ export default class TimeEntry extends React.Component {
                 ...this.state,
                 newDados: {
                     ...this.state.newDados,
-                    projeto: this.state.selectDados.projetos[e.target.value].nome,
-                    gerente: this.state.selectDados.projetos[e.target.value].gerente
+                    project: value
                 }
             });
         }
@@ -90,29 +93,39 @@ export default class TimeEntry extends React.Component {
             ...this.state,
             newDados: {
                 ...this.state.newDados,
-                data: e.target.value
+                date: e.target.value
             }
         });
     }
 
     handleHoras(e) {
+        let value = parseInt(e.target.value);
         this.setState({
             ...this.state,
+            aux: {
+                ...this.state.aux,
+                horas: value,
+            },
             newDados: {
                 ...this.state.newDados,
-                horas: e.target.value
+                amountHours: (value + (this.state.aux.minutos * 1 / 60))
             }
-        });
+        })
     }
 
     handleMinutos(e) {
+        let value = parseInt(e.target.value);
         this.setState({
             ...this.state,
+            aux: {
+                ...this.state.aux,
+                minutos: value,
+            },
             newDados: {
                 ...this.state.newDados,
-                minutos: e.target.value
+                amountHours: (this.state.aux.horas + (value * 1 / 60))
             }
-        });
+        })
     }
 
     handleObs(e) {
@@ -120,7 +133,7 @@ export default class TimeEntry extends React.Component {
             ...this.state,
             newDados: {
                 ...this.state.newDados,
-                obs: e.target.value
+                dsWork: e.target.value
             }
         });
     }
@@ -146,7 +159,7 @@ export default class TimeEntry extends React.Component {
     }
 
     addDados() {
-        if (this.state.newDados.projeto == "" || this.state.newDados.data == "" || this.state.newDados.horas == "" || this.state.newDados.minutos == "" || this.state.newDados.gerente == "" || this.state.newDados.obs == "") {
+        if (this.state.newDados.project < 0 || this.state.newDados.date == "" || this.state.newDados.amountHours == 0 || this.state.newDados.dsWork == "") {
             this.setState({
                 ...this.state,
                 toaster: {
@@ -162,9 +175,48 @@ export default class TimeEntry extends React.Component {
         this.setState({
             ...this.state,
             dadosList: list
-        }
-        );
+        });
     }
+
+    saveDados() {
+        /*this.props.setLoad(true);
+        TimeEntryService.writeNewDados(this.state.dadosList)
+            .then(res => {
+                TimeEntryService.getAllByUser([["id", this.props.logged.id]])
+                    .then(res => {
+                        this.state.dados = res.data == "" ? [] : res.data;
+                        this.setState({
+                            ...this.state,
+                            toaster: {
+                                header: "Sucesso",
+                                body: "Dados gravados com sucesso"
+                            },
+                            showToaster: true
+                        })
+                    })
+                    .catch(error => {
+                        console.log('Error: ', error);
+                    })
+                    .finally(() => {
+                        this.props.setLoad(false);
+                    })
+            })
+            .catch(error => {
+                this.setState({
+                    ...this.state,
+                    toaster: {
+                        header: "Erro",
+                        body: "Algo deu errado"
+                    },
+                    showToaster: true
+                })
+            })
+            .finally(() => {
+                this.props.setLoad(false);
+            })*/
+            console.log("Grava dados: ",this.state.dadosList);
+    }
+
     render() {
         return (
             <>
@@ -200,10 +252,7 @@ export default class TimeEntry extends React.Component {
                                                 <Form.Group as={Col} controlId="formProjeto">
                                                     <Form.Label>Projeto</Form.Label>
                                                     <Form.Control as="select" value="Choose...">
-                                                        <option>Selecione...</option>
-                                                        <option>Gerente 1</option>
-                                                        <option>Gerente 2</option>
-                                                        <option>Gerente 3</option>
+
                                                     </Form.Control>
                                                 </Form.Group>
 
@@ -268,7 +317,7 @@ export default class TimeEntry extends React.Component {
                                                         {
                                                             this.state.selectDados.projetos.map((value, i) => {
                                                                 return (
-                                                                    <option value={i} key={i}>{value.nome}</option>
+                                                                    <option value={i} key={i}>{value.name}</option>
                                                                 )
                                                             })
                                                         }
@@ -290,7 +339,7 @@ export default class TimeEntry extends React.Component {
                                                 </Form.Group>
                                                 <Form.Group as={Col} controlId="formGerente">
                                                     <Form.Label>Gerente</Form.Label>
-                                                    <Form.Control size="sm" type="text" value={this.state.newDados.gerente} readOnly />
+                                                    <Form.Control size="sm" type="text" value={this.state.newDados.project >= 0 ? this.state.selectDados.projetos[this.state.newDados.project].manager : ""} readOnly />
                                                 </Form.Group>
                                             </Form.Row>
                                             <Form.Row>
@@ -303,7 +352,7 @@ export default class TimeEntry extends React.Component {
                                     </Style.DBody>
                                     <Style.DFooter>
                                         <Button className="but" onClick={() => { this.addDados() }}>Adicionar</Button>
-                                        <Button className="but" disabled={this.state.dadosList.length == 0} >Gravar tudo</Button>
+                                        <Button className="but" onClick={() => { this.saveDados() }} disabled={this.state.dadosList.length == 0} >Gravar tudo</Button>
                                     </Style.DFooter>
                                 </Style.Dados>
                                 <Style.ApontamentoSmall>
@@ -323,10 +372,10 @@ export default class TimeEntry extends React.Component {
                                                 this.state.dadosList.map((data, i) => {
                                                     return (
                                                         <Style.Tr key={i}>
-                                                            <Style.Td>{data.projeto}</Style.Td>
-                                                            <Style.Td>{data.obs}</Style.Td>
-                                                            <Style.Td>{data.data}</Style.Td>
-                                                            <Style.Td>{data.horas}:{data.minutos}</Style.Td>
+                                                            <Style.Td>{this.state.selectDados.projetos[data.project].name}</Style.Td>
+                                                            <Style.Td>{data.dsWork}</Style.Td>
+                                                            <Style.Td>{data.date}</Style.Td>
+                                                            <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
                                                             <Style.TDSmall>*ícones*</Style.TDSmall>
                                                         </Style.Tr>
                                                     )
