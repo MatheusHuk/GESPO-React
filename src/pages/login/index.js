@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Cookies, useCookies } from 'react-cookie'
 import { useHistory } from 'react-router-dom'
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 import UserService from '../../services/userService'
@@ -21,8 +22,18 @@ export default function Login({ setLoad, logged, setLogged }) {
 
     const [show, setShow] = useState(false);
 
+    const [cookies, setCookies] = useCookies([]);
+
+    const cookie = new Cookies();
+
     useEffect(() => {
-        setLoad(false);
+        let loggedCookie = cookie.get("LOGGED")
+        if(loggedCookie){
+            setLogged(loggedCookie)
+            history.push("/")
+        }else{
+            setLoad(false);
+        }
     }, []);
 
     function handleLogin(e) {
@@ -44,6 +55,7 @@ export default function Login({ setLoad, logged, setLogged }) {
         UserService.login([["cpf", state.cpf], ["password", state.password]])
             .then((res) => {
                 setLogged(res.data);
+                setCookies("LOGGED", res.data);
                 history.push("/");
             })
             .catch((error) => {

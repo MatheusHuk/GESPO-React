@@ -47,8 +47,8 @@ export default class TimeEntry extends React.Component {
     }
 
     componentDidMount() {
-        this.props.setLoad(false);
-        /* this.props.setLoad(true);
+        //this.props.setLoad(false);
+        this.props.setLoad(true);
         TimeEntryService.getAllByUser([["id", this.props.logged.id]])
             .then(res => {
                 this.state.dados = res.data == "" ? [] : res.data;
@@ -58,7 +58,7 @@ export default class TimeEntry extends React.Component {
             })
             .finally(() => {
                 this.props.setLoad(false);
-            }) */
+            })
     }
 
     componentDidUpdate() {
