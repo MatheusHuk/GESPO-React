@@ -13,7 +13,7 @@ export default function Three(){
                 <div class="container">
                     <div class="subcontainer">
                         <div class="component" onClick={() => history.push("/hoursProvisioning") }>Provisionamento de Horas</div>
-                        <div class="component" onClick={() => history.push("/two") }>Rota 2</div>
+                        <div class="component" onClick={() => history.push("/three/hoursProvisioningReal") }>Provisionamento de Horas Real</div>
                     </div>
                     <div class="subcontainer">
                         <div class="component" onClick={() => history.push("/three") }>Rota 3</div>
