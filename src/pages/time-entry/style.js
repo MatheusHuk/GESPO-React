@@ -311,7 +311,7 @@ export const Th = styled.th`
     padding: 0;
     display: inline-block;
     position: relative;
-    width: 23%;
+    width: 19%;
     height: 100%;
     background-color: white;
     vertical-align: middle;
@@ -322,7 +322,7 @@ export const Td = styled.td`
     padding: 0;
     display: inline-block;
     position: relative;
-    width: 23%;
+    width: 19%;
     height: 100%;
     background-color: white;
     border: 1px solid black;
@@ -331,7 +331,7 @@ export const Td = styled.td`
 export const THSmall = styled.th`
     display: inline-block;
     position: relative;
-    width: 8%;
+    width: 5%;
     height: 100%;
     background-color: white;
     vertical-align: middle;
@@ -341,7 +341,7 @@ export const THSmall = styled.th`
 export const TDSmall = styled.td`
     display: inline-block;
     position: relative;
-    width: 8%;
+    width: 5%;
     height: 100%;
     background-color: white;
     vertical-align: middle;

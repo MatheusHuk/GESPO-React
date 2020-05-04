@@ -23,4 +23,13 @@ export default class TimeEntryService{
                 })
         })
     }
+
+    static async filterEntries(body){
+        return new Promise((resolve, reject) => {
+            Requests.get("/", body)
+                .then(res => {
+                    this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
+                })
+        })
+    }
 }

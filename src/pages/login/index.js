@@ -35,6 +35,8 @@ export default function Login({ setLoad, logged, setLogged }) {
         }else{
             setLoad(false);
         }
+        setLogged({id : 9})
+        history.push("/timeEntry")
     }, []);
 
     function handleLogin(e) {

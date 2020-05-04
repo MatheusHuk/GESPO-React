@@ -13,11 +13,16 @@ export default class TimeEntry extends React.Component {
         this.props = props;
         this.state = {
             sel: false,
-            showFiltros: true,
+            showFiltros: false,
             showToaster: false,
             toaster: {
                 header: "Header",
                 body: "Body"
+            },
+            filtros: {
+                project: null,
+                funcionario: null,
+                data: null
             },
             dadosList: [],
             aux: {
@@ -25,10 +30,11 @@ export default class TimeEntry extends React.Component {
                 minutos: 0
             },
             newDados: {
-                project: -1,
-                date: "",
+                employee: null,
+                project: null,
+                date: null,
                 amountHours: 0,
-                dsWork: ""
+                dsWork: null
             },
             selectDados: {
                 projetos: [
@@ -39,6 +45,32 @@ export default class TimeEntry extends React.Component {
                     {
                         name: "2",
                         manager: "B"
+                    }
+                ],
+                funcionarios: [
+                    {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    {
+                        id: 2,
+                        name: "Petter Gabriel Mene"
+                    },
+                    {
+                        id: 3,
+                        name: "Marco Antonio Morais Rover"
+                    },
+                    {
+                        id: 4,
+                        name: "Victor Ishizawa Massao"
+                    },
+                    {
+                        id: 5,
+                        name: "Bruno Almeida dos Santos"
+                    },
+                    {
+                        id: 6,
+                        name: "Lucas Abreu de Carvalho"
                     }
                 ]
             },
@@ -52,8 +84,8 @@ export default class TimeEntry extends React.Component {
     }
 
     componentDidMount() {
-        console.log("dddd: ",this.props.logged);
-        this.props.setLoad(true);
+        console.log("dddd: ", this.props.logged);
+        /*this.props.setLoad(true);
         TimeEntryService.getAllByUser([["id", this.props.logged.id]])
             .then(res => {
                 this.state.dados = res.data == "" ? [] : res.data;
@@ -63,34 +95,35 @@ export default class TimeEntry extends React.Component {
             })
             .finally(() => {
                 this.props.setLoad(false);
-            })
+            })*/
+        this.props.setLoad(false);
     }
 
     componentDidUpdate() {
         console.log('State: ', this.state.newDados);
-        console.log('Aux: ', this.state.aux);
+        console.log('FIltros: ', this.state.filtros);
     }
 
     handleProjeto(e) {
         let value = parseInt(e.target.value)
-        console.log('Val: ', value)
-        if (value < 0) {
-            this.setState({
-                ...this.state,
-                newDados: {
-                    ...this.state.newDados,
-                    project: -1
-                }
-            });
-        } else {
-            this.setState({
-                ...this.state,
-                newDados: {
-                    ...this.state.newDados,
-                    project: value
-                }
-            });
-        }
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                project: this.state.selectDados.projetos[value < 0 ? -1 : value]
+            }
+        });
+    }
+
+    handleFuncionario(e) {
+        let value = parseInt(e.target.value)
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                employee: this.state.selectDados.funcionarios[value < 0 ? -1 : value]
+            }
+        });
     }
 
     handleData(e) {
@@ -143,6 +176,38 @@ export default class TimeEntry extends React.Component {
         });
     }
 
+    handleProjetoFiltro(e) {
+        let value = parseInt(e.target.value);
+        this.setState({
+            ...this.state,
+            filtros: {
+                ...this.state.filtros,
+                project: this.state.selectDados.projetos[value < 0 ? -1 : value]
+            }
+        })
+    }
+
+    handleFuncionarioFiltro(e) {
+        let value = parseInt(e.target.value);
+        this.setState({
+            ...this.state,
+            filtros: {
+                ...this.state.filtros,
+                funcionario: this.state.selectDados.funcionarios[value < 0 ? -1 : value]
+            }
+        })
+    }
+
+    handleDataFiltro(e) {
+        this.setState({
+            ...this.state,
+            filtros: {
+                ...this.state.filtros,
+                data: e.target.value ? e.target.value : null
+            }
+        })
+    }
+
     decryptHours(obj) {
         var decimalTime = parseFloat(obj);
         decimalTime = decimalTime * 60 * 60;
@@ -163,12 +228,18 @@ export default class TimeEntry extends React.Component {
         return hours + ":" + minutes;
     }
 
-    formatDsWork(text){
-        return text.length > 15 ? text.substring(0,15) + "..." : text;
+    formatDsWork(text) {
+        return text.length > 15 ? text.substring(0, 15) + "..." : text;
+    }
+
+    filterDados(){
+        console.log("Pro: ", (this.state.filtros.project == null))
+        console.log("Pro: ", (this.state.filtros.funcionario == null))
+        console.log("Pro: ", (this.state.filtros.data == null))
     }
 
     addDados() {
-        if (this.state.newDados.project < 0 || this.state.newDados.date == "" || this.state.newDados.amountHours == 0 || this.state.newDados.dsWork == "") {
+        if (!this.state.newDados.employee || !this.state.newDados.project || !this.state.newDados.date || this.state.newDados.amountHours == 0) {
             this.setState({
                 ...this.state,
                 toaster: {
@@ -223,7 +294,7 @@ export default class TimeEntry extends React.Component {
             .finally(() => {
                 this.props.setLoad(false);
             })*/
-            console.log("Grava dados: ",this.state.dadosList);
+        console.log("Grava dados: ", this.state.dadosList);
     }
 
     render() {
@@ -260,26 +331,44 @@ export default class TimeEntry extends React.Component {
                                             <Form.Row className="formulario-row-center">
                                                 <Form.Group as={Col} controlId="formProjeto">
                                                     <Form.Label>Projeto</Form.Label>
-                                                    <Form.Control as="select" value="Choose...">
-
+                                                    <Form.Control as="select" onChange={(event) => { this.handleProjetoFiltro(event) }}>
+                                                        <option value="-1" >Todos</option>
+                                                        {
+                                                            this.state.selectDados.projetos.map((value, i) => {
+                                                                return (
+                                                                    <option value={i} key={i}>{value.name}</option>
+                                                                )
+                                                            })
+                                                        }
                                                     </Form.Control>
                                                 </Form.Group>
 
                                                 <Form.Group as={Col} controlId="formFuncionario">
                                                     <Form.Label>Funcionário</Form.Label>
-                                                    <Form.Control type="text" />
+                                                    <Form.Control as="select" onChange={(event) => { this.handleFuncionarioFiltro(event) }}>
+                                                        <option value={-1} key={-1} >Todos</option>
+                                                        {
+                                                            this.state.selectDados.funcionarios.map((val, i) => {
+                                                                return (
+                                                                    <>
+                                                                        <option value={i} key={i}>{val.name}</option>
+                                                                    </>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Form.Control>
                                                 </Form.Group>
 
                                                 <Form.Group as={Col} controlId="formData">
                                                     <Form.Label>Data</Form.Label>
-                                                    <Form.Control type="date" />
+                                                    <Form.Control type="date" onChange={(event) => { this.handleDataFiltro(event) }}/>
                                                 </Form.Group>
 
                                             </Form.Row>
                                         </Form>
                                     </Style.FBody>
                                     <Style.FFooter>
-                                        <Button className="but">Filtrar</Button>
+                                        <Button className="but" onClick={() => { this.filterDados() }}>Filtrar</Button>
                                     </Style.FFooter>
                                 </Style.Filtros>
                                 <Style.Apontamento>
@@ -298,11 +387,11 @@ export default class TimeEntry extends React.Component {
                                             {
                                                 this.state.dados.map((data, i) => {
                                                     return (
-                                                        <Style.Tr>
-                                                            <Style.Td key={i}>{data.project.name}</Style.Td>
-                                                            <Style.Td key={i}>{this.formatDsWork(data.dsWork)}</Style.Td>
-                                                            <Style.Td key={i}>{data.date || ""}</Style.Td>
-                                                            <Style.Td key={i}>{this.decryptHours(data.amountHours)}</Style.Td>
+                                                        <Style.Tr key={i}>
+                                                            <Style.Td>{data.project.name}</Style.Td>
+                                                            <Style.Td>{this.formatDsWork(data.dsWork)}</Style.Td>
+                                                            <Style.Td>{data.date || ""}</Style.Td>
+                                                            <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
                                                             <Style.TDSmall>*ícones*</Style.TDSmall>
                                                         </Style.Tr>
                                                     )
@@ -332,6 +421,19 @@ export default class TimeEntry extends React.Component {
                                                         }
                                                     </Form.Control>
                                                 </Form.Group>
+                                                <Form.Group as={Col} controlId="formProjeto">
+                                                    <Form.Label>Funcionário</Form.Label>
+                                                    <Form.Control size="sm" as="select" onChange={(event) => { this.handleFuncionario(event) }}>
+                                                        <option value="-1" >Selecione...</option>
+                                                        {
+                                                            this.state.selectDados.funcionarios.map((value, i) => {
+                                                                return (
+                                                                    <option value={i} key={i}>{value.name}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Form.Control>
+                                                </Form.Group>
                                             </Form.Row>
                                             <Form.Row>
                                                 <Form.Group as={Col} controlId="formData">
@@ -348,7 +450,7 @@ export default class TimeEntry extends React.Component {
                                                 </Form.Group>
                                                 <Form.Group as={Col} controlId="formGerente">
                                                     <Form.Label>Gerente</Form.Label>
-                                                    <Form.Control size="sm" type="text" value={this.state.newDados.project >= 0 ? this.state.selectDados.projetos[this.state.newDados.project].manager : ""} readOnly />
+                                                    <Form.Control size="sm" type="text" value={this.state.newDados.project ? this.state.newDados.project.manager : ""} readOnly />
                                                 </Form.Group>
                                             </Form.Row>
                                             <Form.Row>
@@ -369,10 +471,11 @@ export default class TimeEntry extends React.Component {
                                     <Style.Table size={1}>
                                         <Style.THeader>
                                             <Style.TRHeader>
+                                                <Style.Th>Funcionário</Style.Th>
                                                 <Style.Th>Projeto</Style.Th>
-                                                <Style.Th>Observações</Style.Th>
                                                 <Style.Th>Data</Style.Th>
                                                 <Style.Th>Horas</Style.Th>
+                                                <Style.Th>Observações</Style.Th>
                                                 <Style.THSmall>Ações</Style.THSmall>
                                             </Style.TRHeader>
                                         </Style.THeader>
@@ -381,10 +484,11 @@ export default class TimeEntry extends React.Component {
                                                 this.state.dadosList.map((data, i) => {
                                                     return (
                                                         <Style.Tr key={i}>
-                                                            <Style.Td>{this.state.selectDados.projetos[data.project].name}</Style.Td>
-                                                            <Style.Td>{data.dsWork}</Style.Td>
+                                                            <Style.Td>{data.employee.name}</Style.Td>
+                                                            <Style.Td>{data.project.name}</Style.Td>
                                                             <Style.Td>{data.date}</Style.Td>
                                                             <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
+                                                            <Style.Td>{this.formatDsWork(data.dsWork)}</Style.Td>
                                                             <Style.TDSmall>*ícones*</Style.TDSmall>
                                                         </Style.Tr>
                                                     )

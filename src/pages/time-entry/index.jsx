@@ -6,20 +6,20 @@ export default function TimeEntryFunction({ setLoad, logged }) {
     const history = useHistory();
 
     useEffect(() => {
-       if(logged == null) {
+       /*if(logged == null) {
             console.log("LOGGED FALSE: ",logged)
             history.push("/login")
-        }
+        } */
     })
-    return(
+    /*return(
         <>
             {
                 logged != null ? <TimeEntry setLoad={setLoad} logged={logged} history={history} /> : null
             }
         </>
-    );
+    ); */
 
-    /*return(
+    return(
         <TimeEntry setLoad={setLoad} logged={logged} history={history} />
-    );*/
+    );
 }
