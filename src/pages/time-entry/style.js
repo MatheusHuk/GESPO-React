@@ -347,3 +347,10 @@ export const TDSmall = styled.td`
     vertical-align: middle;
     border: 1px solid black;
 `;
+
+export const Icone = styled.div`
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    cursor: pointer;
+`;

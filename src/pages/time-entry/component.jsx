@@ -12,8 +12,7 @@ export default class TimeEntry extends React.Component {
         super(props);
         this.props = props;
         this.state = {
-            sel: false,
-            showFiltros: false,
+            showFiltros: true,
             showToaster: false,
             toaster: {
                 header: "Header",
@@ -74,12 +73,177 @@ export default class TimeEntry extends React.Component {
                     }
                 ]
             },
-            dados: [{
-                project: 0,
-                date: "2020-05-03",
-                amountHours: 3,
-                dsWork: "AAAAAAAAAAAAAAAsssss"
-            }]
+            dados: [
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },{
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+
+                {
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                },
+            ]
         }
     }
 
@@ -101,7 +265,7 @@ export default class TimeEntry extends React.Component {
 
     componentDidUpdate() {
         console.log('State: ', this.state.newDados);
-        console.log('FIltros: ', this.state.filtros);
+        console.log('State.dadosList: ', this.state.dadosList);
     }
 
     handleProjeto(e) {
@@ -228,11 +392,24 @@ export default class TimeEntry extends React.Component {
         return hours + ":" + minutes;
     }
 
-    formatDsWork(text) {
-        return text.length > 15 ? text.substring(0, 15) + "..." : text;
+    formatLongText(text) {
+        return text.length > 20 ? text.substring(0, 17) + "..." : text;
     }
 
-    filterDados(){
+    deleteEntry(key){
+        console.log("DeleteEntry: ",key)
+        let list = this.state.dadosList;
+        for(let i = key ; i < list.length-1; i++){
+            list[i] = list[i+1]
+        }
+        list.pop();
+        this.setState({
+            ...this.state,
+            dadosList: list
+        })
+    }
+
+    filterDados() {
         console.log("Pro: ", (this.state.filtros.project == null))
         console.log("Pro: ", (this.state.filtros.funcionario == null))
         console.log("Pro: ", (this.state.filtros.data == null))
@@ -361,7 +538,7 @@ export default class TimeEntry extends React.Component {
 
                                                 <Form.Group as={Col} controlId="formData">
                                                     <Form.Label>Data</Form.Label>
-                                                    <Form.Control type="date" onChange={(event) => { this.handleDataFiltro(event) }}/>
+                                                    <Form.Control type="date" onChange={(event) => { this.handleDataFiltro(event) }} />
                                                 </Form.Group>
 
                                             </Form.Row>
@@ -376,10 +553,11 @@ export default class TimeEntry extends React.Component {
                                     <Style.Table>
                                         <Style.THeader>
                                             <Style.TRHeader>
+                                                <Style.Th>Funcionário</Style.Th>
                                                 <Style.Th>Projeto</Style.Th>
-                                                <Style.Th>Observações</Style.Th>
                                                 <Style.Th>Data</Style.Th>
                                                 <Style.Th>Horas</Style.Th>
+                                                <Style.Th>Observações</Style.Th>
                                                 <Style.THSmall>Ações</Style.THSmall>
                                             </Style.TRHeader>
                                         </Style.THeader>
@@ -388,11 +566,12 @@ export default class TimeEntry extends React.Component {
                                                 this.state.dados.map((data, i) => {
                                                     return (
                                                         <Style.Tr key={i}>
+                                                            <Style.Td>{this.formatLongText(data.employee.name)}</Style.Td>
                                                             <Style.Td>{data.project.name}</Style.Td>
-                                                            <Style.Td>{this.formatDsWork(data.dsWork)}</Style.Td>
                                                             <Style.Td>{data.date || ""}</Style.Td>
                                                             <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
-                                                            <Style.TDSmall>*ícones*</Style.TDSmall>
+                                                            <Style.Td>{this.formatLongText(data.dsWork)}</Style.Td>
+                                                            <Style.TDSmall><Style.Icone /></Style.TDSmall>
                                                         </Style.Tr>
                                                     )
                                                 })
@@ -484,12 +663,12 @@ export default class TimeEntry extends React.Component {
                                                 this.state.dadosList.map((data, i) => {
                                                     return (
                                                         <Style.Tr key={i}>
-                                                            <Style.Td>{data.employee.name}</Style.Td>
+                                                            <Style.Td>{this.formatLongText(data.employee.name)}</Style.Td>
                                                             <Style.Td>{data.project.name}</Style.Td>
                                                             <Style.Td>{data.date}</Style.Td>
                                                             <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
-                                                            <Style.Td>{this.formatDsWork(data.dsWork)}</Style.Td>
-                                                            <Style.TDSmall>*ícones*</Style.TDSmall>
+                                                            <Style.Td>{this.formatLongText(data.dsWork)}</Style.Td>
+                                                            <Style.TDSmall><Style.Icone onClick={() => { this.deleteEntry(i) }}>X</Style.Icone></Style.TDSmall>
                                                         </Style.Tr>
                                                     )
                                                 })
