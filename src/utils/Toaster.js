@@ -30,7 +30,7 @@ export default class Toaster extends React.Component {
                     right: '1VW',
                     transition: 'all 0.5s',
                     width: '20VW',
-                    zIndex: '1000'
+                    zIndex: this.props.show ? '1000' : '0'
                   }}>
                 <Toast.Header>
                     <img
