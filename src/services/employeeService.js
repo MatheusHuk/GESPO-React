@@ -1,10 +1,10 @@
 import Requests from './requests'
 
-export default class UserService{
+export default class EmployeeService{
 
-    static async login(body){
+    static async getAll(body){
         return new Promise((resolve, reject) => {
-            Requests.get("/user/login", body)
+            Requests.get("employees", body)
                 .then(res => {
                     if(res.status >= 200 && res.status < 300){
                         resolve(res);

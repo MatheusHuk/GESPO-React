@@ -3,9 +3,12 @@ import Viewer from '../../Layout/Viewer'
 import * as ReactBootstrap from "react-bootstrap";
 import * as Style from './style'
 
-export default function HoursProvisioning() {
+export default function HoursProvisioning({ setLoad }) {
 
-
+    useEffect(() => {
+        setLoad(false);
+    }, []);
+    
     return (
         <>
             <Viewer>

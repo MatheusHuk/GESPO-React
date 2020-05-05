@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { CookiesProvider } from 'react-cookie';
 import Routes from './routes'
 import { Loading } from './components'
 import './index.css';
@@ -8,14 +9,16 @@ function App() {
 
   const [loading, setLoading] = useState(true);
 
-  console.log("ENV: ",process.env);
+  //console.log("ENV: ",process.env);
   const setLoad = (l) => {
     setLoading(l);
   }
   return (
     <>
-        <Loading load={loading} />
-        <Routes setLoad={setLoad}/>
+        <CookiesProvider>
+          <Loading load={loading} />
+          <Routes setLoad={setLoad}/>
+        </CookiesProvider>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import Viewer from '../../Layout/Viewer'
 
-export default function Two(){
+export default function Dashboards(){
 
     return(
         <>
