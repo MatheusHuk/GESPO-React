@@ -35,18 +35,6 @@ export default function Login({ setLoad, logged, setLogged }) {
         }else{
             setLoad(false);
         }
-        setLogged({
-            "id": 9,
-            "cpf": "12376576565",
-            "name": "Loko",
-            "permission": {
-                "id": 2,
-                "creationDate": 1585623600000,
-                "lastUpdateDate": 1585623600000,
-                "dsPermission": "Admin"
-            }
-        })
-        history.push("/timeEntry")
     }, []);
 
     function handleLogin(e) {
