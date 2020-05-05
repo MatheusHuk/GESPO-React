@@ -24,7 +24,7 @@ export default class Requests {
     }
 
     static post(path, body) {
-        return axios.post(path, body, {withCredentials : true})
+        return axios.post((process.env.REACT_APP_API_URL + path), body, {withCredentials : true})
             .then(res => {
                 return res
             })

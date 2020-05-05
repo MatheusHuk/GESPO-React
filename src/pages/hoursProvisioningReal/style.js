@@ -1,82 +1,15 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
-const entranceAnimation = keyframes`
-    0%{
-        left: 100%;
-    }
-    100%{
-        left: 0%;
-    }
-`;
+
 export const Container = styled.div`
     padding: 2VH 2VW;
     position: relative;
     width: 100VW;
     height: 100%;
-    animation: ${entranceAnimation} 0.5s;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     flex-direction: column;
-`;
-
-export const MainContainer = styled.div`
-    padding-top: 1%;
-    width: 100%;
-    height: 95%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    flex-direction: column;
-`;
-
-export const HeaderContainer = styled.div`
-    width: auto;
-    height: 5%;
-    display: flex;
-    flex-wrap: wrap;
-`;
-
-export const HeaderBackButton = styled.div`
-    width: 10%;
-    height: 100%;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 10px 10px 0 0;
-    font-size: 2VH;
-
-    p{
-        text-align: center;
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-`;
-
-export const ButtonContainer = styled.div`
-    height: 100%;
-    width: 90%;
-`;
-
-export const HeaderButton = styled.div`
-    width: 50%;
-    height: 100%;
-    background-color: ${props => props.selected ? '#2B47AA' : "white"};
-    color: ${props => props.selected ? 'white' : "black"};
-    border: 1px solid black;
-    border-radius: 10px 10px 0 0;
-    font-size: 2VH;
-    position: relative;
-    right: 0;
-    float: right;
-    cursor: pointer;
-
-    p{
-        text-align: center;
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
-    }
 `;
 
 export const Filtros = styled.div`
@@ -85,10 +18,9 @@ export const Filtros = styled.div`
     transform: translateX(-50%);
     position: relative;
     height: 30%;
-    width: auto;
+    width: 80%;
     border-radius: 17px;
     background-color: #2B47AA;
-    color: white;
 `;
 
 export const FHeader = styled.div`
@@ -110,6 +42,8 @@ export const FBody = styled.div`
     height: calc(100% - 6VH);
     display: flex;
     justify-content: space-around;
+   
+}
 `;
 
 export const FFooter = styled.div`
@@ -130,6 +64,8 @@ export const FBoxBody = styled.div`
     height: 80%;
     display: flex;
     justify-content: space-between;
+    flex: 1 1 auto;
+    min-height: 1px;
 `;
 
 export const BoxHeader = styled.div`
@@ -142,17 +78,20 @@ export const BoxHeader = styled.div`
 
 export const Box = styled.div`
     position: relative;
-    width: 25%;
+    width: 55%;
     height: 10VH;
 `;
 
 export const Dados = styled.div`
     padding: 2%;
     position: relative;
-    height: 60%;
-    width: 100%;
-    border-radius: 17px;
+    height: 50%;
+    width: 80%;
+    border-radius: 10px;
     background-color: #2B47AA;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 `;
 
 export const DHeader = styled.div`
@@ -177,8 +116,6 @@ export const DBody = styled.div`
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    color: white;
-    padding: 2% 0;
 `;
 
 export const DFooter = styled.div`
@@ -190,12 +127,12 @@ export const DFooter = styled.div`
 `;
 
 export const DBoxBody = styled.div`
-    padding: 1VH 2VW 0 2VW;
+    padding: 0VH 2VW 0 2VW;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
     width: 100%;
-    height: 30%;
+    height: 20%;
     display: flex;
     justify-content: space-between;
 `;
@@ -216,7 +153,7 @@ export const DBigBox = styled.div`
 
 export const DBox = styled.div`
     position: relative;
-    width: 30%;
+    width: 40%;
     height: 10VH;
 `;
 
@@ -242,7 +179,7 @@ export const Apontamento = styled.div`
     left: 50%;
     transform: translateX(-50%);
     position: relative;
-    height: 100%;
+    height: 65%;
     width: 100%;
     border-radius: 17px;
     background-color: #2B47AA;
@@ -311,7 +248,7 @@ export const Th = styled.th`
     padding: 0;
     display: inline-block;
     position: relative;
-    width: 19%;
+    width: 23%;
     height: 100%;
     background-color: white;
     vertical-align: middle;
@@ -322,7 +259,7 @@ export const Td = styled.td`
     padding: 0;
     display: inline-block;
     position: relative;
-    width: 19%;
+    width: 23%;
     height: 100%;
     background-color: white;
     border: 1px solid black;
@@ -331,7 +268,7 @@ export const Td = styled.td`
 export const THSmall = styled.th`
     display: inline-block;
     position: relative;
-    width: 5%;
+    width: 8%;
     height: 100%;
     background-color: white;
     vertical-align: middle;
@@ -341,16 +278,10 @@ export const THSmall = styled.th`
 export const TDSmall = styled.td`
     display: inline-block;
     position: relative;
-    width: 5%;
+    width: 8%;
     height: 100%;
     background-color: white;
     vertical-align: middle;
     border: 1px solid black;
 `;
 
-export const Icone = styled.div`
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    cursor: pointer;
-`;
