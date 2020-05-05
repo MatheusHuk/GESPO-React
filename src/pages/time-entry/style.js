@@ -20,15 +20,75 @@ export const Container = styled.div`
     flex-direction: column;
 `;
 
+export const MainContainer = styled.div`
+    padding-top: 1%;
+    width: 100%;
+    height: 95%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column;
+`;
+
+export const HeaderContainer = styled.div`
+    width: auto;
+    height: 5%;
+    display: flex;
+    flex-wrap: wrap;
+`;
+
+export const HeaderBackButton = styled.div`
+    width: 10%;
+    height: 100%;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+`;
+
+export const ButtonContainer = styled.div`
+    height: 100%;
+    width: 90%;
+`;
+
+export const HeaderButton = styled.div`
+    width: 50%;
+    height: 100%;
+    background-color: ${props => props.selected ? '#2B47AA' : "white"};
+    color: ${props => props.selected ? 'white' : "black"};
+    border: 1px solid black;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+    position: relative;
+    right: 0;
+    float: right;
+    cursor: pointer;
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+`;
+
 export const Filtros = styled.div`
     padding: 2%;
     left: 50%;
     transform: translateX(-50%);
     position: relative;
     height: 30%;
-    width: 100%;
+    width: auto;
     border-radius: 17px;
     background-color: #2B47AA;
+    color: white;
 `;
 
 export const FHeader = styled.div`
@@ -117,6 +177,8 @@ export const DBody = styled.div`
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    color: white;
+    padding: 2% 0;
 `;
 
 export const DFooter = styled.div`
@@ -180,7 +242,7 @@ export const Apontamento = styled.div`
     left: 50%;
     transform: translateX(-50%);
     position: relative;
-    height: 65%;
+    height: 100%;
     width: 100%;
     border-radius: 17px;
     background-color: #2B47AA;
@@ -249,7 +311,7 @@ export const Th = styled.th`
     padding: 0;
     display: inline-block;
     position: relative;
-    width: 23%;
+    width: 19%;
     height: 100%;
     background-color: white;
     vertical-align: middle;
@@ -260,7 +322,7 @@ export const Td = styled.td`
     padding: 0;
     display: inline-block;
     position: relative;
-    width: 23%;
+    width: 19%;
     height: 100%;
     background-color: white;
     border: 1px solid black;
@@ -269,7 +331,7 @@ export const Td = styled.td`
 export const THSmall = styled.th`
     display: inline-block;
     position: relative;
-    width: 8%;
+    width: 5%;
     height: 100%;
     background-color: white;
     vertical-align: middle;
@@ -279,9 +341,16 @@ export const THSmall = styled.th`
 export const TDSmall = styled.td`
     display: inline-block;
     position: relative;
-    width: 8%;
+    width: 5%;
     height: 100%;
     background-color: white;
     vertical-align: middle;
     border: 1px solid black;
+`;
+
+export const Icone = styled.div`
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    cursor: pointer;
 `;

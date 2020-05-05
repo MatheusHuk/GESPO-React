@@ -8,7 +8,7 @@ export default function Menu(){
 
     return(
         <Style.Menu>
-            <Style.Empresa />
+            <Style.Empresa>Gespo</Style.Empresa>
             <Style.ButtonContainer>
                 <Style.Button onClick={() => history.push("/")}>Inicio</Style.Button>
                 <Style.Button>Sair</Style.Button>

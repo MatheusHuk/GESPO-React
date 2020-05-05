@@ -14,8 +14,15 @@ export const Menu = styled.div`
 export const Empresa = styled.div`
     width: calc(20VW - 1px);
     height: 7.5VH;
-    background-color: red;
     border-radius: inherit;
+    font-size: 4VH;
+    color: black;
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    flex-direction: column;
 `;
 
 export const ButtonContainer = styled.div`

@@ -1,8 +1,11 @@
 import React from 'react'
-import { Dropdown, Button, InputGroup, FormControl } from 'react-bootstrap'
+import { Button, Col, Form } from 'react-bootstrap'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
 import * as Style from './style'
+import TimeEntryService from '../../services/timeEntryService'
+import ProjectService from '../../services/projectService'
+import EmployeeService from '../../services/employeeService'
 import './index.css'
 
 export default class TimeEntry extends React.Component {
@@ -11,39 +14,147 @@ export default class TimeEntry extends React.Component {
         super(props);
         this.props = props;
         this.state = {
-            sel: false,
-            showFiltros: false,
+            showFiltros: true,
             showToaster: false,
             toaster: {
                 header: "Header",
                 body: "Body"
             },
+            filtros: {
+                project: null,
+                funcionario: null,
+                data: null
+            },
             dadosList: [],
+            aux: {
+                horas: 0,
+                minutos: 0
+            },
             newDados: {
-                projeto: "",
-                data: "",
-                horas: "",
-                minutos: "",
-                gerente: "",
-                obs: ""
+                employee: null,
+                project: null,
+                date: null,
+                amountHours: 0,
+                dsWork: null
+            },
+            selectDados: {
+                projetos: [],
+                funcionarios: [
+                    {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    {
+                        id: 2,
+                        name: "Petter Gabriel Mene"
+                    },
+                    {
+                        id: 3,
+                        name: "Marco Antonio Morais Rover"
+                    },
+                    {
+                        id: 4,
+                        name: "Victor Ishizawa Massao"
+                    },
+                    {
+                        id: 5,
+                        name: "Bruno Almeida dos Santos"
+                    },
+                    {
+                        id: 6,
+                        name: "Lucas Abreu de Carvalho"
+                    }
+                ]
             },
             dados: [
                 {
-                    projeto: "A",
-                    obs: "fdfdfdf",
-                    data: "0101/2020",
-                    horas: "00:00"
-                },
+                    employee: {
+                        id: 1,
+                        name: "Matheus Huk Moreschi"
+                    },
+                    project: {
+                        id: 1,
+                        name: "1"
+                    },
+                    date: "2020-05-03",
+                    amountHours: 3,
+                    dsWork: "AAAAAAAAAAAAAAAsssss"
+                }
             ]
         }
     }
 
+    componentDidMount() {
+        this.props.setLoad(true);
+        TimeEntryService.getAllByUser([["id", this.props.logged.id]])
+            .then(res => {
+                this.setState({
+                    ...this.state,
+                    dados: res.data == "" ? [] : res.data
+                })
+                ProjectService.getAllByEmployeeId(this.props.logged.id)
+                    .then(res2 => {
+                        this.setState({
+                            ...this.state,
+                            dados: res.data == "" ? [] : res.data,
+                            selectDados: {
+                                ...this.state.selectDados,
+                                projetos: res2.data == "" ? [] : res2.data,
+                                funcionarios: [this.props.logged]
+                            },
+                            newDados: {
+                                ...this.state.newDados,
+                                employee: this.props.logged
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        console.log('Error: ', error);
+                    })
+            })
+            .catch(error => {
+                console.log('Error: ', error);
+            })
+            .finally(() => {
+                this.props.setLoad(false);
+            })
+        /* if (this.props.logged.permission.id != 1) {
+             this.state.selectDados.funcionarios = [this.props.logged];
+             this.setState({
+                 ...this.state,
+                 newDados: {
+                     ...this.state.newDados,
+                     employee: this.props.logged
+                 }
+ 
+             });
+         } */
+        //this.props.setLoad(false);
+    }
+
+    componentDidUpdate() {
+        console.log('State: ', this.state.newDados);
+        console.log('State.dadosList: ', this.state.dadosList);
+    }
+
     handleProjeto(e) {
+        let value = parseInt(e.target.value)
         this.setState({
             ...this.state,
             newDados: {
                 ...this.state.newDados,
-                projeto: e
+                project: this.state.selectDados.projetos[value < 0 ? -1 : value]
+            }
+        });
+    }
+
+    handleFuncionario(e) {
+        let value = parseInt(e.target.value)
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                employee: this.state.selectDados.funcionarios[value < 0 ? -1 : value]
             }
         });
     }
@@ -53,39 +164,39 @@ export default class TimeEntry extends React.Component {
             ...this.state,
             newDados: {
                 ...this.state.newDados,
-                data: e.target.value
+                date: e.target.value
             }
         });
     }
 
     handleHoras(e) {
+        let value = parseInt(e.target.value);
         this.setState({
             ...this.state,
+            aux: {
+                ...this.state.aux,
+                horas: value,
+            },
             newDados: {
                 ...this.state.newDados,
-                horas: e.target.value
+                amountHours: (value + (this.state.aux.minutos * 1 / 60))
             }
-        });
+        })
     }
 
     handleMinutos(e) {
+        let value = parseInt(e.target.value);
         this.setState({
             ...this.state,
+            aux: {
+                ...this.state.aux,
+                minutos: value,
+            },
             newDados: {
                 ...this.state.newDados,
-                minutos: e.target.value
+                amountHours: (this.state.aux.horas + (value * 1 / 60))
             }
-        });
-    }
-
-    handleGerente(e) {
-        this.setState({
-            ...this.state,
-            newDados: {
-                ...this.state.newDados,
-                gerente: e.target.value
-            }
-        });
+        })
     }
 
     handleObs(e) {
@@ -93,13 +204,88 @@ export default class TimeEntry extends React.Component {
             ...this.state,
             newDados: {
                 ...this.state.newDados,
-                obs: e.target.value
+                dsWork: e.target.value
             }
         });
     }
 
+    handleProjetoFiltro(e) {
+        let value = parseInt(e.target.value);
+        this.setState({
+            ...this.state,
+            filtros: {
+                ...this.state.filtros,
+                project: this.state.selectDados.projetos[value < 0 ? -1 : value]
+            }
+        })
+    }
+
+    handleFuncionarioFiltro(e) {
+        let value = parseInt(e.target.value);
+        this.setState({
+            ...this.state,
+            filtros: {
+                ...this.state.filtros,
+                funcionario: this.state.selectDados.funcionarios[value < 0 ? -1 : value]
+            }
+        })
+    }
+
+    handleDataFiltro(e) {
+        this.setState({
+            ...this.state,
+            filtros: {
+                ...this.state.filtros,
+                data: e.target.value ? e.target.value : null
+            }
+        })
+    }
+
+    decryptHours(obj) {
+        var decimalTime = parseFloat(obj);
+        decimalTime = decimalTime * 60 * 60;
+        var hours = Math.floor((decimalTime / (60 * 60)));
+        decimalTime = decimalTime - (hours * 60 * 60);
+        var minutes = Math.floor((decimalTime / 60));
+        decimalTime = decimalTime - (minutes * 60);
+        var seconds = Math.round(decimalTime);
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+        return hours + ":" + minutes;
+    }
+
+    formatLongText(text) {
+        return text.length > 20 ? text.substring(0, 17) + "..." : text;
+    }
+
+    deleteEntry(key) {
+        console.log("DeleteEntry: ", key)
+        let list = this.state.dadosList;
+        for (let i = key; i < list.length - 1; i++) {
+            list[i] = list[i + 1]
+        }
+        list.pop();
+        this.setState({
+            ...this.state,
+            dadosList: list
+        })
+    }
+
+    filterDados() {
+        console.log("Pro: ", (this.state.filtros.project == null))
+        console.log("Pro: ", (this.state.filtros.funcionario == null))
+        console.log("Pro: ", (this.state.filtros.data == null))
+    }
+
     addDados() {
-        if (this.state.newDados.projeto == "" || this.state.newDados.data == "" || this.state.newDados.horas == "" || this.state.newDados.minutos == "" || this.state.newDados.gerente == "" || this.state.newDados.obs == "") {
+        if (!this.state.newDados.employee || !this.state.newDados.project || !this.state.newDados.date || this.state.newDados.amountHours == 0) {
             this.setState({
                 ...this.state,
                 toaster: {
@@ -112,263 +298,264 @@ export default class TimeEntry extends React.Component {
         }
         let list = this.state.dadosList;
         list.push(this.state.newDados);
-        console.log("LIST: ", list);
         this.setState({
             ...this.state,
             dadosList: list
-        }
-        );
-        console.log("New dados 0: ", this.state.dadosList);
+        });
     }
 
-    componentWillMount() {
+    saveDados() {
         this.props.setLoad(true);
+        TimeEntryService.writeNewDados(this.state.dadosList)
+            .then(res => {
+                TimeEntryService.getAllByUser([["id", this.props.logged.id]])
+                    .then(res => {
+                        this.setState({
+                            ...this.state,
+                            dados: res.data == "" ? [] : res.data,
+                            toaster: {
+                                header: "Sucesso",
+                                body: "Dados gravados com sucesso"
+                            },
+                            showToaster: true,
+                            showFiltros: true
+                        })
+                    })
+                    .catch(error => {
+                        console.log('Error: ', error);
+                    })
+                    .finally(() => {
+                        this.props.setLoad(false);
+                    })
+            })
+            .catch(error => {
+                this.setState({
+                    ...this.state,
+                    toaster: {
+                        header: "Erro",
+                        body: "Algo deu errado"
+                    },
+                    showToaster: true
+                })
+            })
+            .finally(() => {
+                this.props.setLoad(false);
+            })
+        console.log("Grava dados: ", this.state.dadosList);
     }
 
-    componentDidMount() {
-        this.props.setLoad(false);
-    }
     render() {
         return (
             <>
                 <Viewer>
                     <Toaster
                         show={this.state.showToaster}
-                        setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }) }}
+                        setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }); }}
                         header={this.state.toaster.header}
                         body={this.state.toaster.body}
                     />
-                    {this.state.showFiltros ?
-                        <Style.Container selected={this.state.showFiltros}>
-                            <Style.Filtros>
-                                <Style.FHeader>Filtros</Style.FHeader>
-                                <Style.FBody>
-                                    <Style.FBoxBody>
-                                        <Style.Box>
-                                            <Style.BoxHeader>
-                                                Time
-                                        </Style.BoxHeader>
-                                            <Dropdown>
-                                                <Dropdown.Toggle className="drop-down">
-                                                    {
-                                                        this.state.sel ? this.state.sel : "Select"
-                                                    }
-                                                </Dropdown.Toggle>
+                    <Style.Container>
+                        <Style.HeaderContainer>
+                            <Style.HeaderButton
+                                selected={this.state.showFiltros}
+                                onClick={() => { this.setState({ ...this.state, showFiltros: true }) }}
+                            >
+                                <p>Apontamentos</p>
+                            </Style.HeaderButton>
+                            <Style.HeaderButton
+                                selected={!this.state.showFiltros}
+                                onClick={() => { this.setState({ ...this.state, showFiltros: false }) }}
+                            >
+                                <p>Novo Apontamento</p>
+                            </Style.HeaderButton>
+                        </Style.HeaderContainer>
+                        {this.state.showFiltros ?
+                            <Style.MainContainer>
+                                {/*<Style.Filtros>
+                                        <Style.FHeader>Filtros</Style.FHeader>
+                                        <Style.FBody>
+                                            <Form className="formulario">
+                                                <Form.Row className="formulario-row-center">
+                                                    <Form.Group as={Col} controlId="formProjeto">
+                                                        <Form.Label>Projeto</Form.Label>
+                                                        <Form.Control as="select" onChange={(event) => { this.handleProjetoFiltro(event) }}>
+                                                            {
+                                                                this.state.selectDados.projetos.map((value, i) => {
+                                                                    return (
+                                                                        <option value={i} key={i}>{value.name}</option>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </Form.Control>
+                                                    </Form.Group>
 
-                                                <Dropdown.Menu className="drop-down-menu">
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "1" }) }}>Action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "2" }) }}>Another action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "3" }) }}>Something else</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Style.Box>
-                                        <Style.Box>
-                                            <Style.BoxHeader>
-                                                Centro de Custo
-                                        </Style.BoxHeader>
-                                            <Dropdown>
-                                                <Dropdown.Toggle className="drop-down">
-                                                    {
-                                                        this.state.sel ? this.state.sel : "Select"
-                                                    }
-                                                </Dropdown.Toggle>
+                                                    <Form.Group as={Col} controlId="formFuncionario">
+                                                        <Form.Label>Funcionário</Form.Label>
+                                                        {
+                                                            this.props.logged.permission.id == 1 ?
+                                                                <Form.Control as="select" onChange={(event) => { this.handleFuncionarioFiltro(event) }}>
+                                                                    <option value={-1} key={-1} >Todos</option>
+                                                                    {
+                                                                        this.state.selectDados.funcionarios.map((val, i) => {
+                                                                            return (
+                                                                                <>
+                                                                                    <option value={i} key={i}>{val.name}</option>
+                                                                                </>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Form.Control> :
+                                                                <Form.Control type="text" value={this.props.logged.name} readOnly />
+                                                        }
+                                                    </Form.Group>
 
-                                                <Dropdown.Menu className="drop-down-menu">
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "1" }) }}>Action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "2" }) }}>Another action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "3" }) }}>Something else</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Style.Box>
-                                        <Style.Box>
-                                            <Style.BoxHeader>
-                                                Projeto
-                                        </Style.BoxHeader>
-                                            <Dropdown>
-                                                <Dropdown.Toggle className="drop-down">
-                                                    {
-                                                        this.state.sel ? this.state.sel : "Select"
-                                                    }
-                                                </Dropdown.Toggle>
+                                                    <Form.Group as={Col} controlId="formData">
+                                                        <Form.Label>Data</Form.Label>
+                                                        <Form.Control type="date" onChange={(event) => { this.handleDataFiltro(event) }} />
+                                                    </Form.Group>
 
-                                                <Dropdown.Menu className="drop-down-menu">
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "1" }) }}>Action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "2" }) }}>Another action</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.state.setState({ ...this.state, sel: "3" }) }}>Something else</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Style.Box>
-                                    </Style.FBoxBody>
-                                </Style.FBody>
-                                <Style.FFooter>
-                                    <Button className="but">Filtrar</Button>
-                                </Style.FFooter>
-                            </Style.Filtros>
-                            <Style.Apontamento>
-                                <Style.AHeader>Apontamentos</Style.AHeader>
-                                <Style.Table>
-                                    <Style.THeader>
-                                        <Style.TRHeader>
-                                            <Style.Th>Projeto</Style.Th>
-                                            <Style.Th>Observações</Style.Th>
-                                            <Style.Th>Data</Style.Th>
-                                            <Style.Th>Horas</Style.Th>
-                                            <Style.THSmall>Ações</Style.THSmall>
-                                        </Style.TRHeader>
-                                    </Style.THeader>
-                                    <Style.TData>
-                                        {
-                                            this.state.dados.map((data, i) => {
-                                                return (
-                                                    <Style.Tr>
-                                                        <Style.Td key={i}>{data.projeto}</Style.Td>
-                                                        <Style.Td key={i}>{data.obs}</Style.Td>
-                                                        <Style.Td key={i}>{data.data}</Style.Td>
-                                                        <Style.Td key={i}>{data.horas}</Style.Td>
-                                                        <Style.TDSmall>*ícones*</Style.TDSmall>
-                                                    </Style.Tr>
-                                                )
-                                            })
-                                        }
-                                    </Style.TData>
-                                </Style.Table>
-                            </Style.Apontamento>
-                        </Style.Container>
-                        :
-                        <Style.Container>
-                            <Style.Dados>
-                                <Style.DHeader>Novo Apontamento</Style.DHeader>
-                                <Style.DBody>
-                                    <Style.DBoxBody>
-                                        <Style.DBigBox>
-                                            <Style.BoxHeader>
-                                                Projeto
-                                        </Style.BoxHeader>
-                                            <Dropdown>
-                                                <Dropdown.Toggle className="drop-down">
+                                                </Form.Row>
+                                            </Form>
+                                        </Style.FBody>
+                                        <Style.FFooter>
+                                            <Button className="but" onClick={() => { this.filterDados() }}>Filtrar</Button>
+                                        </Style.FFooter>
+                                                    </Style.Filtros> */}
+                                <Style.Apontamento>
+                                    <Style.AHeader>Apontamentos</Style.AHeader>
+                                    <Style.Table>
+                                        <Style.THeader>
+                                            <Style.TRHeader>
+                                                <Style.Th>Funcionário</Style.Th>
+                                                <Style.Th>Projeto</Style.Th>
+                                                <Style.Th>Data</Style.Th>
+                                                <Style.Th>Horas</Style.Th>
+                                                <Style.Th>Observações</Style.Th>
+                                                <Style.THSmall>Ações</Style.THSmall>
+                                            </Style.TRHeader>
+                                        </Style.THeader>
+                                        <Style.TData>
+                                            {
+                                                this.state.dados.map((data, i) => {
+                                                    return (
+                                                        <Style.Tr key={i}>
+                                                            <Style.Td>{/*this.formatLongText(data.employee.name)*/}</Style.Td>
+                                                            <Style.Td>{/*data.project.name*/}</Style.Td>
+                                                            <Style.Td>{data.creationDate || ""}</Style.Td>
+                                                            <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
+                                                            <Style.Td>{this.formatLongText(data.dsWork)}</Style.Td>
+                                                            <Style.TDSmall><Style.Icone /></Style.TDSmall>
+                                                        </Style.Tr>
+                                                    )
+                                                })
+                                            }
+                                        </Style.TData>
+                                    </Style.Table>
+                                </Style.Apontamento>
+                            </Style.MainContainer>
+                            :
+                            <Style.MainContainer>
+                                <Style.Dados>
+                                    <Style.DHeader>Novo Apontamento</Style.DHeader>
+                                    <Style.DBody>
+                                        <Form className="formulario">
+                                            <Form.Row className="formulario-row">
+                                                <Form.Group as={Col} controlId="formProjeto">
+                                                    <Form.Label>Projeto</Form.Label>
+                                                    <Form.Control size="sm" as="select" onChange={(event) => { this.handleProjeto(event) }}>
+                                                        <option value="-1" >Selecione...</option>
+                                                        {
+                                                            this.state.selectDados.projetos.map((value, i) => {
+                                                                return (
+                                                                    <option value={i} key={i}>{value.name}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Form.Control>
+                                                </Form.Group>
+                                                <Form.Group as={Col} controlId="formProjeto">
+                                                    <Form.Label>Funcionário</Form.Label>
                                                     {
-                                                        this.state.newDados.projeto ? this.state.newDados.projeto : "Selecione"
+                                                        /*this.props.logged.permission.id == 1 ?
+                                                            <Form.Control size="sm" as="select" onChange={(event) => { this.handleFuncionario(event) }}>
+                                                                <option value="-1" >Selecione...</option>
+                                                                {
+                                                                    this.state.selectDados.funcionarios.map((value, i) => {
+                                                                        return (
+                                                                            <option value={i} key={i}>{value.name}</option>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </Form.Control> : */
+                                                            <Form.Control size="sm" type="text" value={this.props.logged.name} readOnly />
                                                     }
-                                                </Dropdown.Toggle>
-                                                <Dropdown.Menu className="drop-down-menu">
-                                                    <Dropdown.Item onClick={() => { this.handleProjeto("Projeto 1") }}>Projeto 1</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.handleProjeto("Projeto 2") }}>Projeto 2</Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => { this.handleProjeto("Projeto 3") }}>Projeto 3</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Style.DBigBox>
-                                    </Style.DBoxBody>
-                                    <Style.DBoxBody>
-                                        <Style.DBox>
-                                            <Style.BoxHeader>
-                                                Data
-                                        </Style.BoxHeader>
-                                            <InputGroup className="text-box">
-                                                <FormControl
-                                                    id="log"
-                                                    aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default"
-                                                    type="date"
-                                                    onChange={(event) => { this.handleData(event) }}
-                                                />
-                                            </InputGroup>
-                                        </Style.DBox>
-                                        <Style.DSmallBox>
-                                            <Style.BoxHeader>
-                                                Horas
-                                    </Style.BoxHeader>
-                                            <InputGroup className="text-box">
-                                                <FormControl
-                                                    id="log"
-                                                    aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default"
-                                                    type="number"
-                                                    onChange={(event) => { this.handleHoras(event) }}
-                                                />
-                                            </InputGroup>
-                                        </Style.DSmallBox>
-                                        <Style.DSmallBox>
-                                            <Style.BoxHeader>
-                                                Minutos
-                                    </Style.BoxHeader>
-                                            <InputGroup className="text-box">
-                                                <FormControl
-                                                    id="log"
-                                                    aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default"
-                                                    type="text"
-                                                    onChange={(event) => { this.handleMinutos(event) }}
-                                                />
-                                            </InputGroup>
-                                        </Style.DSmallBox>
-                                        <Style.DBox>
-                                            <Style.BoxHeader>
-                                                Gerente do Projeto
-                                    </Style.BoxHeader>
-                                            <InputGroup className="text-box">
-                                                <FormControl
-                                                    id="log"
-                                                    aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default"
-                                                    type="text"
-                                                    onChange={(event) => { this.handleGerente(event) }}
-                                                />
-                                            </InputGroup>
-                                        </Style.DBox>
-                                    </Style.DBoxBody>
-                                    <Style.DBoxBody>
-                                        <Style.DBigBox>
-                                            <Style.BoxHeader>
-                                                Observações
-                                    </Style.BoxHeader>
-                                            <InputGroup className="text-box">
-                                                <FormControl
-                                                    id="log"
-                                                    aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default"
-                                                    type="text"
-                                                    onChange={(event) => { this.handleObs(event) }}
-                                                />
-                                            </InputGroup>
-                                        </Style.DBigBox>
-                                    </Style.DBoxBody>
-                                </Style.DBody>
-                                <Style.DFooter>
-                                    <Button className="but" onClick={() => { this.addDados() }}>Adicionar</Button>
-                                    <Button className="but" disabled={this.state.dadosList.length == 0} >Gravar tudo</Button>
-                                </Style.DFooter>
-                            </Style.Dados>
-                            <Style.ApontamentoSmall>
-                                <Style.AHeader>Apontamentos</Style.AHeader>
-                                <Style.Table size={1}>
-                                    <Style.THeader>
-                                        <Style.TRHeader>
-                                            <Style.Th>Projeto</Style.Th>
-                                            <Style.Th>Observações</Style.Th>
-                                            <Style.Th>Data</Style.Th>
-                                            <Style.Th>Horas</Style.Th>
-                                            <Style.THSmall>Ações</Style.THSmall>
-                                        </Style.TRHeader>
-                                    </Style.THeader>
-                                    <Style.TData>
-                                        {
-                                            this.state.dadosList.map((data, i) => {
-                                                return (
-                                                    <Style.Tr key={i}>
-                                                        <Style.Td>{data.projeto}</Style.Td>
-                                                        <Style.Td>{data.obs}</Style.Td>
-                                                        <Style.Td>{data.data}</Style.Td>
-                                                        <Style.Td>{data.horas}:{data.minutos}</Style.Td>
-                                                        <Style.TDSmall>*ícones*</Style.TDSmall>
-                                                    </Style.Tr>
-                                                )
-                                            })
-                                        }
-                                    </Style.TData>
-                                </Style.Table>
-                            </Style.ApontamentoSmall>
-                        </Style.Container>
-                    }
+                                                </Form.Group>
+                                            </Form.Row>
+                                            <Form.Row>
+                                                <Form.Group as={Col} controlId="formData">
+                                                    <Form.Label>Data</Form.Label>
+                                                    <Form.Control size="sm" type="date" onChange={(event) => { this.handleData(event) }} />
+                                                </Form.Group>
+                                                <Form.Group as={Col} controlId="formHoras">
+                                                    <Form.Label>Horas</Form.Label>
+                                                    <Form.Control size="sm" type="number" onChange={(event) => { this.handleHoras(event) }} />
+                                                </Form.Group>
+                                                <Form.Group as={Col} controlId="formMinutos">
+                                                    <Form.Label>Minutos</Form.Label>
+                                                    <Form.Control size="sm" type="number" onChange={(event) => { this.handleMinutos(event) }} />
+                                                </Form.Group>
+                                                <Form.Group as={Col} controlId="formGerente">
+                                                    <Form.Label>Gerente</Form.Label>
+                                                    <Form.Control size="sm" type="text" value={this.state.newDados.project ? this.state.newDados.project.manager : ""} readOnly />
+                                                </Form.Group>
+                                            </Form.Row>
+                                            <Form.Row>
+                                                <Form.Group as={Col} controlId="formObs">
+                                                    <Form.Label>Observações</Form.Label>
+                                                    <Form.Control size="sm" type="text" onChange={(event) => { this.handleObs(event) }} />
+                                                </Form.Group>
+                                            </Form.Row>
+                                        </Form>
+                                    </Style.DBody>
+                                    <Style.DFooter>
+                                        <Button className="but" onClick={() => { this.addDados() }}>Adicionar</Button>
+                                        <Button className="but" onClick={() => { this.saveDados() }} disabled={this.state.dadosList.length == 0} >Gravar tudo</Button>
+                                    </Style.DFooter>
+                                </Style.Dados>
+                                <Style.ApontamentoSmall>
+                                    <Style.AHeader>Apontamentos</Style.AHeader>
+                                    <Style.Table size={1}>
+                                        <Style.THeader>
+                                            <Style.TRHeader>
+                                                <Style.Th>Funcionário</Style.Th>
+                                                <Style.Th>Projeto</Style.Th>
+                                                <Style.Th>Data</Style.Th>
+                                                <Style.Th>Horas</Style.Th>
+                                                <Style.Th>Observações</Style.Th>
+                                                <Style.THSmall>Ações</Style.THSmall>
+                                            </Style.TRHeader>
+                                        </Style.THeader>
+                                        <Style.TData>
+                                            {
+                                                this.state.dadosList.map((data, i) => {
+                                                    return (
+                                                        <Style.Tr key={i}>
+                                                            <Style.Td>{this.formatLongText(data.employee.name)}</Style.Td>
+                                                            <Style.Td>{data.project.name}</Style.Td>
+                                                            <Style.Td>{data.date}</Style.Td>
+                                                            <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
+                                                            <Style.Td>{this.formatLongText(data.dsWork)}</Style.Td>
+                                                            <Style.TDSmall><Style.Icone onClick={() => { this.deleteEntry(i) }}>X</Style.Icone></Style.TDSmall>
+                                                        </Style.Tr>
+                                                    )
+                                                })
+                                            }
+                                        </Style.TData>
+                                    </Style.Table>
+                                </Style.ApontamentoSmall>
+                            </Style.MainContainer>
+                        }
+                    </Style.Container>
                 </Viewer>
             </>
         );
