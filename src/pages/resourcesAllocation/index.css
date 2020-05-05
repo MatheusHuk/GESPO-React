@@ -1,0 +1,54 @@
+.botaoForm{
+    width : 103%; 
+    display : flex;
+    justify-content: right;
+    position: relative;
+}
+
+.divFormulario{
+    height: 20VH;
+    width: 70vw;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+.divFormulario2{
+    height: 20VH;
+    width: 70vw;
+    position: absolute;
+    top: 73%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+.divFormulario3{
+    height: 20VH;
+    width: 70vw;
+    position: absolute;
+    top: 105%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.fundoForm{
+    background-color: #2B47AA;
+    color: white;
+}
+
+.divHeader{
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid white;
+    background-color: #2B47AA;
+    color: white;
+}
+
+.corBotao{
+    color:black;
+    background-color: white;
+    border-color: #007bff;
+}

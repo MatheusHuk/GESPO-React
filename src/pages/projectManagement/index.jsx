@@ -18,7 +18,7 @@ export default function ProjectManagement({ setLoad }){
                 <Style.Container>
                     <Style.SubContainer>
                         <Style.Component onClick={() => history.push("/projectManagement/hoursProvisioning") }>Provisionamento de Horas</Style.Component>
-                        <Style.Component class="component" onClick={() => history.push("/two") }>Alocação de recursos</Style.Component>
+                        <Style.Component onClick={() => history.push("/projectManagement/resourcesAllocation") }>Alocação de recursos</Style.Component>
                     </Style.SubContainer>
                     <Style.SubContainer>
                         <Style.Component class="component" onClick={() => history.push("/three") }>Definição de metas</Style.Component>
