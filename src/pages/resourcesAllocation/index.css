@@ -1,5 +1,5 @@
 .botaoForm{
-    width : 100%; 
+    width : 103%; 
     display : flex;
     justify-content: right;
     position: relative;
@@ -19,6 +19,15 @@
     width: 70vw;
     position: absolute;
     top: 73%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+.divFormulario3{
+    height: 20VH;
+    width: 70vw;
+    position: absolute;
+    top: 105%;
     left: 50%;
     transform: translate(-50%, -50%);
 

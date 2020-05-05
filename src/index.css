@@ -19,10 +19,11 @@ code {
   margin-top: 3VH;
 }
 .tabela{
- 
- 
- 
-  
+  height: 40px;
+  border-bottom: 1px solid white;
+  color: white;
+}
+.tabela2{
   height: 40px;
   border-bottom: 1px solid white;
   color: white;
