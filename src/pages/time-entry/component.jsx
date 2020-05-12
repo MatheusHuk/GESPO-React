@@ -31,14 +31,23 @@ export default class TimeEntry extends React.Component {
                 minutos: 0
             },
             newDados: {
-                employee: null,
+                employee: this.props.logged,
                 project: null,
                 date: null,
                 amountHours: 0,
                 dsWork: null
             },
             selectDados: {
-                projetos: [],
+                projetos: [
+                    {
+                        "id": 1,
+                        "employeeId": null,
+                        "name": "Projeto FMG",
+                        "dsProject": "Projeto para startups",
+                        "manager": "Silvia",
+                        "isDone": 1
+                    }
+                ],
                 funcionarios: [
                     {
                         id: 1,
@@ -66,21 +75,7 @@ export default class TimeEntry extends React.Component {
                     }
                 ]
             },
-            dados: [
-                {
-                    employee: {
-                        id: 1,
-                        name: "Matheus Huk Moreschi"
-                    },
-                    project: {
-                        id: 1,
-                        name: "1"
-                    },
-                    date: "2020-05-03",
-                    amountHours: 3,
-                    dsWork: "AAAAAAAAAAAAAAAsssss"
-                }
-            ]
+            dados: []
         }
     }
 
@@ -265,6 +260,11 @@ export default class TimeEntry extends React.Component {
         return text.length > 20 ? text.substring(0, 17) + "..." : text;
     }
 
+    parseDate(date) {
+        let d = new Date(parseInt(date));
+        return (d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDay())
+    }
+
     deleteEntry(key) {
         console.log("DeleteEntry: ", key)
         let list = this.state.dadosList;
@@ -371,56 +371,56 @@ export default class TimeEntry extends React.Component {
                         </Style.HeaderContainer>
                         {this.state.showFiltros ?
                             <Style.MainContainer>
-                                {/*<Style.Filtros>
-                                        <Style.FHeader>Filtros</Style.FHeader>
-                                        <Style.FBody>
-                                            <Form className="formulario">
-                                                <Form.Row className="formulario-row-center">
-                                                    <Form.Group as={Col} controlId="formProjeto">
-                                                        <Form.Label>Projeto</Form.Label>
-                                                        <Form.Control as="select" onChange={(event) => { this.handleProjetoFiltro(event) }}>
-                                                            {
-                                                                this.state.selectDados.projetos.map((value, i) => {
-                                                                    return (
-                                                                        <option value={i} key={i}>{value.name}</option>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </Form.Control>
-                                                    </Form.Group>
-
-                                                    <Form.Group as={Col} controlId="formFuncionario">
-                                                        <Form.Label>Funcionário</Form.Label>
+                                <Style.Filtros>
+                                    <Style.FHeader>Filtros</Style.FHeader>
+                                    <Style.FBody>
+                                        <Form className="formulario">
+                                            <Form.Row className="formulario-row-center">
+                                                <Form.Group as={Col} controlId="formProjeto">
+                                                    <Form.Label>Projeto</Form.Label>
+                                                    <Form.Control as="select" onChange={(event) => { this.handleProjetoFiltro(event) }}>
                                                         {
-                                                            this.props.logged.permission.id == 1 ?
-                                                                <Form.Control as="select" onChange={(event) => { this.handleFuncionarioFiltro(event) }}>
-                                                                    <option value={-1} key={-1} >Todos</option>
-                                                                    {
-                                                                        this.state.selectDados.funcionarios.map((val, i) => {
-                                                                            return (
-                                                                                <>
-                                                                                    <option value={i} key={i}>{val.name}</option>
-                                                                                </>
-                                                                            )
-                                                                        })
-                                                                    }
-                                                                </Form.Control> :
-                                                                <Form.Control type="text" value={this.props.logged.name} readOnly />
+                                                            this.state.selectDados.projetos.map((value, i) => {
+                                                                return (
+                                                                    <option value={i} key={i}>{value.name}</option>
+                                                                )
+                                                            })
                                                         }
-                                                    </Form.Group>
+                                                    </Form.Control>
+                                                </Form.Group>
 
-                                                    <Form.Group as={Col} controlId="formData">
-                                                        <Form.Label>Data</Form.Label>
-                                                        <Form.Control type="date" onChange={(event) => { this.handleDataFiltro(event) }} />
-                                                    </Form.Group>
+                                                <Form.Group as={Col} controlId="formFuncionario">
+                                                    <Form.Label>Funcionário</Form.Label>
+                                                    {
+                                                        this.props.logged.permission.id == 1 ?
+                                                            <Form.Control as="select" onChange={(event) => { this.handleFuncionarioFiltro(event) }}>
+                                                                <option value={-1} key={-1} >Todos</option>
+                                                                {
+                                                                    this.state.selectDados.funcionarios.map((val, i) => {
+                                                                        return (
+                                                                            <>
+                                                                                <option value={i} key={i}>{val.name}</option>
+                                                                            </>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </Form.Control> :
+                                                            <Form.Control type="text" value={this.props.logged.name} readOnly />
+                                                    }
+                                                </Form.Group>
 
-                                                </Form.Row>
-                                            </Form>
-                                        </Style.FBody>
-                                        <Style.FFooter>
-                                            <Button className="but" onClick={() => { this.filterDados() }}>Filtrar</Button>
-                                        </Style.FFooter>
-                                                    </Style.Filtros> */}
+                                                <Form.Group as={Col} controlId="formData">
+                                                    <Form.Label>Data</Form.Label>
+                                                    <Form.Control type="date" onChange={(event) => { this.handleDataFiltro(event) }} />
+                                                </Form.Group>
+
+                                            </Form.Row>
+                                        </Form>
+                                    </Style.FBody>
+                                    <Style.FFooter>
+                                        <Button className="but" onClick={() => { this.filterDados() }}>Filtrar</Button>
+                                    </Style.FFooter>
+                                </Style.Filtros>
                                 <Style.Apontamento>
                                     <Style.AHeader>Apontamentos</Style.AHeader>
                                     <Style.Table>
@@ -439,9 +439,9 @@ export default class TimeEntry extends React.Component {
                                                 this.state.dados.map((data, i) => {
                                                     return (
                                                         <Style.Tr key={i}>
-                                                            <Style.Td>{/*this.formatLongText(data.employee.name)*/}</Style.Td>
-                                                            <Style.Td>{/*data.project.name*/}</Style.Td>
-                                                            <Style.Td>{data.creationDate || ""}</Style.Td>
+                                                            <Style.Td>{this.formatLongText(data.employee.name)}</Style.Td>
+                                                            <Style.Td>{data.project.name}</Style.Td>
+                                                            <Style.Td>{this.parseDate(data.creationDate)}</Style.Td>
                                                             <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
                                                             <Style.Td>{this.formatLongText(data.dsWork)}</Style.Td>
                                                             <Style.TDSmall><Style.Icone /></Style.TDSmall>
@@ -487,7 +487,7 @@ export default class TimeEntry extends React.Component {
                                                                     })
                                                                 }
                                                             </Form.Control> : */
-                                                            <Form.Control size="sm" type="text" value={this.props.logged.name} readOnly />
+                                                        <Form.Control size="sm" type="text" value={this.props.logged.name} readOnly />
                                                     }
                                                 </Form.Group>
                                             </Form.Row>

@@ -64,12 +64,18 @@ export const HeaderButton = styled.div`
     background-color: ${props => props.selected ? '#2B47AA' : "white"};
     color: ${props => props.selected ? 'white' : "black"};
     border: 1px solid black;
+    border-bottom: 0;
     border-radius: 10px 10px 0 0;
     font-size: 2VH;
     position: relative;
     right: 0;
     float: right;
     cursor: pointer;
+
+    :hover{
+        background-color: ${props => props.selected ? '#2B47AA' : "#251680"};
+        color: white;
+    }
 
     p{
         text-align: center;
@@ -242,7 +248,7 @@ export const Apontamento = styled.div`
     left: 50%;
     transform: translateX(-50%);
     position: relative;
-    height: 100%;
+    height: 65%;
     width: 100%;
     border-radius: 17px;
     background-color: #2B47AA;

@@ -32,8 +32,8 @@ export const Button = styled.div`
     text-align: center;
     line-height: 9.5VH;
     padding: 0 0 0 1VW;
-    border-radius: 15px 0 0 15px;
-    box-shadow: 0 0.5VH 5px black;
+    border-radius: 10px 0 0 10px;
+    box-shadow: 0 0.5VH 3px black;
     cursor: pointer;
     transition: all 0.5s;
 
