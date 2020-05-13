@@ -11,8 +11,7 @@ export default function ResourcesAllocation(){
         <>
         
             <Viewer>
-            <div class="title">GESPO</div>
-                <div class="subtitle">Cadastros/ Cadastro de Projeto </div>
+                <Style.Container>
                 <div className = "divFormulario">
                     <Card >
                         <div className = "divHeader">Selecione o Projeto</div>
@@ -127,6 +126,7 @@ export default function ResourcesAllocation(){
                 </Card.Body>
                 </Card>
                 </div>
+                </Style.Container>
             </Viewer>
 
         </>

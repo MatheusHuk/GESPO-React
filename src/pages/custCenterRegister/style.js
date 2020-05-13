@@ -4,12 +4,9 @@ import styled from 'styled-components';
 export const Container = styled.div`
     padding: 2VH 2VW;
     position: relative;
-    width: 100VW;
+    width: 100%;
     height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    flex-direction: column;
+    overflow-y: scroll;
 `;
 
 export const Filtros = styled.div`
@@ -305,9 +302,13 @@ export const BotaoFormCreate = styled.button`
     width: 20%;
     border: 1px solid white !important;
     line-height: 50% !important;
-    box-shadow: 0.3VW 0.3VH 3px black;
+    box-shadow: 0VW 0.3VH 3px black;
     z-index: 0 !important;
     margin-left: 1VW;
+
+    :hover{
+        background-color: #251680 !important; 
+    }
 `;
 export const DivCreate = styled.div`
     height: 80%

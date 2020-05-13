@@ -4,12 +4,9 @@ import styled from 'styled-components';
 export const Container = styled.div`
     padding: 2VH 2VW;
     position: relative;
-    width: 100VW;
+    width: 100%;
     height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    flex-direction: column;
+    overflow-y: scroll;
 `;
 
 export const Filtros = styled.div`
