@@ -12,6 +12,7 @@ export default function ResourcesAllocation(){
         
             <Viewer>
                 <Style.Container>
+                    <Style.Dados>
                 <div className = "divFormulario">
                     <Card >
                         <div className = "divHeader">Selecione o Projeto</div>
@@ -87,15 +88,14 @@ export default function ResourcesAllocation(){
                     <Card>
                     <Card.Body className = "fundoForm">
                 <div >
-                    <h4>Metas</h4>
+                    <h4>Recursos</h4>
                 <ReactBootstrap.Table striped bordered hover className="table">
                     <thead>
                         <tr>
-                            <th>Titulo</th>
-                            <th>Descrição</th>
+                            <th>Nome</th>
                             <th>Categoria</th>
-                            <th>%</th>
-                            <th>Estimativa</th>
+                            <th>Time</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -104,21 +104,18 @@ export default function ResourcesAllocation(){
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>@mdo</td>
-                            <td>bla</td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Jacob</td>
                             <td>Thornton</td>
                             <td>@fat</td>
-                            <td>bla</td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>Larry the Bird</td>
                             <td>markson </td>
                             <td>@twitter</td>
-                            <td>bla</td>
                         </tr>
                     </tbody>
                 </ReactBootstrap.Table>
@@ -126,6 +123,7 @@ export default function ResourcesAllocation(){
                 </Card.Body>
                 </Card>
                 </div>
+                </Style.Dados>
                 </Style.Container>
             </Viewer>
 
