@@ -21,7 +21,7 @@ export default function Routes({ setLoad }){
                     <Pages.TimeEntry setLoad={setLoad} 
                                      logged={logged} />} exact />
                 <Route path="/dashboards" render={(props) => <Pages.Dashboards setLoad={setLoad} />} exact />
-                <Route path="/hoursProvisioning" render={(props) => <Pages.HoursProvisioning setLoad={setLoad} />} exact />
+                <Route path="/projectManagement/goalsDefinition" render={(props) => <Pages.HoursProvisioning setLoad={setLoad} />} exact />
                 <Route path="/projectManagement/HoursProvisioning" render={(props) => <Pages.HoursProvisioningReal setLoad={setLoad} />} exact />
                 <Route path="/projectManagement" render={(props) => <Pages.ProjectManagement setLoad={setLoad} />} exact />
                 <Route path="/projectManagement/ResourcesAllocation" render={(props) => <Pages.ResourcesAllocation setLoad={setLoad} />} exact />
