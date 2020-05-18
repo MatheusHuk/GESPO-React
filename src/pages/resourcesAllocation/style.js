@@ -7,3 +7,6 @@ export const Container = styled.div`
     height: 100%;
     overflow-y: scroll;
 `;
+export const Dados = styled.div`
+    border-radius: 17px;
+`;
