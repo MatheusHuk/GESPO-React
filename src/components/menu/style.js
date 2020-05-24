@@ -47,3 +47,18 @@ export const Button = styled.div`
         color: grey;
     }
 `;
+
+export const Gespo = styled.div`
+    width: 6VH;
+    height: 6VH;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -60%);
+    img{
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        display: block;
+    }
+`;
