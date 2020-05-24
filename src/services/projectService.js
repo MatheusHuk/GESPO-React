@@ -8,7 +8,7 @@ export default class ProjectService{
 
     static async getAll(body){
         return new Promise((resolve, reject) => {
-            Requests.get("/projects/all", body)
+            Requests.get("/projects")
                 .then(res => {
                     this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
                 });

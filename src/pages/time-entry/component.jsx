@@ -38,16 +38,7 @@ export default class TimeEntry extends React.Component {
                 dsWork: null
             },
             selectDados: {
-                projetos: [
-                    {
-                        "id": 1,
-                        "employeeId": null,
-                        "name": "Projeto FMG",
-                        "dsProject": "Projeto para startups",
-                        "manager": "Silvia",
-                        "isDone": 1
-                    }
-                ],
+                projetos: [],
                 funcionarios: [
                     {
                         id: 1,
@@ -89,6 +80,7 @@ export default class TimeEntry extends React.Component {
                 })
                 ProjectService.getAllByEmployeeId(this.props.logged.id)
                     .then(res2 => {
+                        console.log("RES2: ",res2.data);
                         this.setState({
                             ...this.state,
                             dados: res.data == "" ? [] : res.data,

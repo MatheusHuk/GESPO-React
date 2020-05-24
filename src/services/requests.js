@@ -12,8 +12,7 @@ export default class Requests {
     }
 
     static get(path, body) {
-        if (body)
-            path = process.env.REACT_APP_API_URL + this.buildParams(path, body);
+        path = process.env.REACT_APP_API_URL + (body ? this.buildParams(path, body) : path);
         return axios.get(path, {withCredentials : true})
             .then(res => {
                 return res;
