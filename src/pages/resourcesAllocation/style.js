@@ -9,6 +9,14 @@ export const Container = styled.div`
     overflow-y: scroll;
 `;
 
+export const ContainerDois = styled.div`
+    padding: 2VH 2VW;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+`;
+
 export const Filtros = styled.div`
     padding: 2%;
     left: 50%;
@@ -91,6 +99,18 @@ export const Dados = styled.div`
     transform: translate(-50%, -50%);
 `;
 
+export const DadosDois = styled.div`
+    padding: 2%;
+    position: relative;
+    height: 35%;
+    width: 80%;
+    border-radius: 10px;
+    background-color: #2B47AA;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`;
+
 export const DHeader = styled.div`
     padding: 0 2% 0 2%;
     line-height: 50%;
@@ -121,6 +141,7 @@ export const DFooter = styled.div`
     height: 3VH;
     display: flex;
     justify-content: flex-end;
+    top: 67%
 `;
 
 export const DBoxBody = styled.div`

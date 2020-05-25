@@ -42,6 +42,63 @@ export default function ResourcesAllocation(){
                             </Style.DBoxBody>
                         </Style.DBody>
                     </Style.Dados>
+                    <Style.DadosDois>
+                        <Style.DHeader>
+                    <Style.DivCreate>Dados Alocação
+                            </Style.DivCreate>
+                            </Style.DHeader>
+                            <Style.DBoxBody>
+                                <Style.DBox>
+                                    <Card.Body className="fundoForm">
+
+                                        <Form.Group as={Col} controlId="formGridCategory">
+                                            <Form.Label>Categoria</Form.Label>
+                                            <Form.Control as="select" value="Choose...">
+                                                <option>Selecione...</option>
+                                                <option>Categoria 1</option>
+                                                <option>Categoria 2</option>
+                                                <option>Categoria 3</option>
+                                            </Form.Control>
+                                        </Form.Group>
+
+                                    </Card.Body>
+                                </Style.DBox>
+                                <Style.DBox>
+                                    <Card.Body className="fundoForm">
+                                        <Form.Group as={Col} controlId="formGridTeam">
+                                            <Form.Label>Time</Form.Label>
+                                            <Form.Control as="select" value="Choose...">
+                                                <option>Selecione...</option>
+                                                <option>Time 1</option>
+                                                <option>Time 2</option>
+                                                <option>Time 3</option>
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </Card.Body>
+                                </Style.DBox>
+                                <Style.DBox>
+                                    <Card.Body className="fundoForm">
+                                        <Form.Group as={Col} controlId="formGridResource">
+                                            <Form.Label>Recurso</Form.Label>
+                                            <Form.Control as="select" value="Choose...">
+                                                <option>Selecione...</option>
+                                                <option>Time 1</option>
+                                                <option>Time 2</option>
+                                                <option>Time 3</option>
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </Card.Body>
+                                </Style.DBox>
+                                </Style.DBoxBody>
+                                <Style.DFooter>
+                            <Style.BotaoForm>
+                                Gravar
+                            </Style.BotaoForm>
+                            <Style.BotaoForm>
+                                Deletar
+                            </Style.BotaoForm>
+                        </Style.DFooter>
+                        </Style.DadosDois>
                 </Style.Container>
             </Viewer>
 
