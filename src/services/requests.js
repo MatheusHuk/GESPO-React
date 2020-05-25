@@ -14,7 +14,7 @@ export default class Requests {
     }
 
     static get(path, body) {
-        path = (body ? this.buildParams(path, body) : path);
+        path = body ? this.buildParams(path, body) : path;
         return axios.get(process.env.REACT_APP_API_URL + path, {withCredentials : true})
             .then(res => {
                 return res;
@@ -32,6 +32,37 @@ export default class Requests {
             .catch(error => {
                 return error.response ? error.response : { status: 500 };
             });
+    }
+
+    static put(path, body) {
+        return axios.put((process.env.REACT_APP_API_URL + path), body, {withCredentials : true})
+            .then(res => {
+                return res
+            })
+            .catch(error => {
+                return error.response ? error.response : { status: 500 };
+            });
+    }
+
+    static patch(path, body) {
+        return axios.patch((process.env.REACT_APP_API_URL + path), body, {withCredentials : true})
+            .then(res => {
+                return res
+            })
+            .catch(error => {
+                return error.response ? error.response : { status: 500 };
+            })
+    }
+
+    static delete(path, body) {
+        path = body ? this.buildParams(path, body) : path;
+        return axios.delete((process.env.REACT_APP_API_URL + path), body, {withCredentials : true})
+            .then(res => {
+                return res
+            })
+            .catch(error => {
+                return error.response ? error.response : { status: 500 };
+            })
     }
 
 }
