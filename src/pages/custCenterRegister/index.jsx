@@ -14,7 +14,8 @@ export default function CustCenterRegister() {
                 <Style.Container>
                     <Style.Dados>
                         <Style.DHeader>
-                            <Style.DivCreate>Cadastrar Centro de Custos
+                            <Style.DivCreate>
+                                <Style.DivTitle>Cadastrar Centro de Custos</Style.DivTitle>
                            <Style.BotaoFormCreate onClick={() => { setNovo(!novo) }}>
                                     {!novo ? 'Novo' : 'Editar'}
                                 </Style.BotaoFormCreate>
