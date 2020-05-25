@@ -111,6 +111,19 @@ export const DadosDois = styled.div`
     transform: translate(-50%, -50%);
 `;
 
+
+export const DadosTerceiros = styled.div`
+    padding: 2%;
+    position: relative;
+    height: 65%;
+    width: 80%;
+    border-radius: 10px;
+    background-color: #2B47AA;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`;
+
 export const DHeader = styled.div`
     padding: 0 2% 0 2%;
     line-height: 50%;
