@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Viewer from '../../Layout/Viewer'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
 import "./index.css"
@@ -6,14 +6,19 @@ import * as Style from './style'
 
 export default function UserRegister() {
 
+    const [novo, setNovo] = useState(false);
+
     return (
         <>
             <Viewer>
                 <Style.Container>
                     <Style.Dados>
                         <Style.DHeader> 
-                           <Style.DivCreate>Cadastrar Usuário
-                           <Style.BotaoFormCreate>Novo</Style.BotaoFormCreate>
+                           <Style.DivCreate>
+                               <Style.DivTitle>Cadastrar Usuário</Style.DivTitle>
+                               <Style.BotaoFormCreate onClick={() => { setNovo(!novo) }}>
+                                    {!novo ? 'Novo' : 'Editar'}
+                                </Style.BotaoFormCreate>
                            </Style.DivCreate>
                          </Style.DHeader>
                         <Style.DBody>
@@ -22,7 +27,16 @@ export default function UserRegister() {
                                     <Card.Body className="fundoForm">
                                         <Form.Group as={Col} controlId="formGridUserName">
                                             <Form.Label>Nome do Usuário</Form.Label>
-                                            <Form.Control type="text" placeholder="" />
+                                            {
+                                                novo ?
+                                                    <Form.Control type="text" placeholder="" /> :
+                                                    <Form.Control as="select" value="Choose...">
+                                                        <option>Selecione...</option>
+                                                        <option>Projeto 1</option>
+                                                        <option>Projeto 2</option>
+                                                        <option>Projeto 3</option>
+                                                    </Form.Control>
+                                            }
                                         </Form.Group>
                                     </Card.Body>
                                 </Style.DBox>

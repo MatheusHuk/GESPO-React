@@ -84,11 +84,12 @@ export const Dados = styled.div`
     position: relative;
     height: 70%;
     width: 80%;
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: #2B47AA;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
+    box-shadow: 0VH 0.5VH  8px black;
 `;
 
 export const DHeader = styled.div`
@@ -282,7 +283,6 @@ export const TDSmall = styled.td`
     border: 1px solid black;
 `;
 
-
 export const BotaoForm = styled.button`
     background-color: transparent !important;
     color: white !important;
@@ -290,9 +290,12 @@ export const BotaoForm = styled.button`
     width: 20%;
     border: 1px solid white !important;
     line-height: 50% !important;
-    box-shadow: 0.5VW 0.5VH 5px black;
+    box-shadow: 0VW 0.3VH 3px black;
     z-index: 0 !important;
     margin-left: 1VW;
+
+    :hover{
+        background-color: #251680 !important; 
 `;
 export const BotaoFormCreate = styled.button`
     background-color: transparent !important;
@@ -304,7 +307,21 @@ export const BotaoFormCreate = styled.button`
     box-shadow: 0.3VW 0.3VH 3px black;
     z-index: 0 !important;
     margin-left: 1VW;
+
+    :hover{
+        background-color: #251680 !important; 
 `;
 export const DivCreate = styled.div`
-    height: 80%
+    position: relative;
+    width: 100%;
+    height: 3VH;
+    display: flex;
+    justify-content: flex-end;
+`;
+export const DivTitle = styled.div`
+    position: relative;
+    width: 100%;
+    height: 3VH;
+    display: flex;
+    justify-content: flex-right;
 `;
