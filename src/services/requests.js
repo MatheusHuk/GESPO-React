@@ -4,16 +4,18 @@ export default class Requests {
 
     static buildParams(path, body) {
         path += "?";
-        for (let i = 1; i <= body.length; i++) {
-            path += body[i - 1][0] + "=" + body[i - 1][1];
-            if (i != body.length) path += "&";
+        let keys = Object.keys(body);
+        let values = Object.values(body);
+        for (let i = 0; i < keys.length; i++) {
+            path += keys[i] + "=" + values[i];
+            if (i+1 != keys.length) path += "&";
         }
         return path;
     }
 
     static get(path, body) {
-        path = process.env.REACT_APP_API_URL + (body ? this.buildParams(path, body) : path);
-        return axios.get(path, {withCredentials : true})
+        path = (body ? this.buildParams(path, body) : path);
+        return axios.get(process.env.REACT_APP_API_URL + path, {withCredentials : true})
             .then(res => {
                 return res;
             })

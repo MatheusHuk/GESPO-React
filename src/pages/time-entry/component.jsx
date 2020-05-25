@@ -72,7 +72,7 @@ export default class TimeEntry extends React.Component {
 
     componentDidMount() {
         this.props.setLoad(true);
-        TimeEntryService.getAllByUser([["id", this.props.logged.id]])
+        TimeEntryService.getAllByUser({ "id": this.props.logged.id })
             .then(res => {
                 this.setState({
                     ...this.state,
@@ -300,7 +300,7 @@ export default class TimeEntry extends React.Component {
         this.props.setLoad(true);
         TimeEntryService.writeNewDados(this.state.dadosList)
             .then(res => {
-                TimeEntryService.getAllByUser([["id", this.props.logged.id]])
+                TimeEntryService.getAllByUser({ "id": this.props.logged.id })
                     .then(res => {
                         this.setState({
                             ...this.state,

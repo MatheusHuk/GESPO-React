@@ -53,7 +53,7 @@ export default function Login({ setLoad, logged, setLogged }) {
 
     async function login() {
         setLoad(true);
-        UserService.login([["cpf", state.cpf], ["password", state.password]])
+        UserService.login(state)
             .then((res) => {
                 setLogged(res.data);
                 setCookies("LOGGED", res.data);

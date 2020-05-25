@@ -6,7 +6,7 @@ export default class ProjectService{
         return (status >= 200 && status < 300);
     }
 
-    static async getAll(body){
+    static async getAll(){
         return new Promise((resolve, reject) => {
             Requests.get("/projects")
                 .then(res => {
@@ -16,7 +16,7 @@ export default class ProjectService{
     }
 
     static async getAllByEmployeeId(id){
-        let body = [["id", id]]
+        let body = { id: id }
         return new Promise((resolve, reject) => {
             Requests.get("/projects/employee", body)
                 .then(res => {
