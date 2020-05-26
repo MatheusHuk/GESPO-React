@@ -1,19 +1,21 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-
+const entranceAnimation = keyframes`
+    0%{
+        left: 100%;
+    }
+    100%{
+        left: 0%;
+    }
+`;
 export const Container = styled.div`
     padding: 2VH 2VW;
     position: relative;
-    width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-`;
-
-export const ContainerDois = styled.div`
-    padding: 2VH 2VW;
-    position: relative;
-    width: 100%;
-    height: 100%;
+    width: 100VW;
+    height: 105%;
+    left: 0%;
+    animation: ${entranceAnimation} 0.5s;
+    color: white;
     overflow-y: scroll;
 `;
 
@@ -23,9 +25,10 @@ export const Filtros = styled.div`
     transform: translateX(-50%);
     position: relative;
     height: 30%;
-    width: 80%;
+    width: 100%;
     border-radius: 17px;
     background-color: #2B47AA;
+    margin-bottom: 4%;
 `;
 
 export const FHeader = styled.div`
@@ -47,8 +50,6 @@ export const FBody = styled.div`
     height: calc(100% - 6VH);
     display: flex;
     justify-content: space-around;
-   
-}
 `;
 
 export const FFooter = styled.div`
@@ -56,7 +57,7 @@ export const FFooter = styled.div`
     width: 100%;
     height: 3VH;
     display: flex;
-    justify-content: flex-end;
+    justify-content: right;
     z-index: -1;
 `;
 
@@ -69,8 +70,6 @@ export const FBoxBody = styled.div`
     height: 80%;
     display: flex;
     justify-content: space-between;
-    flex: 1 1 auto;
-    min-height: 1px;
 `;
 
 export const BoxHeader = styled.div`
@@ -83,7 +82,7 @@ export const BoxHeader = styled.div`
 
 export const Box = styled.div`
     position: relative;
-    width: 55%;
+    width: 25%;
     height: 10VH;
 `;
 
@@ -101,29 +100,14 @@ export const Dados = styled.div`
     border-radius: 5px;
 `;
 
-export const DadosDois = styled.div`
-    padding: 2%;
-    position: relative;
-    height: 35%;
-    width: 80%;
-    border-radius: 10px;
-    background-color: #2B47AA;
-    top: 25%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0VH 0.5VH  5px black;
-    border-radius: 5px;
-`;
-
-
 export const DadosTerceiros = styled.div`
     padding: 2%;
     position: relative;
-    height: 65%;
+    height: 60%;
     width: 80%;
     border-radius: 10px;
     background-color: #2B47AA;
-    top: 45%;
+    top: 40%;
     left: 50%;
     margin-bottom: 5%;
     transform: translate(-50%, -50%);
@@ -138,7 +122,7 @@ export const DHeader = styled.div`
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    height: 4VH;
+    height: 3VH;
     border-bottom: 1px solid white;
     color: white;
     font-size: 2.5VH;
@@ -160,17 +144,16 @@ export const DFooter = styled.div`
     width: 100%;
     height: 3VH;
     display: flex;
-    justify-content: flex-end;
-    top: 67%
+    justify-content: right;
 `;
 
 export const DBoxBody = styled.div`
-    padding: 0VH 2VW 0 2VW;
+    padding: 1VH 2VW 0 2VW;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
     width: 100%;
-    height: 10%;
+    height: 30%;
     display: flex;
     justify-content: space-between;
 `;
@@ -191,7 +174,7 @@ export const DBigBox = styled.div`
 
 export const DBox = styled.div`
     position: relative;
-    width: 55%;
+    width: 30%;
     height: 10VH;
 `;
 
@@ -201,23 +184,12 @@ export const DSmallBox = styled.div`
     height: 10VH;
 `;
 
-export const ApontamentoSmall = styled.div`
-    padding: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-    position: relative;
-    height: 35%;
-    width: 100%;
-    border-radius: 17px;
-    background-color: #2B47AA;
-`;
-
 export const Apontamento = styled.div`
     padding: 2%;
     left: 50%;
     transform: translateX(-50%);
     position: relative;
-    height: 65%;
+    height: 60%;
     width: 100%;
     border-radius: 17px;
     background-color: #2B47AA;
@@ -236,124 +208,25 @@ export const AHeader = styled.div`
     font-size: 2.5VH;
 `;
 
-export const Table = styled.table`
-    border: 1;
+export const ABody = styled.div`
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
     width: 100%;
-    height: calc(100% - 3VH);
+    height: calc(100% - 6VH);
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    font-size: ${props => props.size == 1 ? '1.5VH' : '2VH'};
-    border-spacing: 0px;
 `;
 
-export const THeader = styled.thead`
+export const AFooter = styled.div`
     position: relative;
     width: 100%;
-    height: 10%;
+    height: 3VH;
+    display: flex;
+    justify-content: right;
 `;
 
-export const TData = styled.tbody`
-    position: relative;
-    width: 100%;
-    height: 90%;
-    overflow-y: scroll;
-    -moz-overflow-style: none;
-    ::-webkit-scrollbar{
-        display: none;
-    }
-`;
-
-export const TRHeader = styled.tr`
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    height: 100%;
-`;
-
-export const Tr = styled.tr`
-    padding: 0;
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    height: 10%;
-`;
-
-export const Th = styled.th`
-    padding: 0;
-    display: inline-block;
-    position: relative;
-    width: 23%;
-    height: 100%;
-    background-color: white;
-    vertical-align: middle;
-    border: 1px solid black;
-`;
-
-export const Td = styled.td`
-    padding: 0;
-    display: inline-block;
-    position: relative;
-    width: 23%;
-    height: 100%;
-    background-color: white;
-    border: 1px solid black;
-`;
-
-export const THSmall = styled.th`
-    display: inline-block;
-    position: relative;
-    width: 8%;
-    height: 100%;
-    background-color: white;
-    vertical-align: middle;
-    border: 1px solid black;
-`;
-
-export const TDSmall = styled.td`
-    display: inline-block;
-    position: relative;
-    width: 8%;
-    height: 100%;
-    background-color: white;
-    vertical-align: middle;
-    border: 1px solid black;
-`;
-
-
-export const BotaoForm = styled.button`
-    background-color: transparent !important;
-    color: white !important;
-    height: 100% !important;
-    width: 20%;
-    border: 1px solid white !important;
-    line-height: 50% !important;
-    z-index: 0 !important;
-    margin-left: 1VW;
-    box-shadow: 0VW 0.3VH 3px black;
-    
-    :hover{
-        background-color: #251680 !important;
-`;
-
-export const BotaoFormCreate = styled.button`
-    background-color: transparent !important;
-    color: white !important;
-    height: 100% !important;
-    width: 20%;
-    border: 1px solid white !important;
-    line-height: 50% !important;
-    box-shadow: 0VW 0.3VH 3px black;
-    z-index: 0 !important;
-    margin-left: 1VW;
-
-    :hover{
-        background-color: #251680 !important; 
-    }
-`;
 export const DivCreate = styled.div`
     height: 80%
 `;

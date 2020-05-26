@@ -1,22 +1,12 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
-const entranceAnimation = keyframes`
-    0%{
-        left: 100%;
-    }
-    100%{
-        left: 0%;
-    }
-`;
+
 export const Container = styled.div`
     padding: 2VH 2VW;
     position: relative;
-    width: 100VW;
-    height: 105%;
-    left: 0%;
-    animation: ${entranceAnimation} 0.5s;
-    color: white;
-    
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
 `;
 
 export const Filtros = styled.div`
@@ -25,10 +15,9 @@ export const Filtros = styled.div`
     transform: translateX(-50%);
     position: relative;
     height: 30%;
-    width: 100%;
+    width: 80%;
     border-radius: 17px;
     background-color: #2B47AA;
-    margin-bottom: 4%;
 `;
 
 export const FHeader = styled.div`
@@ -50,6 +39,8 @@ export const FBody = styled.div`
     height: calc(100% - 6VH);
     display: flex;
     justify-content: space-around;
+   
+}
 `;
 
 export const FFooter = styled.div`
@@ -57,7 +48,7 @@ export const FFooter = styled.div`
     width: 100%;
     height: 3VH;
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
     z-index: -1;
 `;
 
@@ -70,6 +61,8 @@ export const FBoxBody = styled.div`
     height: 80%;
     display: flex;
     justify-content: space-between;
+    flex: 1 1 auto;
+    min-height: 1px;
 `;
 
 export const BoxHeader = styled.div`
@@ -82,19 +75,49 @@ export const BoxHeader = styled.div`
 
 export const Box = styled.div`
     position: relative;
-    width: 25%;
+    width: 55%;
     height: 10VH;
 `;
 
 export const Dados = styled.div`
     padding: 2%;
-    left: 50%;
-    transform: translateX(-50%);
     position: relative;
-    height: 60%;
-    width: 100%;
-    border-radius: 17px;
+    height: 50%;
+    width: 80%;
+    border-radius: 5px;
     background-color: #2B47AA;
+    top: 30%;
+    left: 50%;
+    margin-bottom: 5%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0VH 0.5VH  8px black;
+`;
+export const DadosTwo = styled.div`
+    padding: 2%;
+    position: relative;
+    height: 70%;
+    width: 80%;
+    background-color: #2B47AA;
+    top: 35%;
+    left: 50%;
+    margin-bottom: 5%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0VH 0.5VH  5px black;
+    border-radius: 5px;
+`;
+
+export const DadosThree = styled.div`
+    padding: 2%;
+    position: relative;
+    height: 70%;
+    width: 80%;
+    border-radius: 5px;
+    background-color: #2B47AA;
+    top: 30%;
+    left: 50%;
+    margin-bottom: 5%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0VH 0.5VH  5px black;
 `;
 
 export const DHeader = styled.div`
@@ -108,6 +131,16 @@ export const DHeader = styled.div`
     border-bottom: 1px solid white;
     color: white;
     font-size: 2.5VH;
+`;
+export const DHeaderTwo = styled.div`
+    padding: 0 2% 0 2%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 3VH;
+    color: #1F1462;
+    font-size: 3VH;
 `;
 
 export const DBody = styled.div`
@@ -126,16 +159,28 @@ export const DFooter = styled.div`
     width: 100%;
     height: 3VH;
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
 `;
 
-export const DBoxBody = styled.div`
-    padding: 1VH 2VW 0 2VW;
+
+export const DBoxBodyFlexRight = styled.div`
+    padding: 0VH 2VW 0 2VW;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
     width: 100%;
-    height: 30%;
+    height: 20%;
+    display: flex;
+    justify-content: flex-right;
+`;
+
+export const DBoxBody = styled.div`
+    padding: 0VH 2VW 0 2VW;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 100%;
+    height: 20%;
     display: flex;
     justify-content: space-between;
 `;
@@ -155,10 +200,36 @@ export const DBigBox = styled.div`
 `;
 
 export const DBox = styled.div`
-    position: relative;
-    width: 30%;
+position: relative;
+    width: 55%;
     height: 10VH;
 `;
+
+export const DBoxFirst = styled.div`
+position: relative;
+width: 60%;
+height: 10VH;
+`;
+
+export const DBoxFirstTwo = styled.div`
+    position: relative;
+    width: 40%;
+    height: 10VH;
+`;
+
+export const DBoxFirstThree = styled.div`
+position: relative;
+    width: 35%;
+    height: 10VH;
+    `;
+
+
+export const DBoxFirstFour = styled.div`
+    position: relative;
+    width: 20%;
+    height: 10VH;
+    `;
+    
 
 export const DSmallBox = styled.div`
     position: relative;
@@ -166,20 +237,31 @@ export const DSmallBox = styled.div`
     height: 10VH;
 `;
 
+export const ApontamentoSmall = styled.div`
+    padding: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    height: 35%;
+    width: 100%;
+    border-radius: 17px;
+    background-color: #2B47AA;
+    `;
+
 export const Apontamento = styled.div`
     padding: 2%;
     left: 50%;
     transform: translateX(-50%);
     position: relative;
-    height: 60%;
+    height: 65%;
     width: 100%;
     border-radius: 17px;
     background-color: #2B47AA;
-`;
+    `;
 
 export const AHeader = styled.div`
-    padding: 0 2% 0 2%;
-    line-height: 50%;
+padding: 0 2% 0 2%;
+line-height: 50%;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
@@ -188,23 +270,136 @@ export const AHeader = styled.div`
     border-bottom: 1px solid white;
     color: white;
     font-size: 2.5VH;
-`;
+    `;
 
-export const ABody = styled.div`
-    position: relative;
+export const Table = styled.table`
+border: 1;
+position: relative;
     left: 50%;
     transform: translate(-50%, 0);
     width: 100%;
-    height: calc(100% - 6VH);
+    height: calc(100% - 3VH);
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    font-size: ${props => props.size == 1 ? '1.5VH' : '2VH'};
+    border-spacing: 0px;
+    `;
+
+export const THeader = styled.thead`
+position: relative;
+    width: 100%;
+    height: 10%;
+    `;
+
+export const TData = styled.tbody`
+    position: relative;
+    width: 100%;
+    height: 90%;
+    overflow-y: scroll;
+    -moz-overflow-style: none;
+    ::-webkit-scrollbar{
+        display: none;
+    }
+    `;
+
+export const TRHeader = styled.tr`
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    `;
+
+export const Tr = styled.tr`
+    padding: 0;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    height: 10%;
 `;
 
-export const AFooter = styled.div`
+export const Th = styled.th`
+    padding: 0;
+    display: inline-block;
     position: relative;
+    width: 23%;
+    height: 100%;
+    background-color: white;
+    vertical-align: middle;
+    border: 1px solid black;
+    `;
+
+export const Td = styled.td`
+padding: 0;
+    display: inline-block;
+    position: relative;
+    width: 23%;
+    height: 100%;
+    background-color: white;
+    border: 1px solid black;
+    `;
+
+export const THSmall = styled.th`
+display: inline-block;
+    position: relative;
+    width: 8%;
+    height: 100%;
+    background-color: white;
+    vertical-align: middle;
+    border: 1px solid black;
+    `;
+
+export const TDSmall = styled.td`
+display: inline-block;
+    position: relative;
+    width: 8%;
+    height: 100%;
+    background-color: white;
+    vertical-align: middle;
+    border: 1px solid black;
+`;
+export const BotaoForm = styled.button`
+    background-color: transparent !important;
+    color: white !important;
+    height: 100% !important;
+    width: 20%;
+    border: 1px solid white !important;
+    line-height: 50% !important;
+    z-index: 0 !important;
+    margin-left: 1VW;
+    box-shadow: 0VW 0.3VH 3px black;
+    
+    :hover{
+        background-color: #251680 !important;}
+`;
+
+export const DivAlign = styled.div`
+position: relative;
     width: 100%;
     height: 3VH;
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
+`;
+
+export const Component = styled.div`
+    float: left;
+    background-color: white;
+    width: 19VW;
+    height: 25VH;
+    border-radius: 10px;
+    color: #1F1462;
+    font-size: 3VH;
+    text-align: left;
+    line-height: 2px;
+    transition: all 0.5s;
+    padding: 3% 1%;
+    box-shadow: 0VH 0.5VH  10px black;
+`;
+export const SubContainer = styled.div`
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 50%;
+    padding-top: 2.5VH;
+    padding-bottom: 2.5VH;
 `;
