@@ -305,7 +305,7 @@ export const BotaoFormCreate = styled.button`
     width: 20%;
     border: 1px solid white !important;
     line-height: 50% !important;
-    box-shadow: 0.3VW 0.3VH 3px black;
+    box-shadow: 0VW 0.3VH 3px black;
     z-index: 0 !important;
     margin-left: 1VW;
 
