@@ -1,5 +1,13 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
+const animation = keyframes`
+    0%{
+        left: 100%
+    }
+    100%{
+        left: 0
+    }
+`;
 
 export const Container = styled.div`
     padding: 2VH 2VW;
@@ -7,6 +15,62 @@ export const Container = styled.div`
     width: 100%;
     height: 100%;
     overflow-y: scroll;
+    animation: ${animation} 0.5s;
+`;
+
+export const HeaderContainer = styled.div`
+    width: auto;
+    height: 5%;
+    display: flex;
+    flex-wrap: wrap;
+`;
+
+export const HeaderBackButton = styled.div`
+    width: 10%;
+    height: 100%;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+`;
+
+export const ButtonContainer = styled.div`
+    height: 100%;
+    width: 90%;
+`;
+
+export const HeaderButton = styled.div`
+    width: 50%;
+    height: 100%;
+    background-color: ${props => props.selected ? '#2B47AA' : "white"};
+    color: ${props => props.selected ? 'white' : "black"};
+    border: 1px solid black;
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+    position: relative;
+    right: 0;
+    float: right;
+    cursor: pointer;
+
+    :hover{
+        background-color: ${props => props.selected ? '#2B47AA' : "#251680"};
+        color: white;
+    }
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 `;
 
 export const Filtros = styled.div`
@@ -99,7 +163,7 @@ export const DadosTwo = styled.div`
     width: 80%;
     border-radius: 5px;
     background-color: #2B47AA;
-    top: 35%;
+    top: 40%;
     left: 50%;
     margin-bottom: 5%;
     transform: translate(-50%, -50%);
@@ -113,7 +177,7 @@ export const DadosThree = styled.div`
     width: 80%;
     border-radius: 5px;
     background-color: #2B47AA;
-    top: 30%;
+    top: 40%;
     left: 50%;
     margin-bottom: 5%;
     transform: translate(-50%, -50%);
