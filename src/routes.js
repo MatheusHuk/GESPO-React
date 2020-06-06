@@ -10,19 +10,30 @@ export default function Routes({ setLoad }){
         <BrowserRouter>
             <Switch>
                 <Route path="/" render={(props) => 
-                    <Pages.Home setLoad={setLoad} 
-                                logged={logged} 
-                                setLogged={setLogged} />} exact />
+                    <Pages.Home 
+                        setLoad={setLoad} 
+                        logged={logged} 
+                        setLogged={setLogged} />}
+                    exact />
                 <Route path="/login" render={(props) => 
-                    <Pages.Login setLoad={setLoad}
-                                 logged={logged} 
-                                 setLogged={setLogged} />} exact />
+                    <Pages.Login 
+                        setLoad={setLoad}
+                        logged={logged} 
+                        setLogged={setLogged} />} 
+                    exact />
                 <Route path="/timeEntry" render={(props) => 
-                    <Pages.TimeEntry setLoad={setLoad} 
-                                     logged={logged} />} exact />
+                    <Pages.TimeEntry
+                        setLoad={setLoad} 
+                        logged={logged} />}
+                    exact />
                 <Route path="/dashboards" render={(props) => <Pages.Dashboards setLoad={setLoad} />} exact />
                 <Route path="/projectManagement/goalsDefinition" render={(props) => <Pages.HoursProvisioning setLoad={setLoad} />} exact />
-                <Route path="/projectManagement/HoursProvisioning" render={(props) => <Pages.HoursProvisioningReal setLoad={setLoad} />} exact />
+                <Route path="/projectManagement/HoursProvisioning" render={(props) =>
+                    <Pages.HoursProvisioningReal 
+                        setLoad={setLoad} 
+                        logged={logged}
+                        setLogged={setLogged}/>}
+                    exact />
                 <Route path="/projectManagement" render={(props) => <Pages.ProjectManagement setLoad={setLoad} />} exact />
                 <Route path="/projectManagement/ResourcesAllocation" render={(props) => <Pages.ResourcesAllocation setLoad={setLoad} />} exact />
                 <Route path="/register" render={(props) => <Pages.Register setLoad={setLoad} />} exact />

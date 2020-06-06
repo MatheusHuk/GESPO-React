@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Viewer from '../../Layout/Viewer'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import * as Style from './style'
 
-export default function HoursProvisioningReal() {
+export default function HoursProvisioningReal({ setLoad, logged, setLogged }) {
+
+    useEffect(() => {
+        setLoad(false)
+    }, [])
 
     return (
         <>
