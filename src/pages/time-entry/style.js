@@ -267,8 +267,7 @@ export const AHeader = styled.div`
     font-size: 2.5VH;
 `;
 
-export const Table = styled.table`
-    border: 1;
+export const TableDiv = styled.div`
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
@@ -279,6 +278,7 @@ export const Table = styled.table`
     flex-wrap: wrap;
     font-size: ${props => props.size == 1 ? '1.5VH' : '2VH'};
     border-spacing: 0px;
+    overflow-y: scroll
 `;
 
 export const THeader = styled.thead`
