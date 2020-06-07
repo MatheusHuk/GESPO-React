@@ -15,10 +15,9 @@ export default class HoursProvisioningService{
         });
     }
 
-    static async getAllByEmployeeId(id){
-        let body = { id: id }
+    static async getAllFiltered(request){
         return new Promise((resolve, reject) => {
-            Requests.get("/provisioning-hours", body)
+            Requests.get("/provisioning-hours/filter", request)
                 .then(res => {
                     this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
                 });

@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import Viewer from '../../Layout/Viewer'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import * as Style from './style'
+import ProjectService from '../../services/projectService'
+import HoursProvisioningService from '../../services/hoursProvisioningService'
 
 export default class HoursProvisioningReal extends React.Component {
 
@@ -9,12 +11,67 @@ export default class HoursProvisioningReal extends React.Component {
         super(props)
         this.props = props;
         this.state = {
-            showFiltros: true
+            showFiltros: true,
+            project: {},
+            editDados: {},
+            newDados: {},
+            selectDados: {
+                projects: []
+            },
+            provisionings: []
         }
     }
 
+    componentDidUpdate(){
+        console.log("Prov state: ",this.state)
+    }
+
     componentDidMount(){
-        this.props.setLoad(false)
+        this.props.setLoad(true)
+        ProjectService.getAllByEmployeeId(this.props.logged.id)
+            .then(res => {
+                let prov = [];
+                if(res.data.length > 0){
+                    HoursProvisioningService.getAllFiltered({
+                        projectId: res.data[0].id
+                    })
+                        .then(res2 => {
+                            this.setState({
+                                ...this.state,
+                                provisionings: res2.data == "" ? [] : res2.data
+                            })
+                            prov = res2.data
+                            console.log("RES2: ",res2)
+                        })
+                        .catch(error => {
+                            console.log("EE 2",error)
+                        })
+                        .finally(() => {
+                            this.props.setLoad(false)
+                        })
+                }
+                this.setState({
+                    ...this.state,
+                    selectDados: {
+                        ...this.state.selectDados,
+                        projects: res.data == "" ? [] : res.data
+                    },
+                    project: res.data == "" ? {} : res.data[0]
+                })
+            })
+            .catch(error => {
+                console.log("Prov error: "+error);
+            })
+            .finally(() => {
+                this.props.setLoad(false)
+            })
+    }
+
+    handleProjectFiltro(e){
+        this.setState({
+            ...this.state,
+
+        })
     }
 
     render() {
@@ -48,11 +105,14 @@ export default class HoursProvisioningReal extends React.Component {
                                                         <Form.Row>
                                                             <Form.Group as={Col} controlId="formGridGerente">
                                                                 <Form.Label>Projeto</Form.Label>
-                                                                <Form.Control as="select" value="Choose...">
-                                                                    <option>Selecione...</option>
-                                                                    <option>Projeto 1</option>
-                                                                    <option>Projeto 2</option>
-                                                                    <option>Projeto 3</option>
+                                                                <Form.Control as="select" onChange={(event) => { this.handleProject() }}>
+                                                                    {
+                                                                        this.state.selectDados.projects.map((value, i) => {
+                                                                            return (
+                                                                                <option value={i} key={value.id} >{value.name}</option>
+                                                                            );
+                                                                        })
+                                                                    }
                                                                 </Form.Control>
                                                             </Form.Group>
                                                         </Form.Row>
@@ -114,6 +174,11 @@ export default class HoursProvisioningReal extends React.Component {
                                             </Style.DBox>
                                         </Style.DBoxBody>
                                     </Style.DBody>
+                                    <Style.DFooter>
+                                        <Style.BotaoForm onClick={() => { console.log("FFF: ",this.state.provisionings) }}>
+                                            Filtrar
+                                        </Style.BotaoForm>
+                                    </Style.DFooter>
                                 </Style.Dados>
                                 <Style.DadosThree>
                                     <Style.DHeader> Provisionamento de Horas </Style.DHeader>
@@ -124,55 +189,19 @@ export default class HoursProvisioningReal extends React.Component {
                                                     <Style.DHeaderTwo> Jan/2020 </Style.DHeaderTwo>
                                                     <Style.DBody>
                                                         <Style.DBoxBody>
-                                                            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">" Recurso:X - Categoria:Y"</Tooltip>}>
-                                                                <span className="d-inline-block">
-                                                                    <Button disabled style={{ pointerEvents: 'none' }}>
-                                                                        120
-                                                                </Button>
-                                                                </span>
-                                                            </OverlayTrigger>
-                                                            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">" Recurso:X - Categoria:Y"</Tooltip>}>
-                                                                <span className="d-inline-block">
-                                                                    <Button disabled style={{ pointerEvents: 'none' }}>
-                                                                        120
-                                                                </Button>
-                                                                </span>
-                                                            </OverlayTrigger>
-                                                            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">" Recurso:X - Categoria:Y"</Tooltip>}>
-                                                                <span className="d-inline-block">
-                                                                    <Button disabled style={{ pointerEvents: 'none' }}>
-                                                                        120
-                                                                </Button>
-                                                                </span>
-                                                            </OverlayTrigger>
-                                                        </Style.DBoxBody>
-                                                    </Style.DBody>
-                                                </Style.Component>
-                                                <Style.Component>
-                                                    <Style.DHeaderTwo> Fev/2020 </Style.DHeaderTwo>
-                                                    <Style.DBody>
-                                                        <Style.DBoxBody>
-                                                            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">" Recurso:X - Categoria:Y"</Tooltip>}>
-                                                                <span className="d-inline-block">
-                                                                    <Button disabled style={{ pointerEvents: 'none' }}>
-                                                                        120
-                                                                </Button>
-                                                                </span>
-                                                            </OverlayTrigger>
-                                                            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">" Recurso:X - Categoria:Y"</Tooltip>}>
-                                                                <span className="d-inline-block">
-                                                                    <Button disabled style={{ pointerEvents: 'none' }}>
-                                                                        120
-                                                                </Button>
-                                                                </span>
-                                                            </OverlayTrigger>
-                                                            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">" Recurso:X - Categoria:Y"</Tooltip>}>
-                                                                <span className="d-inline-block">
-                                                                    <Button disabled style={{ pointerEvents: 'none' }}>
-                                                                        120
-                                                                </Button>
-                                                                </span>
-                                                            </OverlayTrigger>
+                                                            {
+                                                                this.state.provisionings.map((value, i) => {
+                                                                    return (
+                                                                        <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">"Categoria: { value.category.id }"</Tooltip>}>
+                                                                            <span className="d-inline-block">
+                                                                                <Button disabled style={{ pointerEvents: 'none' }}>
+                                                                                    {value.amountHours}
+                                                                            </Button>
+                                                                            </span>
+                                                                        </OverlayTrigger>
+                                                                    );
+                                                                })
+                                                            }
                                                         </Style.DBoxBody>
                                                     </Style.DBody>
                                                 </Style.Component>
