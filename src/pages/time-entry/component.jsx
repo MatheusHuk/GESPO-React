@@ -70,15 +70,11 @@ export default class TimeEntry extends React.Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.setLoad(true);
-        TimeEntryService.getAllByUser({ "id": this.props.logged.id })
-            .then(res => {
-                this.setState({
-                    ...this.state,
-                    dados: res.data == "" ? [] : res.data
-                })
-                ProjectService.getAllByEmployeeId(this.props.logged.id)
+        await TimeEntryService.getAllByUser({ "employeeId": this.props.logged.id })
+            .then(async (res)=> {
+                await ProjectService.getAllByEmployeeId(this.props.logged.id)
                     .then(res2 => {
                         console.log("RES2: ",res2.data);
                         this.setState({

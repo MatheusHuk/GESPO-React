@@ -26,13 +26,13 @@ export default class HoursProvisioningReal extends React.Component {
         console.log("Prov state: ",this.state)
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         this.props.setLoad(true)
-        ProjectService.getAllByEmployeeId(this.props.logged.id)
-            .then(res => {
+        await ProjectService.getAllByEmployeeId(this.props.logged.id)
+            .then(async (res) => {
                 let prov = [];
                 if(res.data.length > 0){
-                    HoursProvisioningService.getAllFiltered({
+                    await HoursProvisioningService.getAllFiltered({
                         projectId: res.data[0].id
                     })
                         .then(res2 => {
