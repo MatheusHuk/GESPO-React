@@ -1,4 +1,5 @@
 import React from 'react'
+import FA from 'react-fontawesome'
 import { Button, Col, Form } from 'react-bootstrap'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
@@ -88,6 +89,10 @@ export default class TimeEntry extends React.Component {
                             newDados: {
                                 ...this.state.newDados,
                                 employee: this.props.logged
+                            },
+                            filtros: {
+                                ...this.state.filtros,
+                                project: res2.data == "" ? null : res2.data[0]
                             }
                         })
                     })
@@ -266,10 +271,26 @@ export default class TimeEntry extends React.Component {
         })
     }
 
-    filterDados() {
-        console.log("Pro: ", (this.state.filtros.project == null))
-        console.log("Pro: ", (this.state.filtros.funcionario == null))
-        console.log("Pro: ", (this.state.filtros.data == null))
+    async filterDados() {
+        console.log("Filt: ",this.state.filtros)
+        this.props.setLoad(true)
+        let filter = {
+            ...this.state.filtros
+        }
+        await TimeEntryService.filterEntries({
+            projectId: filter.project.id,
+            employeeId: filter.funcionario ? filter.funcionario.id : null,
+            date: filter.data
+        })
+            .then((resF) => {
+                console.log("ResF: ",resF)
+            })
+            .catch(error => {
+                console.log("E: ",error)
+            })
+            .finally(() => {
+                this.props.setLoad(false)
+            })
     }
 
     addDados() {
@@ -292,11 +313,11 @@ export default class TimeEntry extends React.Component {
         });
     }
 
-    saveDados() {
+    async saveDados() {
         this.props.setLoad(true);
-        TimeEntryService.writeNewDados(this.state.dadosList)
-            .then(res => {
-                TimeEntryService.getAllByUser({ "id": this.props.logged.id })
+        await TimeEntryService.writeNewDados(this.state.dadosList)
+            .then(async (res) => {
+                await TimeEntryService.getAllByUser({ "employeeId": this.props.logged.id })
                     .then(res => {
                         this.setState({
                             ...this.state,
@@ -432,7 +453,7 @@ export default class TimeEntry extends React.Component {
                                                             <Style.Td>{this.parseDate(data.creationDate)}</Style.Td>
                                                             <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
                                                             <Style.Td>{this.formatLongText(data.dsWork)}</Style.Td>
-                                                            <Style.TDSmall><Style.Icone /></Style.TDSmall>
+                                                            <Style.TDSmall><Style.Icone><FA name="ban" /></Style.Icone></Style.TDSmall>
                                                         </Style.Tr>
                                                     )
                                                 })
@@ -533,7 +554,7 @@ export default class TimeEntry extends React.Component {
                                                             <Style.Td>{data.date}</Style.Td>
                                                             <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
                                                             <Style.Td>{this.formatLongText(data.dsWork)}</Style.Td>
-                                                            <Style.TDSmall><Style.Icone onClick={() => { this.deleteEntry(i) }}>X</Style.Icone></Style.TDSmall>
+                                                            <Style.TDSmall><Style.Icone onClick={() => { this.deleteEntry(i) }}><FA name="ban" /></Style.Icone></Style.TDSmall>
                                                         </Style.Tr>
                                                     )
                                                 })
