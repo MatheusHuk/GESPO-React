@@ -255,7 +255,7 @@ export default class TimeEntry extends React.Component {
 
     parseDate(date) {
         let d = new Date(parseInt(date));
-        return (d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDay())
+        return (d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear())
     }
 
     deleteEntry(key) {
@@ -284,6 +284,10 @@ export default class TimeEntry extends React.Component {
         })
             .then((resF) => {
                 console.log("ResF: ", resF)
+                this.setState({
+                    ...this.state,
+                    dados: resF.data == "" ? [] : resF.data
+                })
             })
             .catch(error => {
                 console.log("E: ", error)
