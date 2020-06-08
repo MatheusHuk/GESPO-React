@@ -16,7 +16,7 @@ export default function Menu(){
             </Style.Empresa>
             <Style.ButtonContainer>
                 <Style.Button onClick={() => history.push("/")}>Inicio</Style.Button>
-                <Style.Button>Sair</Style.Button>
+                <Style.Button onClick={() => history.push("/login")}>Sair</Style.Button>
             </Style.ButtonContainer>
         </Style.Menu>
     )
