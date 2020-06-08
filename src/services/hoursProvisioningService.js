@@ -1,35 +1,35 @@
 import Requests from './requests'
 
-export default class TimeEntryService{
+export default class HoursProvisioningService{
 
     static verifyStatus(status){
         return (status >= 200 && status < 300);
     }
 
-    static async getAllByUser(body){
+    static async getAll(){
         return new Promise((resolve, reject) => {
-            Requests.get("/work-schedules/employee", body)
+            Requests.get("/provisioning-hours")
                 .then(res => {
                     this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
                 });
         });
     }
 
-    static async writeNewDados(body){
+    static async getAllFiltered(request){
         return new Promise((resolve, reject) => {
-            Requests.post("/work-schedules", body)
+            Requests.get("/provisioning-hours/filter", request)
                 .then(res => {
                     this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
-                })
-        })
+                });
+        });
     }
 
-    static async filterEntries(body){
+    static async create(body){
         return new Promise((resolve, reject) => {
-            Requests.get("/work-schedules/filter", body)
+            Requests.post("/provisioning-hours", body)
                 .then(res => {
                     this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
-                })
-        })
+                });
+        });
     }
 }

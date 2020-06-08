@@ -1,12 +1,76 @@
-import styled from 'styled-components';
-
-
+import styled, { keyframes } from 'styled-components';
+const animation = keyframes`
+    0%{
+        left: 100%
+    }
+    100%{
+        left: 0
+    }
+`;
 export const Container = styled.div`
     padding: 2VH 2VW;
     position: relative;
     width: 100%;
     height: 100%;
     overflow-y: scroll;
+    animation: ${animation} 0.5s;
+`;
+
+export const HeaderContainer = styled.div`
+    width: auto;
+    height: 5%;
+    display: flex;
+    flex-wrap: wrap;
+`;
+
+export const HeaderBackButton = styled.div`
+    width: 10%;
+    height: 100%;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+`;
+
+export const ButtonContainer = styled.div`
+    height: 100%;
+    width: 90%;
+`;
+
+export const HeaderButton = styled.div`
+    width: 50%;
+    height: 100%;
+    background-color: ${props => props.selected ? '#2B47AA' : "white"};
+    color: ${props => props.selected ? 'white' : "black"};
+    border: 1px solid black;
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+    position: relative;
+    right: 0;
+    float: right;
+    cursor: pointer;
+
+    :hover{
+        background-color: ${props => props.selected ? '#2B47AA' : "#251680"};
+        color: white;
+    }
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+=======
+>>>>>>> feature
 `;
 
 export const Filtros = styled.div`
@@ -113,7 +177,7 @@ export const DadosThree = styled.div`
     width: 80%;
     border-radius: 5px;
     background-color: #2B47AA;
-    top: 30%;
+    top: 40%;
     left: 50%;
     margin-bottom: 5%;
     transform: translate(-50%, -50%);
@@ -330,7 +394,7 @@ export const Th = styled.th`
     `;
 
 export const Td = styled.td`
-padding: 0;
+    padding: 0;
     display: inline-block;
     position: relative;
     width: 23%;
@@ -340,7 +404,7 @@ padding: 0;
     `;
 
 export const THSmall = styled.th`
-display: inline-block;
+    display: inline-block;
     position: relative;
     width: 8%;
     height: 100%;
@@ -350,7 +414,7 @@ display: inline-block;
     `;
 
 export const TDSmall = styled.td`
-display: inline-block;
+    display: inline-block;
     position: relative;
     width: 8%;
     height: 100%;
@@ -365,14 +429,13 @@ export const BotaoForm = styled.button`
     width: 20%;
     border: 1px solid white !important;
     line-height: 50% !important;
+    box-shadow: 0VW 0.3VH 3px black;
     z-index: 0 !important;
     margin-left: 1VW;
-    box-shadow: 0VW 0.3VH 3px black;
     
     :hover{
-        background-color: #251680 !important;}
+        background-color: #251680 !important; 
 `;
-
 export const DivAlign = styled.div`
 position: relative;
     width: 100%;
