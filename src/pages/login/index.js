@@ -5,6 +5,9 @@ import { FormControl, InputGroup, Button } from 'react-bootstrap';
 import UserService from '../../services/userService'
 import Toaster from '../../utils/Toaster'
 import './index.css'
+import loginImg from "../../assets/gespo.jpg";
+import './style.scss';
+//import "../../App.scss";
 
 export default function Login({ setLoad, logged, setLogged }) {
 
@@ -92,7 +95,8 @@ export default function Login({ setLoad, logged, setLogged }) {
                 header={toaster.header}
                 body={toaster.body}
             />
-            <div class="page">
+            
+            {/*<div class="page">
                 <div class="box">
                     <div class="gespo">GESPO</div>
                     <div class="label">Login</div>
@@ -119,7 +123,32 @@ export default function Login({ setLoad, logged, setLogged }) {
                         <Button onClick={() => { login() }} variant="light">Login</Button>
                     </div>
                 </div>
+    </div>*/}
+<div class="box_login">
+<div className="base-container">
+        <div className="header">Login</div>
+        <div className="content">
+          <div className="image">
+            <img src={loginImg} />
+          </div>
+          <div className="form">
+            <div className="form-group">
+              <label htmlFor="username">Usuário</label>
+              <input type="text" name="username" placeholder="CPF" onChange={(event) => { handleLogin(event) }} />
             </div>
+            <div className="form-group">
+              <label htmlFor="password">Senha</label>
+              <input type="password" name="password" placeholder="Senha" onChange={(event) => { handlePass(event) }} />
+            </div>
+          </div>
+        </div>
+        <div className="footer">
+          <button onClick={() => { login() }} variant="light" type="button" class="button_box">
+            Entrar
+          </button>
+        </div>
+      </div>
+        </div>
         </>
     );
 
