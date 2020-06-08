@@ -27,13 +27,13 @@ export default function Routes({ setLoad }){
                         logged={logged} />}
                     exact />
                 <Route path="/dashboards" render={(props) => <Pages.Dashboards setLoad={setLoad} />} exact />
-                <Route path="/projectManagement/goalsDefinition" render={(props) => <Pages.HoursProvisioning setLoad={setLoad} />} exact />
                 <Route path="/projectManagement/hoursProvisioning" render={(props) =>
                     <Pages.HoursProvisioning 
                         setLoad={setLoad} 
                         logged={logged}
                         setLogged={setLogged}/>}
                     exact />
+                <Route path="/projectManagement/goalsDefinition" render={(props) => <Pages.GoalsDefinition setLoad={setLoad} />} exact />
                 <Route path="/projectManagement" render={(props) => <Pages.ProjectManagement setLoad={setLoad} />} exact />
                 <Route path="/projectManagement/resourcesAllocation" render={(props) => <Pages.ResourcesAllocation setLoad={setLoad} />} exact />
                 <Route path="/register" render={(props) => <Pages.Register setLoad={setLoad} />} exact />

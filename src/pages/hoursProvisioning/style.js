@@ -1,5 +1,4 @@
 import styled, { keyframes } from 'styled-components';
-
 const animation = keyframes`
     0%{
         left: 100%
@@ -8,7 +7,6 @@ const animation = keyframes`
         left: 0
     }
 `;
-
 export const Container = styled.div`
     padding: 2VH 2VW;
     position: relative;
@@ -71,6 +69,8 @@ export const HeaderButton = styled.div`
         top: 50%;
         transform: translateY(-50%);
     }
+=======
+>>>>>>> feature
 `;
 
 export const Filtros = styled.div`
@@ -161,13 +161,13 @@ export const DadosTwo = styled.div`
     position: relative;
     height: 70%;
     width: 80%;
-    border-radius: 5px;
     background-color: #2B47AA;
-    top: 40%;
+    top: 35%;
     left: 50%;
     margin-bottom: 5%;
     transform: translate(-50%, -50%);
     box-shadow: 0VH 0.5VH  5px black;
+    border-radius: 5px;
 `;
 
 export const DadosThree = styled.div`
@@ -394,7 +394,7 @@ export const Th = styled.th`
     `;
 
 export const Td = styled.td`
-padding: 0;
+    padding: 0;
     display: inline-block;
     position: relative;
     width: 23%;
@@ -404,7 +404,7 @@ padding: 0;
     `;
 
 export const THSmall = styled.th`
-display: inline-block;
+    display: inline-block;
     position: relative;
     width: 8%;
     height: 100%;
@@ -414,7 +414,7 @@ display: inline-block;
     `;
 
 export const TDSmall = styled.td`
-display: inline-block;
+    display: inline-block;
     position: relative;
     width: 8%;
     height: 100%;
@@ -423,7 +423,7 @@ display: inline-block;
     border: 1px solid black;
 `;
 export const BotaoForm = styled.button`
-background-color: transparent !important;
+    background-color: transparent !important;
     color: white !important;
     height: 100% !important;
     width: 20%;
