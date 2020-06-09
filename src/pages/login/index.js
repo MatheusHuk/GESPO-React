@@ -7,7 +7,7 @@ import Toaster from '../../utils/Toaster'
 import './index.css'
 import loginImg from "../../assets/gespo.jpg";
 import './style.scss';
-//import "../../App.scss";
+
 
 export default function Login({ setLoad, logged, setLogged }) {
 
@@ -98,7 +98,6 @@ export default function Login({ setLoad, logged, setLogged }) {
 
             <div class="box_login">
                 <div className="base-container">
-                    <div className="header">Login</div>
                     <div className="content">
                         <div className="image">
                             <img src={loginImg} />
