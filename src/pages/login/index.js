@@ -114,7 +114,7 @@ export default function Login({ setLoad, logged, setLogged }) {
                         </div>
                     </div>
                     <div className="footer">
-                        <button onClick={() => { login() }} variant="light" type="button" class="button_box">
+                        <button onClick={() => { login() }} type="button" class="button_box">
                             Entrar
           </button>
                     </div>
