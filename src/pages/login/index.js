@@ -7,7 +7,7 @@ import Toaster from '../../utils/Toaster'
 import './index.css'
 import loginImg from "../../assets/gespo.jpg";
 import './style.scss';
-//import "../../App.scss";
+
 
 export default function Login({ setLoad, logged, setLogged }) {
 
@@ -32,10 +32,10 @@ export default function Login({ setLoad, logged, setLogged }) {
     useEffect(() => {
         setLoad(true);
         let loggedCookie = cookie.get("LOGGED")
-        if(loggedCookie){
+        if (loggedCookie) {
             setLogged(loggedCookie)
             history.push("/")
-        }else{
+        } else {
             setLoad(false);
         }
     }, []);
@@ -64,17 +64,17 @@ export default function Login({ setLoad, logged, setLogged }) {
             })
             .catch((error) => {
                 let erro = "";
-                switch(error){
+                switch (error) {
                     case 400:
-                        erro = "Cpf ou senha inválidos";break;
+                        erro = "Cpf ou senha inválidos"; break;
                     case 403:
-                        erro = "Cpf ou senha inválidos";break;
+                        erro = "Cpf ou senha inválidos"; break;
                     case 404:
-                        erro = "Cpf ou senha inválidos";break;
+                        erro = "Cpf ou senha inválidos"; break;
                     case 500:
-                        erro = "Erro interno do servidor";break;
+                        erro = "Erro interno do servidor"; break;
                     default:
-                        erro = "Erro";break;
+                        erro = "Erro"; break;
                 }
                 setToaster({
                     header: "Erro",
@@ -89,66 +89,37 @@ export default function Login({ setLoad, logged, setLogged }) {
 
     return (
         <>
-            <Toaster 
+            <Toaster
                 show={show}
-                setShowToaster={(sit) => {setShow(sit)}}
+                setShowToaster={(sit) => { setShow(sit) }}
                 header={toaster.header}
                 body={toaster.body}
             />
-            
-            {/*<div class="page">
-                <div class="box">
-                    <div class="gespo">GESPO</div>
-                    <div class="label">Login</div>
-                    <InputGroup className="text">
-                        <FormControl
-                            id="log"
-                            aria-label="Default"
-                            aria-describedby="inputGroup-sizing-default"
-                            onChange={(event) => { handleLogin(event) }}
-                            type="text"
-                        />
-                    </InputGroup>
-                    <div class="label">Senha</div>
-                    <InputGroup className="text">
-                        <FormControl
-                            id="log"
-                            aria-label="Default"
-                            aria-describedby="inputGroup-sizing-default"
-                            onChange={(event) => { handlePass(event) }}
-                            type="password"
-                        />
-                    </InputGroup>
-                    <div class="button_box">
-                        <Button onClick={() => { login() }} variant="light">Login</Button>
+
+            <div class="box_login">
+                <div className="base-container">
+                    <div className="content">
+                        <div className="image">
+                            <img src={loginImg} />
+                        </div>
+                        <div className="form">
+                            <div className="form-group">
+                                <label htmlFor="username">Usuário</label>
+                                <input type="text" name="username" placeholder="CPF" onChange={(event) => { handleLogin(event) }} />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="password">Senha</label>
+                                <input type="password" name="password" placeholder="Senha" onChange={(event) => { handlePass(event) }} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="footer">
+                        <button onClick={() => { login() }} type="button" class="button_box">
+                            Entrar
+          </button>
                     </div>
                 </div>
-    </div>*/}
-<div class="box_login">
-<div className="base-container">
-        <div className="header">Login</div>
-        <div className="content">
-          <div className="image">
-            <img src={loginImg} />
-          </div>
-          <div className="form">
-            <div className="form-group">
-              <label htmlFor="username">Usuário</label>
-              <input type="text" name="username" placeholder="CPF" onChange={(event) => { handleLogin(event) }} />
             </div>
-            <div className="form-group">
-              <label htmlFor="password">Senha</label>
-              <input type="password" name="password" placeholder="Senha" onChange={(event) => { handlePass(event) }} />
-            </div>
-          </div>
-        </div>
-        <div className="footer">
-          <button onClick={() => { login() }} variant="light" type="button" class="button_box">
-            Entrar
-          </button>
-        </div>
-      </div>
-        </div>
         </>
     );
 

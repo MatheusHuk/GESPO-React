@@ -6,13 +6,6 @@
     display: flex;
 }
 
-.gespo {
-    height: auto;
-    width: 100%;
-    font-size: 5VH;
-    text-align: center;
-}
-
 .label {
     width: 100%;
     margin-top: 5VH;
@@ -70,6 +63,3 @@
     background-color: red;
 }
 
-.box_login{
-    
-}
