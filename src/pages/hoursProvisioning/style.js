@@ -45,7 +45,7 @@ export const ButtonContainer = styled.div`
 `;
 
 export const HeaderButton = styled.div`
-    width: 50%;
+    width: 33%;
     height: 100%;
     background-color: ${props => props.selected ? '#2B47AA' : "white"};
     color: ${props => props.selected ? 'white' : "black"};
@@ -69,8 +69,27 @@ export const HeaderButton = styled.div`
         top: 50%;
         transform: translateY(-50%);
     }
-=======
->>>>>>> feature
+`;
+
+export const HeaderEditButton = styled.div`
+    width: 33%;
+    height: 100%;
+    background-color: ${props => props.selected ? '#2B47AA' : "white"};
+    color: ${props => props.selected ? 'white' : "grey"};
+    border: 1px solid black;
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+    position: relative;
+    right: 0;
+    float: right;
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 `;
 
 export const Filtros = styled.div`
@@ -162,7 +181,7 @@ export const DadosTwo = styled.div`
     height: 70%;
     width: 80%;
     background-color: #2B47AA;
-    top: 35%;
+    top: 40%;
     left: 50%;
     margin-bottom: 5%;
     transform: translate(-50%, -50%);
