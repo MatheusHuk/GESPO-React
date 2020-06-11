@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import Viewer from '../../Layout/Viewer'
-import Picker from 'react-month-picker'
+import Toaster from '../../utils/Toaster'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import * as Style from './style'
 import ProjectService from '../../services/projectService'
@@ -15,17 +15,33 @@ export default class HoursProvisioningReal extends React.Component {
         this.state = {
             showFiltros: true,
             showEdit: false,
+            showToaster: false,
+            toaster: {
+                header: "",
+                body: "",
+            },
             project: {},
             filters: {
                 category: {},
                 month: "",
                 year: ""
             },
-            editDados: {},
-            newDados: {},
+            editDados: {
+                project: {},
+                resource: {},
+                employee: this.props.logged
+            },
+            newDados: {
+                project: {},
+                //resource: {},
+                employee: this.props.logged,
+                creationDate: "2020-01-01",
+                amountHours: 0
+            },
             selectDados: {
                 projects: [],
-                categories: []
+                categories: [],
+                months: ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"]
             },
             provisionings: []
         }
@@ -47,7 +63,11 @@ export default class HoursProvisioningReal extends React.Component {
                         .then(res2 => {
                             this.setState({
                                 ...this.state,
-                                provisionings: res2.data == "" ? [] : res2.data
+                                provisionings: res2.data == "" ? [] : res2.data,
+                                newDados: {
+                                    ...this.state.newDados,
+                                    project: res.data[0]
+                                }
                             })
                             prov = res2.data
                             console.log("RES2: ",res2)
@@ -92,12 +112,44 @@ export default class HoursProvisioningReal extends React.Component {
             })
     }
 
+    async createProvisioning(){
+        this.props.setLoad(true)
+        await HoursProvisioningService.create([this.state.newDados])
+            .then(async (res) => {
+                await HoursProvisioningService.getAllFiltered({
+                    projectId: this.state.newDados.project.id
+                })
+                    .then(res2 => {
+                        this.setState({
+                            ...this.state,
+                            provisionings: res2.data == "" ? [] : res2.data,
+                            toaster: {
+                                header: "Sucesso",
+                                body: "Dados gravados com sucesso"
+                            },
+                            showToaster: true,
+                            showFiltros: true
+                        })
+                    })
+            })
+            .catch(error => {
+                console.log("error create prov: "+error)
+            })
+            .finally(() => {
+                this.props.setLoad(false)
+            })
+    }
+
     editProvisioning(data){
+        let month= new Date(data.creationDate).getMonth() + 1
         this.setState({
             ...this.state,
             showFiltros: false,
             showEdit: true,
-            editDados: data
+            editDados: {
+                ...data,
+                creationDate: "2020-"+(month < 10 ? "0"+month : month)+"-01"
+            }
         })
     }
 
@@ -118,54 +170,58 @@ export default class HoursProvisioningReal extends React.Component {
         })
     }
 
-    handleMonth(e){
-        this.setState({
-            ...this.state,
-            filters: {
-                ...this.state.filters,
-                month: e.target.value
-            }
-        })
-    }
-
-    handleYear(e){
-        this.setState({
-            ...this.state,
-            filters: {
-                ...this.state.filters,
-                year: e.target.value
-            }
-        })
-    }
-
-    handleMonthEdit(e){
+    handleHoursEdit(e){
         this.setState({
             ...this.state,
             editDados: {
                 ...this.state.editDados,
-                month: e.target.value
+                amountHours: parseInt(e.target.value)
             }
         })
     }
 
-    handleYearEdit(e){
+    handleNewProject(e){
         this.setState({
             ...this.state,
-            editDados: {
-                ...this.state.editDados,
-                year: e.target.value
+            newDados: {
+                ...this.state.newDados,
+                project: e.target.value
             }
         })
     }
 
-    componentDidUpdate(){
-        console.log("Fil: ",this.state.filters)
+    handleNewCreationDate(e){
+        let value = e.target.value;
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                creationDate: "2020-"+(value < 10 ? "0"+value : value)+"-01"
+            }
+        })
+    }
+
+    handleNewHoras(e){
+        let value = e.target.value;
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                amountHours: value
+            }
+        })
     }
 
     render() {
         return (
             <>
                 <Viewer>
+                    <Toaster
+                        show={this.state.showToaster}
+                        setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }); }}
+                        header={this.state.toaster.header}
+                        body={this.state.toaster.body}
+                    />
                     <Style.Container>
                         <Style.HeaderContainer>
                             <Style.HeaderButton
@@ -213,61 +269,6 @@ export default class HoursProvisioningReal extends React.Component {
                                                 </Card.Body>
                                             </Style.DBigBox>
                                         </Style.DBoxBody>
-                                        <Style.DBoxBody>
-                                            <Style.DBox>
-                                                <Card.Body className="fundoForm">
-                                                    <Form>
-                                                        <Form.Row>
-                                                            <Form.Group as={Col} controlId="formGridGerente">
-                                                                <Form.Label>Recurso</Form.Label>
-                                                                <Form.Control as="select" value="Choose...">
-                                                                    <option>Selecione...</option>
-                                                                    <option>Projeto 1</option>
-                                                                    <option>Projeto 2</option>
-                                                                    <option>Projeto 3</option>
-                                                                </Form.Control>
-                                                            </Form.Group>
-                                                        </Form.Row>
-                                                    </Form>
-                                                </Card.Body>
-                                            </Style.DBox>
-                                            <Style.DBox>
-                                                <Card.Body className="fundoForm">
-                                                    <Form>
-                                                        <Form.Row>
-                                                            <Form.Group as={Col} controlId="formCategory">
-                                                                <Form.Label>Categoria</Form.Label>
-                                                                <Form.Control as="select" onChange={(event) => { this.handleCategory(event) }}>
-                                                                    {
-                                                                        this.state.selectDados.categories.map((value, i) => {
-                                                                            return (
-                                                                                <option value={i} key={value.id} >{value.dsCategory}</option>
-                                                                            );
-                                                                        })
-                                                                    }
-                                                                </Form.Control>
-                                                            </Form.Group>
-                                                        </Form.Row>
-                                                    </Form>
-                                                </Card.Body>
-                                            </Style.DBox>
-                                            <Style.DBox>
-                                                <Card.Body className="fundoForm">
-                                                    <Form>
-                                                        <Form.Row>
-                                                            <Form.Group as={Col} controlId="formGridGerente">
-                                                                <Form.Label>Mês</Form.Label>
-                                                                <Form.Control onChange={(event) => { this.handleMonth(event) }}/>
-                                                            </Form.Group>
-                                                            <Form.Group as={Col} controlId="formGridGerente">
-                                                                <Form.Label>Ano</Form.Label>
-                                                                <Form.Control onChange={(event) => { this.handleYear(event) }}/>
-                                                            </Form.Group>
-                                                        </Form.Row>
-                                                    </Form>
-                                                </Card.Body>
-                                            </Style.DBox>
-                                        </Style.DBoxBody>
                                     </Style.DBody>
                                     <Style.DFooter>
                                         <Style.BotaoForm onClick={() => { console.log("FFF: ",this.state.provisionings) }}>
@@ -311,7 +312,6 @@ export default class HoursProvisioningReal extends React.Component {
                                     <Style.DHeader> Editar Provisionamento </Style.DHeader>
                                     <Style.DBody>
                                         <Style.DBoxBody>
-                                            <Style.DBigBox>
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridProjectAction">
                                                         <Form.Label>Projeto</Form.Label>
@@ -326,14 +326,13 @@ export default class HoursProvisioningReal extends React.Component {
                                                         </Form.Control>
                                                     </Form.Group>
                                                 </Card.Body>
-                                            </Style.DBigBox>
                                         </Style.DBoxBody>
                                         <Style.DBoxBody>
                                             <Style.DBoxFirst>
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridResourceAction">
                                                         <Form.Label>Recurso</Form.Label>
-                                                        <Form.Control as="select" value="Choose...">
+                                                        <Form.Control as="select">
                                                             <option>Selecione...</option>
                                                             <option>Recurso 1</option>
                                                             <option>Recurso 2</option>
@@ -342,41 +341,44 @@ export default class HoursProvisioningReal extends React.Component {
                                                     </Form.Group>
                                                 </Card.Body>
                                             </Style.DBoxFirst>
-                                            <Style.DBoxFirstTwo>
+                                            <Style.DBoxFirst>
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridCategory">
                                                         <Form.Label>Categoria</Form.Label>
                                                         <Form.Control type="text" placeholder="Automatico" />
                                                     </Form.Group>
                                                 </Card.Body>
-                                            </Style.DBoxFirstTwo>
+                                            </Style.DBoxFirst>
                                         </Style.DBoxBody>
-                                        <Style.DBoxBodyFlexRight>
-                                            <Style.DBoxFirstThree>
-                                                <Card.Body className="fundoForm">
-                                                    <Form.Group as={Col} controlId="formGridGerente">
-                                                        <Form.Label>Mês</Form.Label>
-                                                        <Form.Control onChange={(event) => { this.handleMonthEdit(event) }}/>
-                                                    </Form.Group>
-                                                </Card.Body>
-                                            </Style.DBoxFirstThree>
-                                            <Style.DBoxFirstThree>
-                                                <Card.Body className="fundoForm">
-                                                    <Form.Group as={Col} controlId="formGridGerente">
-                                                        <Form.Label>Ano</Form.Label>
-                                                        <Form.Control onChange={(event) => { this.handleYearEdit(event) }}/>
-                                                    </Form.Group>
-                                                </Card.Body>
-                                            </Style.DBoxFirstThree>
-                                            <Style.DBoxFirstThree>
+                                        <Style.DBoxBody>
+                                            <Style.DBoxFirst>
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridCategory">
                                                         <Form.Label>Horas</Form.Label>
-                                                        <Form.Control type="text" value={this.state.editDados.amountHours} />
+                                                        <Form.Control type="text" onChange={(event) => { this.handleHoursEdit(event) }} value={this.state.editDados.amountHours} />
                                                     </Form.Group>
                                                 </Card.Body>
-                                            </Style.DBoxFirstThree>
-                                        </Style.DBoxBodyFlexRight>
+                                            </Style.DBoxFirst>
+                                            <Style.DBoxFirst>
+                                                <Card.Body className="fundoForm">
+                                                    <Form.Group as={Col} controlId="formGridResourceAction">
+                                                        <Form.Label>Mês</Form.Label>
+                                                        <Form.Control as="select" value={parseInt(this.state.editDados.creationDate.split("-")[1])} onChange={(event) => { this.handleNewCreationDate(event) }}>
+                                                            {
+                                                                this.state.selectDados.months.map((v, i) => {
+                                                                    return(
+                                                                        <>
+                                                                            <option value={(i+1)}>{v}</option>
+                                                                        </>
+                                                                        
+                                                                    )
+                                                                })
+                                                            }
+                                                        </Form.Control>
+                                                    </Form.Group>
+                                                </Card.Body>
+                                            </Style.DBoxFirst>
+                                        </Style.DBoxBody>
                                     </Style.DBody>
                                     <Style.DFooter>
                                         <Style.BotaoForm>
@@ -390,18 +392,21 @@ export default class HoursProvisioningReal extends React.Component {
                             </> : 
                             <>
                                 <Style.DadosTwo>
-                                    <Style.DHeader> Dados do Provisionamento </Style.DHeader>
+                                    <Style.DHeader> Novo Provisionamento </Style.DHeader>
                                     <Style.DBody>
                                         <Style.DBoxBody>
                                             <Style.DBigBox>
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridProjectAction">
                                                         <Form.Label>Projeto</Form.Label>
-                                                        <Form.Control as="select" value="Choose...">
-                                                            <option>Selecione...</option>
-                                                            <option>Projeto 1</option>
-                                                            <option>Projeto 2</option>
-                                                            <option>Projeto 3</option>
+                                                        <Form.Control as="select" onChange={(event) => { this.handleNewProject(event) }} >
+                                                            {
+                                                                this.state.selectDados.projects.map((value, i) => {
+                                                                    return (
+                                                                        <option value={value} key={value.id} >{value.name}</option>
+                                                                    );
+                                                                })
+                                                            }      
                                                         </Form.Control>
                                                     </Form.Group>
                                                 </Card.Body>
@@ -421,36 +426,44 @@ export default class HoursProvisioningReal extends React.Component {
                                                     </Form.Group>
                                                 </Card.Body>
                                             </Style.DBoxFirst>
-                                            <Style.DBoxFirstTwo>
+                                            <Style.DBoxFirst>
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridCategory">
                                                         <Form.Label>Categoria</Form.Label>
                                                         <Form.Control type="text" placeholder="Automatico" />
                                                     </Form.Group>
                                                 </Card.Body>
-                                            </Style.DBoxFirstTwo>
+                                            </Style.DBoxFirst>
                                         </Style.DBoxBody>
-                                        <Style.DBoxBodyFlexRight>
-                                            <Style.DBoxFirstThree>
-                                                <Card.Body className="fundoForm">
-                                                    <Form.Group as={Col} controlId="formGridResourceAction">
-                                                        <Form.Label>Data</Form.Label>
-                                                        <Form.Control type="date"></Form.Control>
-                                                    </Form.Group>
-                                                </Card.Body>
-                                            </Style.DBoxFirstThree>
-                                            <Style.DBoxFirstFour>
+                                        <Style.DBoxBody>
+                                            <Style.DBoxFirst>
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridCategory">
                                                         <Form.Label>Horas</Form.Label>
-                                                        <Form.Control type="text" placeholder="00h" />
+                                                        <Form.Control type="number" value={this.state.newDados.amountHours} onChange={(event) => { this.handleNewHoras(event) }} />
                                                     </Form.Group>
                                                 </Card.Body>
-                                            </Style.DBoxFirstFour>
-                                        </Style.DBoxBodyFlexRight>
+                                            </Style.DBoxFirst>
+                                            <Style.DBoxFirst>
+                                                <Card.Body className="fundoForm">
+                                                    <Form.Group as={Col} controlId="formGridResourceAction">
+                                                        <Form.Label>Mês</Form.Label>
+                                                        <Form.Control as="select" onChange={(event) => { this.handleNewCreationDate(event) }}>
+                                                            {
+                                                                this.state.selectDados.months.map((v, i) => {
+                                                                    return(
+                                                                        <option value={(i+1)}>{v}</option>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </Form.Control>
+                                                    </Form.Group>
+                                                </Card.Body>
+                                            </Style.DBoxFirst>
+                                        </Style.DBoxBody>
                                     </Style.DBody>
                                     <Style.DFooter>
-                                        <Style.BotaoForm>
+                                        <Style.BotaoForm onClick={() => { this.createProvisioning() }}>
                                             Gravar
                                         </Style.BotaoForm>
                                         <Style.BotaoForm>

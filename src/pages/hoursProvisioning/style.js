@@ -165,11 +165,11 @@ export const Box = styled.div`
 export const Dados = styled.div`
     padding: 2%;
     position: relative;
-    height: 50%;
+    height: 35%;
     width: 80%;
     border-radius: 5px;
     background-color: #2B47AA;
-    top: 30%;
+    top: 23%;
     left: 50%;
     margin-bottom: 5%;
     transform: translate(-50%, -50%);
@@ -192,11 +192,11 @@ export const DadosTwo = styled.div`
 export const DadosThree = styled.div`
     padding: 2%;
     position: relative;
-    height: 70%;
+    height: auto;
     width: 80%;
     border-radius: 5px;
     background-color: #2B47AA;
-    top: 40%;
+    top: 20VH;
     left: 50%;
     margin-bottom: 5%;
     transform: translate(-50%, -50%);
