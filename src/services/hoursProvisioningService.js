@@ -41,4 +41,13 @@ export default class HoursProvisioningService{
                 });
         });
     }
+
+    static async delete(body){
+        return new Promise((resolve, reject) => {
+            Requests.delete("/provisioning-hours", body)
+                .then(res => {
+                    this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
+                });
+        });
+    }
 }
