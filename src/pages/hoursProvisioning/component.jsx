@@ -6,6 +6,7 @@ import * as Style from './style'
 import ProjectService from '../../services/projectService'
 import HoursProvisioningService from '../../services/hoursProvisioningService'
 import CategoryService from '../../services/categoryService'
+import EmployeeService from '../../services/employeeService'
 
 export default class HoursProvisioningReal extends React.Component {
 
@@ -28,19 +29,18 @@ export default class HoursProvisioningReal extends React.Component {
             },
             editDados: {
                 project: {},
-                resource: {},
                 employee: this.props.logged
             },
             newDados: {
                 project: {},
-                //resource: {},
-                employee: this.props.logged,
+                employee: {},
                 creationDate: "2020-01-01",
                 amountHours: 0
             },
             selectDados: {
                 projects: [],
                 categories: [],
+                resources: [],
                 months: ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"]
             },
             provisionings: []
@@ -55,12 +55,25 @@ export default class HoursProvisioningReal extends React.Component {
         this.props.setLoad(true)
         await ProjectService.getAllByEmployeeId(this.props.logged.id)
             .then(async (res) => {
-                let prov = [];
                 if(res.data.length > 0){
                     await HoursProvisioningService.getAllFiltered({
                         projectId: res.data[0].id
                     })
-                        .then(res2 => {
+                        .then(async (res2) => {
+                            await EmployeeService.getAllByProject({ projectId: res.data[0].id })
+                                .then(res3 => {
+                                    this.setState({
+                                        ...this.state,
+                                        selectDados: {
+                                            ...this.state.selectDados,
+                                            resources: res3.data = "" ? [] : res3.data
+                                        },
+                                        newDados: {
+                                            ...this.state.newDados,
+                                            employee: res3.data[0].employee ? res3.data[0].employee : {}
+                                        }
+                                    })
+                                })
                             this.setState({
                                 ...this.state,
                                 provisionings: res2.data == "" ? [] : res2.data,
@@ -69,14 +82,10 @@ export default class HoursProvisioningReal extends React.Component {
                                     project: res.data[0]
                                 }
                             })
-                            prov = res2.data
                             console.log("RES2: ",res2)
                         })
                         .catch(error => {
                             console.log("EE 2",error)
-                        })
-                        .finally(() => {
-                            this.props.setLoad(false)
                         })
                 }
                 await CategoryService.getAll()
@@ -91,9 +100,6 @@ export default class HoursProvisioningReal extends React.Component {
                     })
                     .catch(error => {
                         console.log("Cat e",error)
-                    })
-                    .finally(() => {
-                        this.props.setLoad(false)
                     })
                 this.setState({
                     ...this.state,
@@ -180,6 +186,38 @@ export default class HoursProvisioningReal extends React.Component {
         })
     }
 
+    handleEditProject(e){
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.newDados,
+                project: e.target.value
+            }
+        })
+    }
+
+    handleEditCreationDate(e){
+        let value = e.target.value;
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.newDados,
+                creationDate: "2020-"+(value < 10 ? "0"+value : value)+"-01"
+            }
+        })
+    }
+
+    handleEditHoras(e){
+        let value = e.target.value;
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.newDados,
+                amountHours: parseInt(value)
+            }
+        })
+    }
+
     handleNewProject(e){
         this.setState({
             ...this.state,
@@ -207,7 +245,18 @@ export default class HoursProvisioningReal extends React.Component {
             ...this.state,
             newDados: {
                 ...this.state.newDados,
-                amountHours: value
+                amountHours: parseInt(value)
+            }
+        })
+    }
+
+    handleNewResource(e){
+        let value = e.target.value;
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                employee: this.state.selectDados.resources[parseInt(value)].employee
             }
         })
     }
@@ -363,7 +412,7 @@ export default class HoursProvisioningReal extends React.Component {
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridResourceAction">
                                                         <Form.Label>Mês</Form.Label>
-                                                        <Form.Control as="select" value={parseInt(this.state.editDados.creationDate.split("-")[1])} onChange={(event) => { this.handleNewCreationDate(event) }}>
+                                                        <Form.Control as="select" value={parseInt(this.state.editDados.creationDate.split("-")[1])} onChange={(event) => { this.handleEditCreationDate(event) }}>
                                                             {
                                                                 this.state.selectDados.months.map((v, i) => {
                                                                     return(
@@ -417,11 +466,16 @@ export default class HoursProvisioningReal extends React.Component {
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridResourceAction">
                                                         <Form.Label>Recurso</Form.Label>
-                                                        <Form.Control as="select" value="Choose...">
-                                                            <option>Selecione...</option>
-                                                            <option>Recurso 1</option>
-                                                            <option>Recurso 2</option>
-                                                            <option>Recurso 3</option>
+                                                        <Form.Control as="select"
+                                                            value={this.state.selectDados.resources[0].employee.name} 
+                                                            onChange={(event) => { this.handleNewResource(event) }} >
+                                                            {
+                                                                this.state.selectDados.resources.map((v, i) => {
+                                                                    return (
+                                                                        <option value={i}>{v.employee.name}</option>
+                                                                    )
+                                                                })
+                                                            }
                                                         </Form.Control>
                                                     </Form.Group>
                                                 </Card.Body>
@@ -430,7 +484,7 @@ export default class HoursProvisioningReal extends React.Component {
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridCategory">
                                                         <Form.Label>Categoria</Form.Label>
-                                                        <Form.Control type="text" placeholder="Automatico" />
+                                                        <Form.Control type="text" value={this.state.newDados.employee.category.dsCategory || ""}  readOnly/>
                                                     </Form.Group>
                                                 </Card.Body>
                                             </Style.DBoxFirst>
