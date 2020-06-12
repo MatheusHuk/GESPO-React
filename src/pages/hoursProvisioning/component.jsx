@@ -29,7 +29,9 @@ export default class HoursProvisioningReal extends React.Component {
             },
             editDados: {
                 project: {},
-                employee: this.props.logged
+                employee: {},
+                creationDate: "2020-01-01",
+                amountHours: 0
             },
             newDados: {
                 project: {},
@@ -70,6 +72,10 @@ export default class HoursProvisioningReal extends React.Component {
                                         },
                                         newDados: {
                                             ...this.state.newDados,
+                                            employee: res3.data[0].employee ? res3.data[0].employee : {}
+                                        },
+                                        editDados: {
+                                            ...this.state.editDados,
                                             employee: res3.data[0].employee ? res3.data[0].employee : {}
                                         }
                                     })
@@ -146,6 +152,34 @@ export default class HoursProvisioningReal extends React.Component {
             })
     }
 
+    async updateProvisioning(){
+        this.props.setLoad(true)
+        await HoursProvisioningService.update(this.state.editDados)
+            .then(async (res) => {
+                await HoursProvisioningService.getAllFiltered({
+                    projectId: this.state.newDados.project.id
+                })
+                    .then(res2 => {
+                        this.setState({
+                            ...this.state,
+                            provisionings: res2.data == "" ? [] : res2.data,
+                            toaster: {
+                                header: "Sucesso",
+                                body: "Dados gravados com sucesso"
+                            },
+                            showToaster: true,
+                            showFiltros: true
+                        })
+                    })
+            })
+            .catch(error => {
+                console.log("error create prov: "+error)
+            })
+            .finally(() => {
+                this.props.setLoad(false)
+            })
+    }
+
     editProvisioning(data){
         let month= new Date(data.creationDate).getMonth() + 1
         this.setState({
@@ -153,8 +187,14 @@ export default class HoursProvisioningReal extends React.Component {
             showFiltros: false,
             showEdit: true,
             editDados: {
-                ...data,
-                creationDate: "2020-"+(month < 10 ? "0"+month : month)+"-01"
+                id: data.id,
+                creationDate: "2020-"+(month < 10 ? "0"+month : month)+"-01",
+                employee: {
+                    ...data.employee,
+                    category: data.category
+                },
+                project: data.project,
+                amountHours: data.amountHours
             }
         })
     }
@@ -201,7 +241,7 @@ export default class HoursProvisioningReal extends React.Component {
         this.setState({
             ...this.state,
             editDados: {
-                ...this.state.newDados,
+                ...this.state.editDados,
                 creationDate: "2020-"+(value < 10 ? "0"+value : value)+"-01"
             }
         })
@@ -214,6 +254,18 @@ export default class HoursProvisioningReal extends React.Component {
             editDados: {
                 ...this.state.newDados,
                 amountHours: parseInt(value)
+            }
+        })
+    }
+
+    handleEditResource(e){
+        let value = e.target.value;
+        let res = this.state.selectDados.resources.find(v => v.employee.id == value)
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                employee: res.employee
             }
         })
     }
@@ -252,11 +304,12 @@ export default class HoursProvisioningReal extends React.Component {
 
     handleNewResource(e){
         let value = e.target.value;
+        let res = this.state.selectDados.resources.find(v => v.employee.id == value).employee
         this.setState({
             ...this.state,
             newDados: {
                 ...this.state.newDados,
-                employee: this.state.selectDados.resources[parseInt(value)].employee
+                employee: res
             }
         })
     }
@@ -381,11 +434,16 @@ export default class HoursProvisioningReal extends React.Component {
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridResourceAction">
                                                         <Form.Label>Recurso</Form.Label>
-                                                        <Form.Control as="select">
-                                                            <option>Selecione...</option>
-                                                            <option>Recurso 1</option>
-                                                            <option>Recurso 2</option>
-                                                            <option>Recurso 3</option>
+                                                        <Form.Control as="select" 
+                                                            defaultValue={this.state.editDados.employee.id}
+                                                            onChange={(event) => { this.handleEditResource(event) }}>
+                                                            {
+                                                                this.state.selectDados.resources.map((v, i) => {
+                                                                    return (
+                                                                        <option value={v.employee.id}>{v.employee.name}</option>
+                                                                    )
+                                                                })
+                                                            }
                                                         </Form.Control>
                                                     </Form.Group>
                                                 </Card.Body>
@@ -394,7 +452,7 @@ export default class HoursProvisioningReal extends React.Component {
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridCategory">
                                                         <Form.Label>Categoria</Form.Label>
-                                                        <Form.Control type="text" placeholder="Automatico" />
+                                                        <Form.Control type="text"  value={this.state.editDados.employee.category.dsCategory}  readOnly/>
                                                     </Form.Group>
                                                 </Card.Body>
                                             </Style.DBoxFirst>
@@ -430,7 +488,7 @@ export default class HoursProvisioningReal extends React.Component {
                                         </Style.DBoxBody>
                                     </Style.DBody>
                                     <Style.DFooter>
-                                        <Style.BotaoForm>
+                                        <Style.BotaoForm onClick={() => { this.updateProvisioning() }}>
                                             Gravar
                                         </Style.BotaoForm>
                                         <Style.BotaoForm>
@@ -467,12 +525,12 @@ export default class HoursProvisioningReal extends React.Component {
                                                     <Form.Group as={Col} controlId="formGridResourceAction">
                                                         <Form.Label>Recurso</Form.Label>
                                                         <Form.Control as="select"
-                                                            value={this.state.selectDados.resources[0].employee.name} 
+                                                            defaultValue={this.state.selectDados.resources[0].employee.name} 
                                                             onChange={(event) => { this.handleNewResource(event) }} >
                                                             {
                                                                 this.state.selectDados.resources.map((v, i) => {
                                                                     return (
-                                                                        <option value={i}>{v.employee.name}</option>
+                                                                        <option value={v.employee.id}>{v.employee.name}</option>
                                                                     )
                                                                 })
                                                             }
