@@ -53,8 +53,7 @@ export default class HoursProvisioningReal extends React.Component {
         console.log("Prov state: ", this.state)
     }
 
-    async componentDidMount() {
-        this.props.setLoad(true)
+    async mount(){
         await ProjectService.getAllByEmployeeId(this.props.logged.id)
             .then(async (res) => {
                 if (res.data.length > 0) {
@@ -81,16 +80,16 @@ export default class HoursProvisioningReal extends React.Component {
                                     })
                                 })
                             let aux = []
-                            if(res2.data == ""){
+                            if (res2.data == "") {
                                 console.log("res2 data is null")
                                 aux = []
-                            }else{
+                            } else {
                                 res2.data.map((value, i) => {
                                     let m = new Date(value.creationDate).getMonth();
-                                    if(aux.find(u => u.id == m)){
+                                    if (aux.find(u => u.id == m)) {
                                         let obj = aux.find(u => u.id == m)
                                         obj.provisionings.push(value)
-                                    }else{
+                                    } else {
                                         aux.push({
                                             id: m,
                                             name: this.state.selectDados.months[m],
@@ -98,11 +97,11 @@ export default class HoursProvisioningReal extends React.Component {
                                         })
                                     }
                                 })
-                                console.log("Sorting aux:",aux)
+                                console.log("Sorting aux:", aux)
                             }
                             this.setState({
                                 ...this.state,
-                                provisionings: res2.data == "" ? [] : res2.data,
+                                provisionings: aux,
                                 newDados: {
                                     ...this.state.newDados,
                                     project: res.data[0]
@@ -135,35 +134,33 @@ export default class HoursProvisioningReal extends React.Component {
                     },
                     project: res.data == "" ? {} : res.data[0]
                 })
-                this.sortProvisioning()
             })
             .catch(error => {
                 console.log("Prov error: " + error);
             })
-            .finally(() => {
-                this.props.setLoad(false)
-            })
+    }
+
+    async componentDidMount() {
+        this.props.setLoad(true)
+        await this.mount();
+        this.props.setLoad(false)
     }
 
     async createProvisioning() {
         this.props.setLoad(true)
         await HoursProvisioningService.create([this.state.newDados])
             .then(async (res) => {
-                await HoursProvisioningService.getAllFiltered({
-                    projectId: this.state.newDados.project.id
+                await this.mount()
+                this.setState({
+                    ...this.state,
+                    toaster: {
+                        header: "Sucesso",
+                        body: "Dados gravados com sucesso"
+                    },
+                    showToaster: true,
+                    showFiltros: true,
+                    showEdit: false
                 })
-                    .then(res2 => {
-                        this.setState({
-                            ...this.state,
-                            provisionings: res2.data == "" ? [] : res2.data,
-                            toaster: {
-                                header: "Sucesso",
-                                body: "Dados gravados com sucesso"
-                            },
-                            showToaster: true,
-                            showFiltros: true
-                        })
-                    })
             })
             .catch(error => {
                 console.log("error create prov: " + error)
@@ -177,21 +174,17 @@ export default class HoursProvisioningReal extends React.Component {
         this.props.setLoad(true)
         await HoursProvisioningService.update(this.state.editDados)
             .then(async (res) => {
-                await HoursProvisioningService.getAllFiltered({
-                    projectId: this.state.newDados.project.id
+                await this.mount();
+                this.setState({
+                    ...this.state,
+                    toaster: {
+                        header: "Sucesso",
+                        body: "Dados gravados com sucesso"
+                    },
+                    showToaster: true,
+                    showFiltros: true,
+                    showEdit: false
                 })
-                    .then(res2 => {
-                        this.setState({
-                            ...this.state,
-                            provisionings: res2.data == "" ? [] : res2.data,
-                            toaster: {
-                                header: "Sucesso",
-                                body: "Dados gravados com sucesso"
-                            },
-                            showToaster: true,
-                            showFiltros: true
-                        })
-                    })
             })
             .catch(error => {
                 console.log("error update prov: " + error)
@@ -201,48 +194,21 @@ export default class HoursProvisioningReal extends React.Component {
             })
     }
 
-    sortProvisioning() {
-        console.log("SORT: ", this.state.provisionings)
-        let aux = []
-        this.state.provisionings.map((value, i) => {
-            let m = new Date(value.creationDate).getMonth();
-            if (aux.find(u => u.id == m)) {
-                let obj = aux.find(u => u.id == m)
-                obj.provisionings.push(value)
-            } else {
-                aux.push({
-                    id: m,
-                    name: this.state.selectDados.months[m],
-                    provisionings: [value]
-                })
-            }
-        })
-        this.setState({
-            ...this.state,
-            provisionings: aux
-        })
-        console.log("Sorting aux:", aux)
-    }
-
     async deleteProvisioning() {
         this.props.setLoad(true)
         await HoursProvisioningService.delete({ "id": this.state.editDados.id })
             .then(async (res) => {
-                await HoursProvisioningService.getAllFiltered({
-                    projectId: this.state.newDados.project.id
+                await this.mount()
+                this.setState({
+                    ...this.state,
+                    toaster: {
+                        header: "Sucesso",
+                        body: "Dados excluídos com sucesso"
+                    },
+                    showToaster: true,
+                    showFiltros: true,
+                    showEdit: false
                 })
-                    .then(res2 => {
-                        this.setState({
-                            ...this.state,
-                            provisionings: res2.data == "" ? [] : res2.data,
-                            toaster: {
-                                header: "Sucesso",
-                                body: "Dados excluídos com sucesso"
-                            },
-                            showToaster: true,
-                            showFiltros: true
-                        })
-                    })
             })
             .catch(error => {
                 console.log("error delete prov: " + error)
@@ -460,23 +426,19 @@ export default class HoursProvisioningReal extends React.Component {
                                                         return (
                                                             <Style.Component>
                                                                 <Style.DHeaderTwo>{month.name}</Style.DHeaderTwo>
-                                                                <Style.DBody>
-                                                                    <Style.DBoxBody>
-                                                                        {
-                                                                            month.provisionings.map((prov, i) => {
-                                                                                return (
-                                                                                    <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">{prov.employee.name} - {prov.category.dsCategory}</Tooltip>}>
-                                                                                        <span className="d-inline-block">
-                                                                                            <Button onClick={() => { this.editProvisioning(prov) }}>
-                                                                                                {prov.amountHours}
-                                                                                            </Button>
-                                                                                        </span>
-                                                                                    </OverlayTrigger>
-                                                                                );
-                                                                            })
-                                                                        }
-                                                                    </Style.DBoxBody>
-                                                                </Style.DBody>
+                                                                <Style.CBody>
+                                                                    {
+                                                                        month.provisionings.map((prov, i) => {
+                                                                            return (
+                                                                                <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">{prov.employee.name} - {prov.category.dsCategory}</Tooltip>}>
+                                                                                    <Style.ProvButton onClick={() => { this.editProvisioning(prov) }}>
+                                                                                        <Style.ProvSpam>{prov.amountHours}</Style.ProvSpam>
+                                                                                    </Style.ProvButton>
+                                                                                </OverlayTrigger>
+                                                                            );
+                                                                        })
+                                                                    }
+                                                                </Style.CBody>
                                                             </Style.Component>
                                                         );
                                                     })
