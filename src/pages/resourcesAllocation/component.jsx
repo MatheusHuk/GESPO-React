@@ -16,10 +16,8 @@ export default class ResourcesAllocation extends React.Component {
                     <Style.Container>
                         <Style.Dados>
                             <Style.DHeader>
-                                <Style.DivCreate>Filtros
-                            </Style.DivCreate>
+                                <Style.DivCreate>Filtros</Style.DivCreate>
                             </Style.DHeader>
-                            <Style.DBody>
                                 <Style.DBoxBody>
                                     <Style.DBigBox>
                                         <Card.Body className="fundoForm">
@@ -35,51 +33,49 @@ export default class ResourcesAllocation extends React.Component {
                                         </Card.Body>
                                     </Style.DBigBox>
                                 </Style.DBoxBody>
-                            </Style.DBody>
                         </Style.Dados>
                         <Style.DadosDois>
                             <Style.DHeader>
-                                <Style.DivCreate>Dados Alocação
-                            </Style.DivCreate>
+                                <Style.DivCreate>Dados Alocação</Style.DivCreate>
                             </Style.DHeader>
-                            <Style.DBoxBody>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
+                                <Style.DBoxBody>
+                                    <Style.DBox>
+                                        <Card.Body className="fundoForm">
 
-                                        <Form.Group as={Col} controlId="formGridCategory">
-                                            <Form.Label>Categoria</Form.Label>
-                                            <Form.Control as="select" value="Choose...">
-                                                <option>Selecione...</option>
-                                                <option>Categoria 1</option>
-                                                <option>Categoria 2</option>
-                                                <option>Categoria 3</option>
-                                            </Form.Control>
-                                        </Form.Group>
+                                            <Form.Group as={Col} controlId="formGridCategory">
+                                                <Form.Label>Categoria</Form.Label>
+                                                <Form.Control as="select" value="Choose...">
+                                                    <option>Selecione...</option>
+                                                    <option>Categoria 1</option>
+                                                    <option>Categoria 2</option>
+                                                    <option>Categoria 3</option>
+                                                </Form.Control>
+                                            </Form.Group>
 
-                                    </Card.Body>
-                                </Style.DBox>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
-                                        <Form.Group as={Col} controlId="formGridResource">
-                                            <Form.Label>Recurso</Form.Label>
-                                            <Form.Control as="select" value="Choose...">
-                                                <option>Selecione...</option>
-                                                <option>Time 1</option>
-                                                <option>Time 2</option>
-                                                <option>Time 3</option>
-                                            </Form.Control>
-                                        </Form.Group>
-                                    </Card.Body>
-                                </Style.DBox>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
-                                        <Form.Group as={Col} controlId="formGridCategory">
-                                            <Form.Label>Time</Form.Label>
-                                            <Form.Control type="text" placeholder="Automatico" />
-                                        </Form.Group>
-                                    </Card.Body>
-                                </Style.DBox>
-                            </Style.DBoxBody>
+                                        </Card.Body>
+                                    </Style.DBox>
+                                    <Style.DBox>
+                                        <Card.Body className="fundoForm">
+                                            <Form.Group as={Col} controlId="formGridResource">
+                                                <Form.Label>Recurso</Form.Label>
+                                                <Form.Control as="select" value="Choose...">
+                                                    <option>Selecione...</option>
+                                                    <option>Time 1</option>
+                                                    <option>Time 2</option>
+                                                    <option>Time 3</option>
+                                                </Form.Control>
+                                            </Form.Group>
+                                        </Card.Body>
+                                    </Style.DBox>
+                                    <Style.DBox>
+                                        <Card.Body className="fundoForm">
+                                            <Form.Group as={Col} controlId="formGridCategory">
+                                                <Form.Label>Time</Form.Label>
+                                                <Form.Control type="text" placeholder="Automatico" />
+                                            </Form.Group>
+                                        </Card.Body>
+                                    </Style.DBox>
+                                </Style.DBoxBody>
                             <Style.DFooter>
                                 <Style.BotaoForm>
                                     Gravar
