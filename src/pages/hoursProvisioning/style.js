@@ -467,7 +467,7 @@ export const Component = styled.div`
     float: left;
     background-color: white;
     width: 19VW;
-    height: 25VH;
+    height: auto;
     border-radius: 10px;
     color: #1F1462;
     font-size: 3VH;
@@ -477,6 +477,7 @@ export const Component = styled.div`
     padding: 3% 1%;
     box-shadow: 0VH 0.5VH  10px black;
 `;
+
 export const SubContainer = styled.div`
     display: flex;
     justify-content: space-around;
@@ -484,4 +485,40 @@ export const SubContainer = styled.div`
     height: 50%;
     padding-top: 2.5VH;
     padding-bottom: 2.5VH;
+`;
+
+export const ProvButton = styled.div`
+    height: 5VH;
+    width: auto;
+    background-color: #251680;
+    margin: 2% 2%;
+    padding: 5% 5%;
+    border-radius: 5px;
+    color: white;
+    position: relative;
+    cursor: pointer;
+
+    :hover{
+        background-color: #12075A
+    }
+`
+
+export const ProvSpam = styled.div`
+    position: relative;
+    height: auto;
+    width: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+`;
+
+export const CBody = styled.div`
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    height: auto;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 100%;
 `;
