@@ -25,9 +25,9 @@ export default class ProjectService{
         });
     }
 
-    static async addAllocation(body){
+    static async addAllocation(body, isParam){
         return new Promise((resolve, reject) => {
-            Requests.put("/projects/add-allocation", body)
+            Requests.put("/projects/add-allocation", body, isParam)
                 .then(res => {
                     this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
                 });

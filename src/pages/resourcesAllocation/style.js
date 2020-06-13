@@ -380,3 +380,10 @@ export const BotaoFormCreate = styled.button`
 export const DivCreate = styled.div`
     height: 80%
 `;
+
+export const Icone = styled.div`
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    cursor: pointer;
+`;

@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import Viewer from '../../Layout/Viewer'
+import Toaster from '../../utils/Toaster'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
 import "./index.css"
 import * as ReactBootstrap from "react-bootstrap";
 import * as Style from './style'
+import FA from 'react-fontawesome'
 import ProjectService from '../../services/projectService'
 import EmployeeService from '../../services/employeeService'
 
@@ -22,6 +24,7 @@ export default class ResourcesAllocation extends React.Component {
             },
             project: {},
             resource: {},
+            alocations: [],
             selectDados: {
                 projects: [],
                 resources: []
@@ -35,8 +38,15 @@ export default class ResourcesAllocation extends React.Component {
 
     async componentDidMount() {
         this.props.setLoad(true)
+        await this.mount()
+        this.props.setLoad(false);
+    }
+
+    async mount(){
+        console.log("MOUNT")
         await ProjectService.getAllByEmployeeId(this.props.logged.id)
             .then(async (res) => {
+                console.log("RES 1: ",res)
                 if (res.data.length > 0) {
                     await EmployeeService.distinctProject({
                         projectId: res.data[0].id
@@ -56,10 +66,69 @@ export default class ResourcesAllocation extends React.Component {
                         .catch(error => {
                             console.log("Dist pro: " + error)
                         })
+                    await EmployeeService.getAllByProject({
+                        projectId: res.data[0].id
+                    })
+                        .then(async (res3) => {
+                            this.setState({
+                                ...this.state,
+                                alocations: res3.data == "" ? [] : res3.data
+                            })
+                        })
+                        .catch(error => {
+                            console.log("Get proj: "+ error)
+                        })
                 }
             })
             .catch(error => {
                 console.log("Res a error: ", error)
+            })
+    }
+
+    async alocate(){
+        this.props.setLoad(true)
+        await ProjectService.addAllocation({
+            employeeId: this.state.resource.id,
+            projectId: this.state.project.id
+        }, true)
+            .then(async (res) => {
+                await this.mount()
+                this.setState({
+                    ...this.state,
+                    showToaster: true,
+                    toaster:{
+                        header: "Sucesso",
+                        body: "Recurso Alocado"
+                    }
+                })
+            })
+            .catch(error => {
+               console.log("Add Al: ",error) 
+            })
+            .finally(() => {
+                this.props.setLoad(false)
+            })
+    }
+
+    async deallocate(id){
+        this.props.setLoad(true)
+        await ProjectService.removeAllocation({
+            employeeId: id,
+            projectId: this.state.project.id
+        })
+            .then(async (res) => {
+                await this.mount()
+                this.setState({
+                    ...this.state,
+                    showToaster: true,
+                    toaster:{
+                        header: "Sucesso",
+                        body: "Recurso Desalocado"
+                    }
+                })
+            })
+            .catch(error => {
+               console.log("Rem Al: ",error) 
             })
             .finally(() => {
                 this.props.setLoad(false)
@@ -88,6 +157,12 @@ export default class ResourcesAllocation extends React.Component {
         return (
             <>
                 <Viewer>
+                    <Toaster
+                        show={this.state.showToaster}
+                        setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }); }}
+                        header={this.state.toaster.header}
+                        body={this.state.toaster.body}
+                    />
                     <Style.Container>
                         <Style.Dados>
                             <Style.DHeader>
@@ -166,7 +241,7 @@ export default class ResourcesAllocation extends React.Component {
 
                             </Style.DBoxBody>
                             <Style.DFooter>
-                                <Style.BotaoForm disabled={!this.state.resource}>
+                                <Style.BotaoForm onClick={() => { this.alocate() }}>
                                     Alocar
                                 </Style.BotaoForm>
                             </Style.DFooter>
@@ -182,24 +257,22 @@ export default class ResourcesAllocation extends React.Component {
                                             <th>Recurso</th>
                                             <th>Categoria</th>
                                             <th>Time</th>
+                                            <th>Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Larry the Bird</td>
-                                            <td>markson </td>
-                                        </tr>
+                                        {
+                                            this.state.alocations.map((data, i) => {
+                                                return (
+                                                    <tr key={i}>
+                                                        <td>{data.employee.name}</td>
+                                                        <td>{data.employee.category.dsCategory}</td>
+                                                        <td>{data.employee.team.name}</td>
+                                                        <td><Style.Icone onClick={() => { this.deallocate(data.employee.id) }}><FA name="ban" /></Style.Icone></td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
                                     </tbody>
                                 </ReactBootstrap.Table>
                             </Style.TableDiv>
