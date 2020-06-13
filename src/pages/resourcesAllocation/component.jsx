@@ -64,7 +64,14 @@ export default class ResourcesAllocation extends React.Component {
                             })
                         })
                         .catch(error => {
-                            console.log("Dist pro: " + error)
+                            this.setState({
+                                ...this.state,
+                                showToaster: true,
+                                toaster: {
+                                    header: "Erro",
+                                    body: "Erro interno do Servidor"
+                                }
+                            })
                         })
                     await EmployeeService.getAllByProject({
                         projectId: res.data[0].id
@@ -76,12 +83,26 @@ export default class ResourcesAllocation extends React.Component {
                             })
                         })
                         .catch(error => {
-                            console.log("Get proj: "+ error)
+                            this.setState({
+                                ...this.state,
+                                showToaster: true,
+                                toaster: {
+                                    header: "Erro",
+                                    body: "Erro interno do Servidor"
+                                }
+                            })
                         })
                 }
             })
             .catch(error => {
-                console.log("Res a error: ", error)
+                this.setState({
+                    ...this.state,
+                    showToaster: true,
+                    toaster: {
+                        header: "Erro",
+                        body: "Erro interno do Servidor"
+                    }
+                })
             })
     }
 

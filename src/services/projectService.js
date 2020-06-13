@@ -36,7 +36,7 @@ export default class ProjectService{
 
     static async removeAllocation(body){
         return new Promise((resolve, reject) => {
-            Requests.delete("/projects/add-allocation", body)
+            Requests.delete("/projects/delete-allocation", body)
                 .then(res => {
                     this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
                 });

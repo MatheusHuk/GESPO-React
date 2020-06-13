@@ -58,7 +58,7 @@ export default class Requests {
 
     static delete(path, body) {
         path = body ? this.buildParams(path, body) : path;
-        return axios.delete((process.env.REACT_APP_API_URL + path), body, {withCredentials : true})
+        return axios.delete((process.env.REACT_APP_API_URL + path), {withCredentials : true})
             .then(res => {
                 return res
             })
