@@ -250,6 +250,20 @@ export const Table = styled.table`
     border-spacing: 0px;
 `;
 
+export const TableDiv = styled.div`
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 100%;
+    height: calc(100% - 3VH);
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    font-size: ${props => props.size == 1 ? '1.5VH' : '2VH'};
+    border-spacing: 0px;
+    overflow-y: scroll
+`;
+
 export const THeader = styled.thead`
     position: relative;
     width: 100%;

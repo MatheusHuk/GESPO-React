@@ -540,32 +540,6 @@ export default class TimeEntry extends React.Component {
                                 <Style.ApontamentoSmall>
                                     <Style.AHeader>Apontamentos</Style.AHeader>
                                     <Style.TableDiv size={1}>
-                                        { /*<Style.THeader>
-                                            <Style.TRHeader>
-                                                <Style.Th>Funcionário</Style.Th>
-                                                <Style.Th>Projeto</Style.Th>
-                                                <Style.Th>Data</Style.Th>
-                                                <Style.Th>Horas</Style.Th>
-                                                <Style.Th>Observações</Style.Th>
-                                                <Style.THSmall>Ações</Style.THSmall>
-                                            </Style.TRHeader>
-                                        </Style.THeader>
-                                        <Style.TData>
-                                            {
-                                                this.state.dadosList.map((data, i) => {
-                                                    return (
-                                                        <Style.Tr key={i}>
-                                                            <Style.Td>{this.formatLongText(data.employee.name)}</Style.Td>
-                                                            <Style.Td>{data.project.name}</Style.Td>
-                                                            <Style.Td>{data.date}</Style.Td>
-                                                            <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
-                                                            <Style.Td>{this.formatLongText(data.dsWork)}</Style.Td>
-                                                            <Style.TDSmall><Style.Icone onClick={() => { this.deleteEntry(i) }}><FA name="ban" /></Style.Icone></Style.TDSmall>
-                                                        </Style.Tr>
-                                                    )
-                                                })
-                                            }
-                                        </Style.TData> */}
                                         <Table striped bordered hover className="table">
                                             <thead>
                                                 <tr>
