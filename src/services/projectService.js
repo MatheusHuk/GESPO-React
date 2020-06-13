@@ -24,4 +24,22 @@ export default class ProjectService{
                 });
         });
     }
+
+    static async addAllocation(body, isParam){
+        return new Promise((resolve, reject) => {
+            Requests.put("/projects/add-allocation", body, isParam)
+                .then(res => {
+                    this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
+                });
+        });
+    }
+
+    static async removeAllocation(body){
+        return new Promise((resolve, reject) => {
+            Requests.delete("/projects/delete-allocation", body)
+                .then(res => {
+                    this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
+                });
+        });
+    }
 }

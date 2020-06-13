@@ -16,7 +16,6 @@ export default class Requests {
 
     static get(path, body) {
         path = body ? this.buildParams(path, body) : path;
-        console.log("PO: ",path)
         return axios.get(process.env.REACT_APP_API_URL + path, {withCredentials : true})
             .then(res => {
                 return res;
@@ -36,7 +35,8 @@ export default class Requests {
             });
     }
 
-    static put(path, body) {
+    static put(path, body, isParam) {
+        path = body && isParam ? this.buildParams(path, body) : path;
         return axios.put((process.env.REACT_APP_API_URL + path), body, {withCredentials : true})
             .then(res => {
                 return res
@@ -58,7 +58,7 @@ export default class Requests {
 
     static delete(path, body) {
         path = body ? this.buildParams(path, body) : path;
-        return axios.delete((process.env.REACT_APP_API_URL + path), body, {withCredentials : true})
+        return axios.delete((process.env.REACT_APP_API_URL + path), {withCredentials : true})
             .then(res => {
                 return res
             })
