@@ -1,5 +1,13 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
+const entranceAnimation = keyframes`
+    0%{
+        left: 100%;
+    }
+    100%{
+        left: 0%;
+    }
+`;
 
 export const Container = styled.div`
     padding: 2VH 2VW;
@@ -7,6 +15,7 @@ export const Container = styled.div`
     width: 100%;
     height: 100%;
     overflow-y: scroll;
+    animation: ${entranceAnimation} 0.5s;
 `;
 
 export const ContainerDois = styled.div`
@@ -250,6 +259,20 @@ export const Table = styled.table`
     border-spacing: 0px;
 `;
 
+export const TableDiv = styled.div`
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 100%;
+    height: calc(100% - 3VH);
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    font-size: ${props => props.size == 1 ? '1.5VH' : '2VH'};
+    border-spacing: 0px;
+    overflow-y: scroll
+`;
+
 export const THeader = styled.thead`
     position: relative;
     width: 100%;
@@ -356,4 +379,11 @@ export const BotaoFormCreate = styled.button`
 `;
 export const DivCreate = styled.div`
     height: 80%
+`;
+
+export const Icone = styled.div`
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    cursor: pointer;
 `;

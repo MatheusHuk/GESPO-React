@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Col, Form } from 'react-bootstrap'
+import FA from 'react-fontawesome'
+import { Button, Col, Form, Table } from 'react-bootstrap'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
 import * as Style from './style'
@@ -70,17 +71,13 @@ export default class TimeEntry extends React.Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.setLoad(true);
-        TimeEntryService.getAllByUser({ "id": this.props.logged.id })
-            .then(res => {
-                this.setState({
-                    ...this.state,
-                    dados: res.data == "" ? [] : res.data
-                })
-                ProjectService.getAllByEmployeeId(this.props.logged.id)
+        await TimeEntryService.getAllByUser({ "employeeId": this.props.logged.id })
+            .then(async (res) => {
+                await ProjectService.getAllByEmployeeId(this.props.logged.id)
                     .then(res2 => {
-                        console.log("RES2: ",res2.data);
+                        console.log("RES2: ", res2.data);
                         this.setState({
                             ...this.state,
                             dados: res.data == "" ? [] : res.data,
@@ -92,6 +89,10 @@ export default class TimeEntry extends React.Component {
                             newDados: {
                                 ...this.state.newDados,
                                 employee: this.props.logged
+                            },
+                            filtros: {
+                                ...this.state.filtros,
+                                project: res2.data == "" ? null : res2.data[0]
                             }
                         })
                     })
@@ -254,7 +255,7 @@ export default class TimeEntry extends React.Component {
 
     parseDate(date) {
         let d = new Date(parseInt(date));
-        return (d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDay())
+        return (d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear())
     }
 
     deleteEntry(key) {
@@ -270,10 +271,30 @@ export default class TimeEntry extends React.Component {
         })
     }
 
-    filterDados() {
-        console.log("Pro: ", (this.state.filtros.project == null))
-        console.log("Pro: ", (this.state.filtros.funcionario == null))
-        console.log("Pro: ", (this.state.filtros.data == null))
+    async filterDados() {
+        console.log("Filt: ", this.state.filtros)
+        this.props.setLoad(true)
+        let filter = {
+            ...this.state.filtros
+        }
+        await TimeEntryService.filterEntries({
+            projectId: filter.project.id,
+            employeeId: filter.funcionario ? filter.funcionario.id : null,
+            date: filter.data
+        })
+            .then((resF) => {
+                console.log("ResF: ", resF)
+                this.setState({
+                    ...this.state,
+                    dados: resF.data == "" ? [] : resF.data
+                })
+            })
+            .catch(error => {
+                console.log("E: ", error)
+            })
+            .finally(() => {
+                this.props.setLoad(false)
+            })
     }
 
     addDados() {
@@ -296,11 +317,11 @@ export default class TimeEntry extends React.Component {
         });
     }
 
-    saveDados() {
+    async saveDados() {
         this.props.setLoad(true);
-        TimeEntryService.writeNewDados(this.state.dadosList)
-            .then(res => {
-                TimeEntryService.getAllByUser({ "id": this.props.logged.id })
+        await TimeEntryService.writeNewDados(this.state.dadosList)
+            .then(async (res) => {
+                await TimeEntryService.getAllByUser({ "employeeId": this.props.logged.id })
                     .then(res => {
                         this.setState({
                             ...this.state,
@@ -415,34 +436,36 @@ export default class TimeEntry extends React.Component {
                                 </Style.Filtros>
                                 <Style.Apontamento>
                                     <Style.AHeader>Apontamentos</Style.AHeader>
-                                    <Style.Table>
-                                        <Style.THeader>
-                                            <Style.TRHeader>
-                                                <Style.Th>Funcionário</Style.Th>
-                                                <Style.Th>Projeto</Style.Th>
-                                                <Style.Th>Data</Style.Th>
-                                                <Style.Th>Horas</Style.Th>
-                                                <Style.Th>Observações</Style.Th>
-                                                <Style.THSmall>Ações</Style.THSmall>
-                                            </Style.TRHeader>
-                                        </Style.THeader>
-                                        <Style.TData>
-                                            {
-                                                this.state.dados.map((data, i) => {
-                                                    return (
-                                                        <Style.Tr key={i}>
-                                                            <Style.Td>{this.formatLongText(data.employee.name)}</Style.Td>
-                                                            <Style.Td>{data.project.name}</Style.Td>
-                                                            <Style.Td>{this.parseDate(data.creationDate)}</Style.Td>
-                                                            <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
-                                                            <Style.Td>{this.formatLongText(data.dsWork)}</Style.Td>
-                                                            <Style.TDSmall><Style.Icone /></Style.TDSmall>
-                                                        </Style.Tr>
-                                                    )
-                                                })
-                                            }
-                                        </Style.TData>
-                                    </Style.Table>
+                                    <Style.TableDiv>
+                                        <Table striped bordered hover className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Funcionário</th>
+                                                    <th>Projeto</th>
+                                                    <th>Data</th>
+                                                    <th>Horas</th>
+                                                    <th>Observações</th>
+                                                    <th>Ações</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    this.state.dados.map((data, i) => {
+                                                        return (
+                                                            <tr key={i}>
+                                                                <td>{this.formatLongText(data.employee.name)}</td>
+                                                                <td>{data.project.name}</td>
+                                                                <td>{this.parseDate(data.creationDate)}</td>
+                                                                <td>{this.decryptHours(data.amountHours)}</td>
+                                                                <td>{this.formatLongText(data.dsWork)}</td>
+                                                                <td><Style.Icone><FA name="ban" /></Style.Icone></td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                }
+                                            </tbody>
+                                        </Table>
+                                    </Style.TableDiv>
                                 </Style.Apontamento>
                             </Style.MainContainer>
                             :
@@ -516,34 +539,36 @@ export default class TimeEntry extends React.Component {
                                 </Style.Dados>
                                 <Style.ApontamentoSmall>
                                     <Style.AHeader>Apontamentos</Style.AHeader>
-                                    <Style.Table size={1}>
-                                        <Style.THeader>
-                                            <Style.TRHeader>
-                                                <Style.Th>Funcionário</Style.Th>
-                                                <Style.Th>Projeto</Style.Th>
-                                                <Style.Th>Data</Style.Th>
-                                                <Style.Th>Horas</Style.Th>
-                                                <Style.Th>Observações</Style.Th>
-                                                <Style.THSmall>Ações</Style.THSmall>
-                                            </Style.TRHeader>
-                                        </Style.THeader>
-                                        <Style.TData>
-                                            {
-                                                this.state.dadosList.map((data, i) => {
-                                                    return (
-                                                        <Style.Tr key={i}>
-                                                            <Style.Td>{this.formatLongText(data.employee.name)}</Style.Td>
-                                                            <Style.Td>{data.project.name}</Style.Td>
-                                                            <Style.Td>{data.date}</Style.Td>
-                                                            <Style.Td>{this.decryptHours(data.amountHours)}</Style.Td>
-                                                            <Style.Td>{this.formatLongText(data.dsWork)}</Style.Td>
-                                                            <Style.TDSmall><Style.Icone onClick={() => { this.deleteEntry(i) }}>X</Style.Icone></Style.TDSmall>
-                                                        </Style.Tr>
-                                                    )
-                                                })
-                                            }
-                                        </Style.TData>
-                                    </Style.Table>
+                                    <Style.TableDiv size={1}>
+                                        <Table striped bordered hover className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Funcionário</th>
+                                                    <th>Projeto</th>
+                                                    <th>Data</th>
+                                                    <th>Horas</th>
+                                                    <th>Observações</th>
+                                                    <th>Ações</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    this.state.dadosList.map((data, i) => {
+                                                        return (
+                                                            <tr key={i}>
+                                                                <td>{this.formatLongText(data.employee.name)}</td>
+                                                                <td>{data.project.name}</td>
+                                                                <td>{data.date}</td>
+                                                                <td>{this.decryptHours(data.amountHours)}</td>
+                                                                <td>{this.formatLongText(data.dsWork)}</td>
+                                                                <td><Style.Icone onClick={() => { this.deleteEntry(i) }}><FA name="ban" /></Style.Icone></td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                }
+                                            </tbody>
+                                        </Table>
+                                    </Style.TableDiv>
                                 </Style.ApontamentoSmall>
                             </Style.MainContainer>
                         }

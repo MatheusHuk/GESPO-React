@@ -1,6 +1,6 @@
 import Requests from './requests'
 
-export default class ProjectService{
+export default class HoursProvisioningService{
 
     static verifyStatus(status){
         return (status >= 200 && status < 300);
@@ -8,35 +8,43 @@ export default class ProjectService{
 
     static async getAll(){
         return new Promise((resolve, reject) => {
-            Requests.get("/projects")
+            Requests.get("/provisioning-hours")
                 .then(res => {
                     this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
                 });
         });
     }
 
-    static async getAllByEmployeeId(id){
-        let body = { id: id }
+    static async getAllFiltered(request){
         return new Promise((resolve, reject) => {
-            Requests.get("/projects/employee", body)
+            Requests.get("/provisioning-hours/filter", request)
                 .then(res => {
                     this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
                 });
         });
     }
 
-    static async addAllocation(body, isParam){
+    static async create(body){
         return new Promise((resolve, reject) => {
-            Requests.put("/projects/add-allocation", body, isParam)
+            Requests.post("/provisioning-hours", body)
                 .then(res => {
                     this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
                 });
         });
     }
 
-    static async removeAllocation(body){
+    static async update(body){
         return new Promise((resolve, reject) => {
-            Requests.delete("/projects/delete-allocation", body)
+            Requests.put("/provisioning-hours", body)
+                .then(res => {
+                    this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
+                });
+        });
+    }
+
+    static async delete(body){
+        return new Promise((resolve, reject) => {
+            Requests.delete("/provisioning-hours", body)
                 .then(res => {
                     this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
                 });
