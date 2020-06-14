@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Viewer from '../../Layout/Viewer'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
 import "./index.css"
 import * as Style from './style'
 
-export default function CustCenterRegister() {
+export default class CustCenterRegister extends React.Component {
 
-    const [novo, setNovo] = useState(false);
 
+    render() {
     return (
         <>
             <Viewer>
@@ -63,4 +63,5 @@ export default function CustCenterRegister() {
             </Viewer>
         </>
     );
+    }
 }
