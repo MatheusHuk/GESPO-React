@@ -29,6 +29,7 @@ export default function Routes({ setLoad }){
                 <Route path="/register/UserRegister" render={(props) => <Pages.UserRegister setLoad={setLoad} />} exact />
                 <Route path="/register/ProjectRegister" render={(props) => <Pages.ProjectRegister setLoad={setLoad} />} exact />
                 <Route path="/register/CustCenterRegister" render={(props) => <Pages.CustCenterRegister setLoad={setLoad} />} exact />
+                <Route path="/register/CategoryRegister" render={(props) => <Pages.CategoryRegister setLoad={setLoad} />} exact />
             </Switch>
         </BrowserRouter>
     );
