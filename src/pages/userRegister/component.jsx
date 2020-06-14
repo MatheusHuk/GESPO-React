@@ -38,6 +38,19 @@ export default class UserRegister extends React.Component {
                 permission: {
                     id: 2
                 }
+            },
+            editDados: {
+                id: -1,
+                name: "",
+                cpf: "",
+                dtBirth: "2020-01-01",
+                email: "",
+                password: "",
+                hourValue: 0,
+                office: "",
+                permission: {
+                    id: 2
+                }
             }
         }
     }
@@ -82,15 +95,29 @@ export default class UserRegister extends React.Component {
     async save() {
         this.props.setLoad(true)
         await EmployeeService.create([this.state.newDados])
-            .then(res => {
-                this.setState({
-                    ...this.state,
-                    showToaster: true,
-                    toaster: {
-                        header: "Sucesso",
-                        body: `Usuário ${this.state.newDados.name} criado com sucesso`,
-                    }
-                })
+            .then(async (res) => {
+                await EmployeeService.getAll()
+                    .then(async (res2) => {
+                        this.setState({
+                            ...this.state,
+                            showToaster: true,
+                            employees: res2.data = "" ? [] : res2.data,
+                            toaster: {
+                                header: "Sucesso",
+                                body: `Usuário ${this.state.newDados.name} criado com sucesso`,
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        this.setState({
+                            ...this.state,
+                            showToaster: true,
+                            toaster: {
+                                header: "Error",
+                                body: `Erro ao criar usuário`,
+                            }
+                        })
+                    })
             })
             .catch(error => {
                 this.setState({
@@ -103,6 +130,106 @@ export default class UserRegister extends React.Component {
                 })
             })
         this.props.setLoad(false)
+    }
+
+    async updateUser(){
+        this.props.setLoad(true)
+        await EmployeeService.update(this.state.editDados)
+            .then(async (res) => {
+                await EmployeeService.getAll()
+                    .then(res2 => {
+                        this.setState({
+                            ...this.state,
+                            showToaster: true,
+                            showGrid: true,
+                            showEdit: false,
+                            employees: res2.data = "" ? [] : res2.data,
+                            toaster: {
+                                header: "Sucesso",
+                                body: `Usuário ${this.state.editDados.name} atualizado com sucesso`,
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        this.setState({
+                            ...this.state,
+                            showToaster: true,
+                            toaster: {
+                                header: "Error",
+                                body: `Erro ao editar usuário`,
+                            }
+                        })
+                    })
+            })
+            .catch(error => {
+                this.setState({
+                    ...this.state,
+                    showToaster: true,
+                    toaster: {
+                        header: "Error",
+                        body: `Erro ao editar usuário`,
+                    }
+                })
+            })
+        this.props.setLoad(false)
+    }
+
+    async deleteUser(id){
+        this.props.setLoad(true)
+        await EmployeeService.delete({ "id": id })
+            .then(async (res) => {
+                await EmployeeService.getAll()
+                    .then(res2 => {
+                        this.setState({
+                            ...this.state,
+                            showToaster: true,
+                            showGrid: true,
+                            showEdit: false,
+                            employees: res2.data = "" ? [] : res2.data,
+                            toaster: {
+                                header: "Sucesso",
+                                body: `Usuário excluído com sucesso`,
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        this.setState({
+                            ...this.state,
+                            showToaster: true,
+                            toaster: {
+                                header: "Error",
+                                body: `Erro ao excluir usuário`,
+                            }
+                        })
+                    })
+            })
+            .catch(error => {
+                this.setState({
+                    ...this.state,
+                    showToaster: true,
+                    toaster: {
+                        header: "Error",
+                        body: `Erro ao excluir usuário`,
+                    }
+                })
+            })
+        this.props.setLoad(false)
+    }
+
+    editUser(data){
+        let aux = new Date(data.dtBirth)
+        aux = aux.getFullYear()+"-"+
+        (aux.getMonth()+1 < 10 ? "0"+(aux.getMonth()+1) : aux.getMonth()+1)+"-"+
+        (aux.getDate() < 10 ? "0"+aux.getDate() : aux.getDate())
+        this.setState({
+            ...this.state,
+            showEdit: true,
+            showGrid: false,
+            editDados: {
+                ...data,
+                dtBirth: aux
+            }
+        })
     }
 
     handleNewName(e) {
@@ -197,6 +324,98 @@ export default class UserRegister extends React.Component {
         })
     }
 
+    handleEditName(e) {
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                name: e.target.value
+            }
+        })
+    }
+
+    handleEditCpf(e) {
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                cpf: e.target.value
+            }
+        })
+    }
+
+    handleEditDate(e) {
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                dtBirth: e.target.value
+            }
+        })
+    }
+
+    handleEditEmail(e) {
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                email: e.target.value
+            }
+        })
+    }
+
+    handleEditOffice(e) {
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                office: e.target.value
+            }
+        })
+    }
+
+    handleEditPassword(e) {
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                password: e.target.value
+            }
+        })
+    }
+
+    handleEditCategory(e) {
+        let res = this.state.selectDados.categories.find(v => v.id == e.target.value)
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                category: res
+            }
+        })
+    }
+
+    handleEditTeam(e) {
+        let res = this.state.selectDados.teams.find(v => v.id == e.target.value)
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                team: res
+            }
+        })
+    }
+
+    handleEditHourValue(e) {
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                hourValue: parseInt(e.target.value)
+            }
+        })
+    }
+
     render() {
         return (
             <>
@@ -251,10 +470,10 @@ export default class UserRegister extends React.Component {
                                                             <td>{value.email}</td>
                                                             <td>{value.office}</td>
                                                             <td>
-                                                                <Style.Icone onClick={() => { }}>
+                                                                <Style.Icone onClick={() => { this.editUser(value) }}>
                                                                     <FA name="edit" />
                                                                 </Style.Icone>
-                                                                <Style.Icone onClick={() => { }}>
+                                                                <Style.Icone onClick={() => { this.deleteUser(value.id) }}>
                                                                     <FA name="ban" />
                                                                 </Style.Icone>
                                                             </td>
@@ -279,7 +498,9 @@ export default class UserRegister extends React.Component {
                                             <Card.Body className="fundoForm">
                                                 <Form.Group as={Col}>
                                                     <Form.Label>Nome do Usuário</Form.Label>
-                                                    <Form.Control type="text" onChange={(event) => { this.handleNewName(event) }} />
+                                                    <Form.Control type="text" 
+                                                    defaultValue={this.state.editDados.name}
+                                                    onChange={(event) => { this.handleEditName(event) }} />
                                                 </Form.Group>
                                             </Card.Body>
                                         </Style.DBox>
@@ -287,7 +508,9 @@ export default class UserRegister extends React.Component {
                                             <Card.Body className="fundoForm">
                                                 <Form.Group as={Col}>
                                                     <Form.Label>Email</Form.Label>
-                                                    <Form.Control type="text" onChange={(event) => { this.handleNewEmail(event) }} />
+                                                    <Form.Control type="text"
+                                                    defaultValue={this.state.editDados.email}
+                                                    onChange={(event) => { this.handleEditEmail(event) }} />
                                                 </Form.Group>
                                             </Card.Body>
                                         </Style.DBox>
@@ -295,7 +518,9 @@ export default class UserRegister extends React.Component {
                                             <Card.Body className="fundoForm">
                                                 <Form.Group as={Col}>
                                                     <Form.Label>Cargo</Form.Label>
-                                                    <Form.Control type="text" onChange={(event) => { this.handleNewOffice(event) }} />
+                                                    <Form.Control type="text"
+                                                    defaultValue={this.state.editDados.office}
+                                                    onChange={(event) => { this.handleEditOffice(event) }} />
                                                 </Form.Group>
                                             </Card.Body>
                                         </Style.DBox>
@@ -303,9 +528,11 @@ export default class UserRegister extends React.Component {
                                     <Style.DBoxBody>
                                         <Style.DBox>
                                             <Card.Body className="fundoForm">
-                                                <Form.Group as={Col} controlId="formGridBirthDate">
+                                                <Form.Group as={Col}>
                                                     <Form.Label>Data de Nascimento</Form.Label>
-                                                    <Form.Control type="date" onChange={(event) => { this.handleNewDate(event) }} />
+                                                    <Form.Control type="date"
+                                                    defaultValue={this.state.editDados.dtBirth}
+                                                    onChange={(event) => { this.handleEditDate(event) }} />
                                                 </Form.Group>
                                             </Card.Body>
                                         </Style.DBox>
@@ -313,7 +540,9 @@ export default class UserRegister extends React.Component {
                                             <Card.Body className="fundoForm">
                                                 <Form.Group as={Col}>
                                                     <Form.Label>CPF</Form.Label>
-                                                    <Form.Control type="text" onChange={(event) => { this.handleNewCpf(event) }} />
+                                                    <Form.Control type="text"
+                                                    defaultValue={this.state.editDados.cpf}
+                                                    onChange={(event) => { this.handleEditCpf(event) }} />
                                                 </Form.Group>
                                             </Card.Body>
                                         </Style.DBox>
@@ -321,7 +550,9 @@ export default class UserRegister extends React.Component {
                                             <Card.Body className="fundoForm">
                                                 <Form.Group as={Col}>
                                                     <Form.Label>Password</Form.Label>
-                                                    <Form.Control type="text" onChange={(event) => { this.handleNewPassword(event) }} />
+                                                    <Form.Control type="text"
+                                                    defaultValue={this.state.editDados.password}
+                                                    onChange={(event) => { this.handleEditPassword(event) }} />
                                                 </Form.Group>
                                             </Card.Body>
                                         </Style.DBox>
@@ -333,8 +564,8 @@ export default class UserRegister extends React.Component {
                                                 <Form.Group as={Col} controlId="formGridCategory">
                                                     <Form.Label>Categoria</Form.Label>
                                                     <Form.Control as="select"
-                                                        defaultValue={this.state.newDados.category}
-                                                        onChange={(event) => { this.handleNewCategory(event) }}>
+                                                        defaultValue={this.state.editDados.category.id}
+                                                        onChange={(event) => { this.handleEditCategory(event) }}>
                                                         {
                                                             this.state.selectDados.categories.map((value, i) => {
                                                                 return (
@@ -349,11 +580,11 @@ export default class UserRegister extends React.Component {
                                         </Style.DBox>
                                         <Style.DBox>
                                             <Card.Body className="fundoForm">
-                                                <Form.Group as={Col} controlId="formGridTeam">
+                                                <Form.Group as={Col}>
                                                     <Form.Label>Time</Form.Label>
                                                     <Form.Control as="select"
-                                                        defaultValue={this.state.newDados.team}
-                                                        onChange={(event) => { this.handleNewTeam(event) }}>
+                                                        defaultValue={this.state.editDados.team.id}
+                                                        onChange={(event) => { this.handleEditTeam(event) }}>
                                                         {
                                                             this.state.selectDados.teams.map((value, i) => {
                                                                 return (
@@ -367,20 +598,19 @@ export default class UserRegister extends React.Component {
                                         </Style.DBox>
                                         <Style.DBox>
                                             <Card.Body className="fundoForm">
-                                                <Form.Group as={Col} controlId="formGridHourTax">
+                                                <Form.Group as={Col}>
                                                     <Form.Label>Taxa Hora</Form.Label>
-                                                    <Form.Control type="text" onChange={(event) => { this.handleNewHourValue(event) }} />
+                                                    <Form.Control type="text"
+                                                    defaultValue={this.state.editDados.hourValue}
+                                                    onChange={(event) => { this.handleEditHourValue(event) }} />
                                                 </Form.Group>
                                             </Card.Body>
                                         </Style.DBox>
                                     </Style.DBoxBody>
                                 </Style.DBody>
                                 <Style.DFooter>
-                                    <Style.BotaoForm onClick={() => { this.save() }}>
+                                    <Style.BotaoForm onClick={() => { this.updateUser() }}>
                                         Gravar
-                                    </Style.BotaoForm>
-                                    <Style.BotaoForm>
-                                        Deletar
                                     </Style.BotaoForm>
                                 </Style.DFooter>
                             </Style.Dados>
