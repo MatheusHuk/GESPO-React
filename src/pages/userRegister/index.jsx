@@ -1,122 +1,23 @@
-import React, { useState } from 'react'
-import Viewer from '../../Layout/Viewer'
-import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
-import "./index.css"
-import * as Style from './style'
+import React, { useEffect } from 'react'
+import UserRegister from './component'
+import { useHistory } from 'react-router-dom'
 
-export default function UserRegister() {
+export default function UserRegisterFunction ({ setLoad, logged, setLogged }){
 
-    const [novo, setNovo] = useState(false);
+    const history = useHistory();
+
+    useEffect(() => {
+        if(logged == null) {
+             history.push("/login")
+         } 
+     })
 
     return (
         <>
-            <Viewer>
-                <Style.Container>
-                    <Style.Dados>
-                        <Style.DHeader> 
-                           <Style.DivCreate>
-                               <Style.DivTitle>Cadastrar Usuário</Style.DivTitle>
-                               <Style.BotaoFormCreate onClick={() => { setNovo(!novo) }}>
-                                    {!novo ? 'Novo' : 'Editar'}
-                                </Style.BotaoFormCreate>
-                           </Style.DivCreate>
-                         </Style.DHeader>
-                        <Style.DBody>
-                            <Style.DBoxBody>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
-                                        <Form.Group as={Col} controlId="formGridUserName">
-                                            <Form.Label>Nome do Usuário</Form.Label>
-                                            {
-                                                novo ?
-                                                    <Form.Control type="text" placeholder="" /> :
-                                                    <Form.Control as="select" value="Choose...">
-                                                        <option>Selecione...</option>
-                                                        <option>Projeto 1</option>
-                                                        <option>Projeto 2</option>
-                                                        <option>Projeto 3</option>
-                                                    </Form.Control>
-                                            }
-                                        </Form.Group>
-                                    </Card.Body>
-                                </Style.DBox>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
-                                        <Form.Group as={Col} controlId="formGridBirthDate">
-                                            <Form.Label>Data de Nascimento</Form.Label>
-                                            <Form.Control type="text" placeholder="xx/xx/xxxx" />
-                                        </Form.Group>
-                                    </Card.Body>
-                                </Style.DBox>
-                            </Style.DBoxBody>
-                            <Style.DBoxBody>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
-                                        <Form.Group as={Col} controlId="formGridRG">
-                                            <Form.Label>RG</Form.Label>
-                                            <Form.Control type="text" placeholder="" />
-                                        </Form.Group>
-                                    </Card.Body>
-                                </Style.DBox>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
-                                        <Form.Group as={Col} controlId="formGridCPF">
-                                            <Form.Label>CPF</Form.Label>
-                                            <Form.Control type="text" placeholder="" />
-                                        </Form.Group>
-                                    </Card.Body>
-                                </Style.DBox>
-                            </Style.DBoxBody>
-                            <Style.DBoxBody>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
+            {
+                logged != null ? <UserRegister setLoad={setLoad} logged={logged} setLogged={setLogged}/> : null
+            }
 
-                                        <Form.Group as={Col} controlId="formGridCategory">
-                                            <Form.Label>Categoria</Form.Label>
-                                            <Form.Control as="select" value="Choose...">
-                                                <option>Selecione...</option>
-                                                <option>Categoria 1</option>
-                                                <option>Categoria 2</option>
-                                                <option>Categoria 3</option>
-                                            </Form.Control>
-                                        </Form.Group>
-
-                                    </Card.Body>
-                                </Style.DBox>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
-                                        <Form.Group as={Col} controlId="formGridTeam     ">
-                                            <Form.Label>Time</Form.Label>
-                                            <Form.Control as="select" value="Choose...">
-                                                <option>Selecione...</option>
-                                                <option>Time 1</option>
-                                                <option>Time 2</option>
-                                                <option>Time 3</option>
-                                            </Form.Control>
-                                        </Form.Group>
-                                    </Card.Body>
-                                </Style.DBox>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
-                                        <Form.Group as={Col} controlId="formGridHourTax">
-                                            <Form.Label>Taxa Hora</Form.Label>
-                                            <Form.Control type="text" placeholder="R$00,00" />
-                                        </Form.Group>
-                                    </Card.Body>
-                                </Style.DBox>
-                            </Style.DBoxBody>
-                        </Style.DBody>
-                        <Style.DFooter>
-                            <Style.BotaoForm>
-                                Gravar
-                            </Style.BotaoForm>
-                            <Style.BotaoForm>
-                                Deletar
-                            </Style.BotaoForm>
-                        </Style.DFooter>
-                    </Style.Dados>
-                </Style.Container>
-            </Viewer>
         </>
-    );
+    )
 }
