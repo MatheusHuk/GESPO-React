@@ -325,3 +325,115 @@ export const DivTitle = styled.div`
     display: flex;
     justify-content: flex-right;
 `;
+
+export const HeaderContainer = styled.div`
+    width: auto;
+    height: 5%;
+    display: flex;
+    flex-wrap: wrap;
+`;
+
+export const HeaderBackButton = styled.div`
+    width: 10%;
+    height: 100%;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+`;
+
+export const ButtonContainer = styled.div`
+    height: 100%;
+    width: 90%;
+`;
+
+export const HeaderButton = styled.div`
+    width: 33%;
+    height: 100%;
+    background-color: ${props => props.selected ? '#2B47AA' : "white"};
+    color: ${props => props.selected ? 'white' : "black"};
+    border: 1px solid black;
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+    position: relative;
+    right: 0;
+    float: right;
+    cursor: pointer;
+
+    :hover{
+        background-color: ${props => props.selected ? '#2B47AA' : "#251680"};
+        color: white;
+    }
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+`;
+
+export const HeaderEditButton = styled.div`
+    width: 33%;
+    height: 100%;
+    background-color: ${props => props.selected ? '#2B47AA' : "white"};
+    color: ${props => props.selected ? 'white' : "grey"};
+    border: 1px solid black;
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+    position: relative;
+    right: 0;
+    float: right;
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+`;
+
+export const DadosGrid = styled.div`
+    padding: 2%;
+    position: relative;
+    height: 90%;
+    width: 90%;
+    border-radius: 10px;
+    background-color: #2B47AA;
+    top: 43VH;
+    left: 50%;
+    margin-bottom: 5%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0VH 0.5VH  5px black;
+    border-radius: 5px;
+`;
+
+export const Icone = styled.div`
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    cursor: pointer;
+`;
+
+export const TableDiv = styled.div`
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 100%;
+    height: calc(100% - 3VH);
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    font-size: ${props => props.size == 1 ? '1.5VH' : '2VH'};
+    border-spacing: 0px;
+    overflow-y: scroll
+`;
