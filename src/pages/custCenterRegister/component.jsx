@@ -199,7 +199,7 @@ export default class CustCenterRegister extends React.Component {
 
         return (
             <>
-                <Viewer>
+                <Viewer setLoad={this.props.setLoad}>
                     <Toaster
                         show={this.state.showToaster}
                         setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }); }}

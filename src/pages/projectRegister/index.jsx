@@ -10,7 +10,7 @@ export default function ProjectRegister() {
 
     return (
         <>
-            <Viewer>
+            <Viewer setLoad={this.props.setLoad}>
                 <Style.Container>
                     <Style.Dados>
                         <Style.DHeader>

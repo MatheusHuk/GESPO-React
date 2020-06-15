@@ -15,7 +15,7 @@ export default function Register({ setLoad }){
 
     return(
         <>
-            <Viewer>
+            <Viewer setLoad={setLoad}>
             <Style.Title>GESPO</Style.Title>
                 <Style.SubTitle>Gestão de custos e projetos / Cadastros </Style.SubTitle>
                 <Style.Container>

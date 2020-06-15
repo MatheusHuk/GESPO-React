@@ -15,7 +15,7 @@ export default function Home({ setLoad, logged, setLogged }){
 
     return(
         <>
-            <Viewer>
+            <Viewer setLoad={setLoad}>
                 <Style.Title>GESPO</Style.Title>
                 <Style.SubTitle>Gestão de custos e projetos</Style.SubTitle>
                 <Style.Container>
