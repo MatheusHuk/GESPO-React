@@ -1,12 +1,21 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
+const entranceAnimation = keyframes`
+    0%{
+        left: 100%;
+    }
+    100%{
+        left: 0%;
+    }
+`;
 
 export const Container = styled.div`
     padding: 2VH 2VW;
     position: relative;
     width: 100%;
     height: 100%;
-    overflow-y: scroll;  
+    overflow-y: scroll;
+    animation: ${entranceAnimation} 0.5s;
 `;
 
 export const Filtros = styled.div`
