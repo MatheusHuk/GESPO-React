@@ -2,53 +2,58 @@ import React, { useState } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import * as Pages from './pages'
 
-export default function Routes({ setLoad }){
-    
+export default function Routes({ setLoad }) {
+
     const [logged, setLogged] = useState();
 
-    return(
+    return (
         <BrowserRouter>
             <Switch>
-                <Route path="/" render={(props) => 
-                    <Pages.Home 
-                        setLoad={setLoad} 
-                        logged={logged} 
+                <Route path="/" render={(props) =>
+                    <Pages.Home
+                        setLoad={setLoad}
+                        logged={logged}
                         setLogged={setLogged} />}
                     exact />
-                <Route path="/login" render={(props) => 
-                    <Pages.Login 
+                <Route path="/login" render={(props) =>
+                    <Pages.Login
                         setLoad={setLoad}
-                        logged={logged} 
-                        setLogged={setLogged} />} 
+                        logged={logged}
+                        setLogged={setLogged} />}
                     exact />
-                <Route path="/timeEntry" render={(props) => 
+                <Route path="/timeEntry" render={(props) =>
                     <Pages.TimeEntry
-                        setLoad={setLoad} 
+                        setLoad={setLoad}
                         logged={logged} />}
                     exact />
                 <Route path="/dashboards" render={(props) => <Pages.Dashboards setLoad={setLoad} />} exact />
                 <Route path="/projectManagement/hoursProvisioning" render={(props) =>
-                    <Pages.HoursProvisioning 
-                        setLoad={setLoad} 
+                    <Pages.HoursProvisioning
+                        setLoad={setLoad}
                         logged={logged}
-                        setLogged={setLogged}/>}
+                        setLogged={setLogged} />}
                     exact />
                 <Route path="/projectManagement/goalsDefinition" render={(props) => <Pages.GoalsDefinition setLoad={setLoad} />} exact />
                 <Route path="/projectManagement" render={(props) => <Pages.ProjectManagement setLoad={setLoad} />} exact />
-                <Route path="/projectManagement/resourcesAllocation" render={(props) => 
+                <Route path="/projectManagement/resourcesAllocation" render={(props) =>
                     <Pages.ResourcesAllocation
-                        setLoad={setLoad} 
+                        setLoad={setLoad}
                         logged={logged}
-                        setLogged={setLogged}/>}
+                        setLogged={setLogged} />}
                     exact />
                 <Route path="/register" render={(props) => <Pages.Register setLoad={setLoad} />} exact />
-                <Route path="/register/userRegister" render={(props) => 
+                <Route path="/register/userRegister" render={(props) =>
                     <Pages.UserRegister
-                        setLoad={setLoad} 
+                        setLoad={setLoad}
                         logged={logged}
-                        setLogged={setLogged}/>} 
+                        setLogged={setLogged} />}
                     exact />
-                <Route path="/register/projectRegister" render={(props) => <Pages.ProjectRegister setLoad={setLoad} />} exact />
+                <Route path="/register/projectRegister" render={(props) =>
+                    <Pages.ProjectRegister
+                        setLoad={setLoad}
+                        logged={logged}
+                        setLogged={setLogged}
+                    />} exact />
                 <Route path="/register/custCenterRegister" render={(props) => <Pages.CustCenterRegister setLoad={setLoad} />} exact />
             </Switch>
         </BrowserRouter>
