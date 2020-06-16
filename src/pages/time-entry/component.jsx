@@ -431,7 +431,7 @@ export default class TimeEntry extends React.Component {
                                         </Form>
                                     </Style.FBody>
                                     <Style.FFooter>
-                                        <Button className="but" onClick={() => { this.filterDados() }}>Filtrar</Button>
+                                        <Style.BotaoForm onClick={() => { this.filterDados() }}>Filtrar</Style.BotaoForm>
                                     </Style.FFooter>
                                 </Style.Filtros>
                                 <Style.Apontamento>
@@ -533,8 +533,8 @@ export default class TimeEntry extends React.Component {
                                         </Form>
                                     </Style.DBody>
                                     <Style.DFooter>
-                                        <Button className="but" onClick={() => { this.addDados() }}>Adicionar</Button>
-                                        <Button className="but" onClick={() => { this.saveDados() }} disabled={this.state.dadosList.length == 0} >Gravar tudo</Button>
+                                        <Style.BotaoForm onClick={() => { this.addDados() }}>Adicionar</Style.BotaoForm>
+                                        <Style.BotaoForm onClick={() => { this.saveDados() }} disabled={this.state.dadosList.length == 0} >Gravar tudo</Style.BotaoForm>
                                     </Style.DFooter>
                                 </Style.Dados>
                                 <Style.ApontamentoSmall>

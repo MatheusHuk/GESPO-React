@@ -322,6 +322,7 @@ export const BotaoForm = styled.button`
 
     :hover{
         background-color: #251680 !important; 
+    }
 `;
 
 export const DivTitle = styled.div`
