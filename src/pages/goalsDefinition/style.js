@@ -251,3 +251,58 @@ export const TableDiv = styled.div`
     border-spacing: 0px;
     overflow-y: scroll
 `;
+
+export const HeaderContainer = styled.div`
+    width: auto;
+    height: 5%;
+    display: flex;
+    flex-wrap: wrap;
+`;
+
+export const HeaderButton = styled.div`
+    width: 33%;
+    height: 100%;
+    background-color: ${props => props.selected ? '#2B47AA' : "white"};
+    color: ${props => props.selected ? 'white' : "black"};
+    border: 1px solid black;
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+    position: relative;
+    right: 0;
+    float: right;
+    cursor: pointer;
+
+    :hover{
+        background-color: ${props => props.selected ? '#2B47AA' : "#251680"};
+        color: white;
+    }
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+`;
+
+export const HeaderEditButton = styled.div`
+    width: 33%;
+    height: 100%;
+    background-color: ${props => props.selected ? '#2B47AA' : "white"};
+    color: ${props => props.selected ? 'white' : "grey"};
+    border: 1px solid black;
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    font-size: 2VH;
+    position: relative;
+    right: 0;
+    float: right;
+
+    p{
+        text-align: center;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+`;
