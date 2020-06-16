@@ -19,18 +19,6 @@ export const Container = styled.div`
     color: white;
 `;
 
-export const Filtros = styled.div`
-    padding: 2%;
-    left: 50%;
-    transform: translateX(-50%);
-    position: relative;
-    height: 30%;
-    width: 100%;
-    border-radius: 17px;
-    background-color: #2B47AA;
-    margin-bottom: 4%;
-`;
-
 export const FHeader = styled.div`
     padding: 0 2% 0 2%;
     line-height: 50%;
@@ -86,17 +74,31 @@ export const Box = styled.div`
     height: 10VH;
 `;
 
-export const Dados = styled.div`
+export const Filtros = styled.div`
     padding: 2%;
     position: relative;
-    height: 35%;
+    height: 30%;
     width: 80%;
     border-radius: 10px;
     background-color: #2B47AA;
-    top: 20%;
+    top: 15VH;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 0VH 0.5VH  5px black;
+    border-radius: 5px;
+`;
+
+export const Dados = styled.div`
+    padding: 2%;
+    position: relative;
+    height: 70%;
+    width: 80%;
+    border-radius: 5px;
+    background-color: #2B47AA;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0VH 0.5VH  8px black;
     border-radius: 5px;
 `;
 
@@ -107,7 +109,7 @@ export const DadosTerceiros = styled.div`
     width: 80%;
     border-radius: 10px;
     background-color: #2B47AA;
-    top: 34VH;
+    top: 30VH;
     left: 50%;
     margin-bottom: 5%;
     transform: translate(-50%, -50%);
@@ -148,12 +150,12 @@ export const DFooter = styled.div`
 `;
 
 export const DBoxBody = styled.div`
-    padding: 1VH 2VW 0 2VW;
+    padding: 0VH 2VW 0 2VW;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
     width: 100%;
-    height: 30%;
+    height: 10%;
     display: flex;
     justify-content: space-between;
 `;
@@ -174,7 +176,7 @@ export const DBigBox = styled.div`
 
 export const DBox = styled.div`
     position: relative;
-    width: 30%;
+    width: 55%;
     height: 10VH;
 `;
 
@@ -305,4 +307,27 @@ export const HeaderEditButton = styled.div`
         top: 50%;
         transform: translateY(-50%);
     }
+`;
+
+export const BotaoForm = styled.button`
+    background-color: transparent !important;
+    color: white !important;
+    height: 100% !important;
+    width: 20%;
+    border: 1px solid white !important;
+    line-height: 50% !important;
+    box-shadow: 0VW 0.3VH 3px black;
+    z-index: 0 !important;
+    margin-left: 1VW;
+
+    :hover{
+        background-color: #251680 !important; 
+`;
+
+export const DivTitle = styled.div`
+    position: relative;
+    width: 100%;
+    height: 3VH;
+    display: flex;
+    justify-content: flex-right;
 `;

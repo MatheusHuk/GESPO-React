@@ -37,7 +37,8 @@ export default class GoalsDefinition extends React.Component {
                 percentProject: 0,
                 employee: {},
                 category: {},
-                project: {}
+                project: {},
+                deadline: 0
             },
             editDados: {
                 title: "",
@@ -45,9 +46,14 @@ export default class GoalsDefinition extends React.Component {
                 percentProject: 0,
                 employee: {},
                 category: {},
-                project: {}
+                project: {},
+                deadline: 0
             }
         }
+    }
+
+    componentDidUpdate(){
+        console.log("State: ",this.state)
     }
 
     async componentDidMount() {
@@ -61,6 +67,12 @@ export default class GoalsDefinition extends React.Component {
                                 .then(async (res3) => {
                                     await EmployeeService.getAllByProject({ projectId: res.data[0].id })
                                         .then(async (res4) => {
+                                            let emp = []
+                                            if(res4.data != ""){
+                                                res4.data.forEach(v => {
+                                                    emp.push(v.employee)
+                                                })
+                                            }
                                             this.setState({
                                                 ...this.state,
                                                 project: res.data[0],
@@ -69,7 +81,14 @@ export default class GoalsDefinition extends React.Component {
                                                     ...this.state.selectDados,
                                                     projects: res.data = "" ? [] : res.data,
                                                     categories: res3.data = "" ? [] : res3.data,
-                                                    employees: res4.data = "" ? [] : res4.data,
+                                                    employees: emp,
+                                                },
+                                                newDados: {
+                                                    ...this.state.newDados,
+                                                    project: res.data = "" ? {} : res.data[0],
+                                                    employee: emp[0],
+                                                    category: res3.data = "" ? {} : res3.data[0],
+                                                    percentProject: 0
                                                 }
                                             })
                                         })
@@ -120,6 +139,256 @@ export default class GoalsDefinition extends React.Component {
         this.props.setLoad(false)
     }
 
+    edit(value){
+        this.setState({
+            ...this.state,
+            showGrid: false,
+            showEdit: true,
+            editDados: {
+                ...value,
+                deadline: 0
+            }
+        })
+    }
+
+    async editTask(){
+        this.props.setLoad(true)
+        await TasksService.update(this.state.editDados)
+            .then(async (res) => {
+                await TasksService.getAllByProjectId({ id: this.state.project.id })
+                    .then(async (res2) => {
+                        this.setState({
+                            ...this.state,
+                            tasks: res2.data == "" ? [] : res2.data,
+                            showGrid: true,
+                            showEdit: false,
+                            showToaster: true,
+                            toaster: {
+                                header: "Sucesso",
+                                body: "Meta atualizada com sucesso"
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        this.setState({
+                            ...this.state,
+                            showToaster: true,
+                            toaster: {
+                                header: "Erro",
+                                body: "Erro interno do servidor"
+                            }
+                        })
+                    })
+            })
+            .catch(error => {
+                this.setState({
+                    ...this.state,
+                    showToaster: true,
+                    toaster: {
+                        header: "Erro",
+                        body: "Erro interno do servidor"
+                    }
+                })
+            })
+        this.props.setLoad(false)
+    }
+
+    async saveTask(){
+        this.props.setLoad(true)
+        await TasksService.create([this.state.newDados])
+            .then(async (res) => {
+                await TasksService.getAllByProjectId({ id: this.state.project.id })
+                    .then(async (res2) => {
+                        this.setState({
+                            ...this.state,
+                            tasks: res2.data == "" ? [] : res2.data,
+                            showGrid: true,
+                            showEdit: false,
+                            showToaster: true,
+                            toaster: {
+                                header: "Sucesso",
+                                body: "Meta criada com sucesso"
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        this.setState({
+                            ...this.state,
+                            showToaster: true,
+                            toaster: {
+                                header: "Erro",
+                                body: "Erro interno do servidor"
+                            }
+                        })
+                    })
+            })
+            .catch(error => {
+                this.setState({
+                    ...this.state,
+                    showToaster: true,
+                    toaster: {
+                        header: "Erro",
+                        body: "Erro interno do servidor"
+                    }
+                })
+            })
+        this.props.setLoad(false)
+    }
+
+    async deleteTask(id){
+        this.props.setLoad(true)
+        await TasksService.delete({ id: id })
+            .then(async (res) => {
+                await TasksService.getAllByProjectId({ id: this.state.project.id })
+                    .then(async (res2) => {
+                        this.setState({
+                            ...this.state,
+                            tasks: res2.data == "" ? [] : res2.data,
+                            showGrid: true,
+                            showEdit: false,
+                            showToaster: true,
+                            toaster: {
+                                header: "Sucesso",
+                                body: "Meta excluída com sucesso"
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        this.setState({
+                            ...this.state,
+                            showToaster: true,
+                            toaster: {
+                                header: "Erro",
+                                body: "Erro interno do servidor"
+                            }
+                        })
+                    })
+            })
+            .catch(error => {
+                this.setState({
+                    ...this.state,
+                    showToaster: true,
+                    toaster: {
+                        header: "Erro",
+                        body: "Erro interno do servidor"
+                    }
+                })
+            })
+        this.props.setLoad(false)
+    }
+
+    handleEditTitle(e){
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                title: e.target.value
+            }
+        })
+    }
+
+    handleEditCategory(e){
+        let value = e.target.value
+        console.log("Cat v: ",value)
+        let res = this.state.selectDados.categories.find(v => v.id == value)
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                category: res
+            }
+        })
+    }
+
+    handleEditProject(e){
+        let value = e.target.value
+        let res = this.state.selectDados.projects.find(v => v.id == value)
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                project: res
+            }
+        })
+    }
+
+    handleEditPercent(e){
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                percentProject: e.target.value
+            }
+        })
+    }
+
+    handleEditDesc(e){
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                description: e.target.value
+            }
+        })
+    }
+
+    handleNewTitle(e){
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                title: e.target.value
+            }
+        })
+    }
+
+    handleNewCategory(e){
+        let value = e.target.value
+        console.log("Cat v: ",value)
+        let res = this.state.selectDados.categories.find(v => v.id == value)
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                category: res
+            }
+        })
+    }
+
+    handleNewProject(e){
+        let value = e.target.value
+        let res = this.state.selectDados.projects.find(v => v.id == value)
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                project: res
+            }
+        })
+    }
+
+    handleNewEmployee(e){
+        let value = e.target.value
+        let res = this.state.selectDados.employees.find(v => v.id == value)
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                employee: res
+            }
+        })
+    }
+
+    handleNewDesc(e){
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                description: e.target.value
+            }
+        })
+    }
+
     render() {
         return (
             <>
@@ -152,7 +421,7 @@ export default class GoalsDefinition extends React.Component {
                         </Style.HeaderContainer>
                         {this.state.showGrid ?
                             <>
-                                <Style.Dados>
+                                <Style.Filtros>
                                     <Style.DHeader>
                                         <Style.DivCreate>Filtros</Style.DivCreate>
                                     </Style.DHeader>
@@ -177,7 +446,7 @@ export default class GoalsDefinition extends React.Component {
                                             </Style.DBigBox>
                                         </Style.DBoxBody>
                                     </Style.DBody>
-                                </Style.Dados>
+                                </Style.Filtros>
                                 <Style.DadosTerceiros>
                                     <Style.DHeader>
                                         <Style.DivCreate>Metas - {this.state.project.name}</Style.DivCreate>
@@ -208,10 +477,10 @@ export default class GoalsDefinition extends React.Component {
                                                                 <input type="range" min={0} max={100} value={value.percentProject} readOnly />
                                                                 </td>
                                                                 <td>
-                                                                    <Style.Icone onClick={() => { }}>
+                                                                    <Style.Icone onClick={() => { this.edit(value) }}>
                                                                         <FA name="edit" />
                                                                     </Style.Icone>
-                                                                    <Style.Icone onClick={() => { }}>
+                                                                    <Style.Icone onClick={() => { this.deleteTask(value.id) }}>
                                                                         <FA name="ban" />
                                                                     </Style.Icone>
                                                                 </td>
@@ -225,7 +494,188 @@ export default class GoalsDefinition extends React.Component {
                                 </Style.DadosTerceiros>
                             </>
                             : this.state.showEdit ?
-                                <></> : <></>}
+                            <Style.Dados>
+                                <Style.DHeader>
+                                    <Style.DivCreate>
+                                        <Style.DivTitle>Editar Meta</Style.DivTitle>
+                                    </Style.DivCreate>
+                                </Style.DHeader>
+                                <Style.DBody>
+                                    <Style.DBoxBody>
+                                        <Style.DBox>
+                                            <Card.Body className="fundoForm">
+                                                <Form.Group as={Col}>
+                                                    <Form.Label>Título</Form.Label>
+                                                    <Form.Control type="text"
+                                                    defaultValue={this.state.editDados.title}
+                                                    onChange={(event) => { this.handleEditTitle(event) }} />
+                                                </Form.Group>
+                                            </Card.Body>
+                                        </Style.DBox>
+                                        <Style.DBox>
+                                            <Card.Body className="fundoForm">
+                                                <Form.Group as={Col}>
+                                                    <Form.Label>Categoria</Form.Label>
+                                                    <Form.Control as="select" 
+                                                    defaultValue={this.state.editDados.category.id}
+                                                    onChange={(event) => { this.handleEditCategory(event) }}>
+                                                        {
+                                                            this.state.selectDados.categories.map((value, i) => {
+                                                                return (
+                                                                    <option value={value.id} key={i}>{value.dsCategory}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Card.Body>
+                                        </Style.DBox>
+                                    </Style.DBoxBody>
+                                    <Style.DBoxBody>
+                                        <Style.DBox>
+                                            <Card.Body className="fundoForm">
+                                                <Form.Group as={Col}>
+                                                    <Form.Label>Projeto</Form.Label>
+                                                    <Form.Control as="select" 
+                                                    defaultValue={this.state.editDados.project.id}
+                                                    onChange={(event) => { this.handleEditProject(event) }}>
+                                                        {
+                                                            this.state.selectDados.projects.map((value, i) => {
+                                                                return (
+                                                                    <option value={value.id} key={i}>{value.name}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Card.Body>
+                                        </Style.DBox>
+                                        <Style.DBox>
+                                            <Card.Body className="fundoForm">
+                                                <Form.Group as={Col}>
+                                                    <Form.Label>Concluída (%)</Form.Label>
+                                                    <Form.Control type="text"
+                                                    defaultValue={this.state.editDados.percentProject}
+                                                    onChange={(event) => { this.handleEditPercent(event) }} />
+                                                </Form.Group>
+                                            </Card.Body>
+                                        </Style.DBox>
+                                    </Style.DBoxBody>
+                                    <Style.DBoxBody>
+                                        <Style.DBigBox>
+                                            <Card.Body className="fundoForm">
+                                                <Form.Group as={Col}>
+                                                    <Form.Label>Descrição</Form.Label>
+                                                    <Form.Control type="text"
+                                                    defaultValue={this.state.editDados.description}
+                                                    onChange={(event) => { this.handleEditDesc(event) }} />
+                                                </Form.Group>
+                                            </Card.Body>
+                                        </Style.DBigBox>
+                                    </Style.DBoxBody>
+                                </Style.DBody>
+                                <Style.DFooter>
+                                    <Style.BotaoForm onClick={() => { this.editTask() }}>
+                                        Gravar
+                                    </Style.BotaoForm>
+                                </Style.DFooter>
+                            </Style.Dados>
+                            :
+                            <Style.Dados>
+                                <Style.DHeader>
+                                    <Style.DivCreate>
+                                        <Style.DivTitle>Nova Meta</Style.DivTitle>
+                                    </Style.DivCreate>
+                                </Style.DHeader>
+                                <Style.DBody>
+                                    <Style.DBoxBody>
+                                        <Style.DBox>
+                                            <Card.Body className="fundoForm">
+                                                <Form.Group as={Col}>
+                                                    <Form.Label>Título</Form.Label>
+                                                    <Form.Control type="text"
+                                                    defaultValue={this.state.newDados.title}
+                                                    onChange={(event) => { this.handleNewTitle(event) }} />
+                                                </Form.Group>
+                                            </Card.Body>
+                                        </Style.DBox>
+                                        <Style.DBox>
+                                            <Card.Body className="fundoForm">
+                                                <Form.Group as={Col}>
+                                                    <Form.Label>Categoria</Form.Label>
+                                                    <Form.Control as="select" 
+                                                    defaultValue={this.state.newDados.category.id}
+                                                    onChange={(event) => { this.handleNewCategory(event) }}>
+                                                        {
+                                                            this.state.selectDados.categories.map((value, i) => {
+                                                                return (
+                                                                    <option value={value.id} key={i}>{value.dsCategory}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Card.Body>
+                                        </Style.DBox>
+                                    </Style.DBoxBody>
+                                    <Style.DBoxBody>
+                                        <Style.DBox>
+                                            <Card.Body className="fundoForm">
+                                                <Form.Group as={Col}>
+                                                    <Form.Label>Projeto</Form.Label>
+                                                    <Form.Control as="select" 
+                                                    defaultValue={this.state.newDados.project.id}
+                                                    onChange={(event) => { this.handleNewProject(event) }}>
+                                                        {
+                                                            this.state.selectDados.projects.map((value, i) => {
+                                                                return (
+                                                                    <option value={value.id} key={i}>{value.name}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Card.Body>
+                                        </Style.DBox>
+                                        <Style.DBox>
+                                            <Card.Body className="fundoForm">
+                                                <Form.Group as={Col}>
+                                                    <Form.Label>Funcionário</Form.Label>
+                                                    <Form.Control as="select" 
+                                                    defaultValue={this.state.newDados.employee.id}
+                                                    onChange={(event) => { this.handleNewEmployee(event) }}>
+                                                        {
+                                                            this.state.selectDados.employees.map((value, i) => {
+                                                                return (
+                                                                    <option value={value.id} key={i}>{value.name}</option>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Form.Control>
+                                                </Form.Group>
+                                            </Card.Body>
+                                        </Style.DBox>
+                                    </Style.DBoxBody>
+                                    <Style.DBoxBody>
+                                        <Style.DBigBox>
+                                            <Card.Body className="fundoForm">
+                                                <Form.Group as={Col}>
+                                                    <Form.Label>Descrição</Form.Label>
+                                                    <Form.Control type="text"
+                                                    defaultValue={this.state.newDados.description}
+                                                    onChange={(event) => { this.handleNewDesc(event) }} />
+                                                </Form.Group>
+                                            </Card.Body>
+                                        </Style.DBigBox>
+                                    </Style.DBoxBody>
+                                </Style.DBody>
+                                <Style.DFooter>
+                                    <Style.BotaoForm onClick={() => { this.saveTask() }}>
+                                        Gravar
+                                    </Style.BotaoForm>
+                                </Style.DFooter>
+                            </Style.Dados>
+                        }
                     </Style.Container>
                 </Viewer>
             </>
