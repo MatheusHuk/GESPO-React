@@ -156,7 +156,7 @@ export const Box = styled.div`
 export const Dados = styled.div`
     padding: 2%;
     position: relative;
-    height: 60%;
+    height: 62%;
     width: 100%;
     border-radius: 17px;
     background-color: #2B47AA;
