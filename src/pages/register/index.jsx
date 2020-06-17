@@ -5,17 +5,18 @@ import * as Style from './style'
 
 import './index.css'
 
-export default function Register({ setLoad }){
+export default function Register({ setLoad, showMenu, setShowMenu }){
 
     const history = useHistory();
 
     useEffect(() => {
         setLoad(false);
+        setShowMenu(true);
     }, []);
-
+    
     return(
         <>
-            <Viewer setLoad={setLoad}>
+            <Viewer setLoad={setLoad} showMenu={showMenu} setShowMenu={setShowMenu}>
             <Style.Title>GESPO</Style.Title>
                 <Style.SubTitle>Gestão de custos e projetos / Cadastros </Style.SubTitle>
                 <Style.Container>

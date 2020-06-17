@@ -58,7 +58,9 @@ export default class CustCenterRegister extends React.Component {
             .catch(error => {
                 console.log("Error: ", error)
             })
-        this.props.setLoad(false)
+        this.props.setLoad(false);
+        this.props.setShowMenu(true);
+
     }
 
 
@@ -199,7 +201,7 @@ export default class CustCenterRegister extends React.Component {
 
         return (
             <>
-                <Viewer setLoad={this.props.setLoad}>
+                <Viewer setLoad={this.props.setLoad} showMenu={this.props.showMenu} setShowMenu={this.props.setShowMenu}>
                     <Toaster
                         show={this.state.showToaster}
                         setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }); }}

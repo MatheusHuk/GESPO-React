@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import GoalsDefinition from './component'
 import { useHistory } from 'react-router-dom'
 
-export default function GoalsDefinitionFunction ({ setLoad, logged, setLogged }){
+export default function GoalsDefinitionFunction ({ setLoad, logged, setLogged, showMenu, setShowMenu }){
 
     const history = useHistory();
 
@@ -15,7 +15,7 @@ export default function GoalsDefinitionFunction ({ setLoad, logged, setLogged })
     return (
         <>
             {
-                logged != null ? <GoalsDefinition setLoad={setLoad} logged={logged} setLogged={setLogged}/> : null
+                logged != null ? <GoalsDefinition setLoad={setLoad} logged={logged} setLogged={setLogged} showMenu={showMenu} setShowMenu={setShowMenu}/> : null
             }
 
         </>

@@ -3,19 +3,23 @@ import { useHistory } from 'react-router-dom'
 import Viewer from '../../Layout/Viewer'
 import * as Style from './style'
 
-export default function Home({ setLoad, logged, setLogged }){
+export default function Home({ setLoad, logged, setLogged, showMenu, setShowMenu }){
 
     const history = useHistory();
     
     useEffect(() => {
         setLoad(true);
-        if(logged == null) history.push("/login");
+        if(logged == null){
+            history.push("/login");
+        }else{
+            setShowMenu(false);
+        }
         setLoad(false);
     }, [])
 
     return(
         <>
-            <Viewer setLoad={setLoad}>
+            <Viewer setLoad={setLoad} showMenu={showMenu} setShowMenu={setShowMenu} >
                 <Style.Title>GESPO</Style.Title>
                 <Style.SubTitle>Gestão de custos e projetos</Style.SubTitle>
                 <Style.Container>

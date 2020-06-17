@@ -106,6 +106,7 @@ export default class TimeEntry extends React.Component {
             .finally(() => {
                 this.props.setLoad(false);
             })
+        this.props.setShowMenu(true);
         /* if (this.props.logged.permission.id != 1) {
              this.state.selectDados.funcionarios = [this.props.logged];
              this.setState({
@@ -360,7 +361,7 @@ export default class TimeEntry extends React.Component {
     render() {
         return (
             <>
-                <Viewer setLoad={this.props.setLoad}>
+                <Viewer setLoad={this.props.setLoad} showMenu={this.props.showMenu} setShowMenu={this.props.setShowMenu}>
                     <Toaster
                         show={this.state.showToaster}
                         setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }); }}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import TimeEntry from './component'
 
-export default function TimeEntryFunction({ setLoad, logged }) {
+export default function TimeEntryFunction({ setLoad, logged, showMenu, setShowMenu }) {
     const history = useHistory();
 
     useEffect(() => {
@@ -13,7 +13,7 @@ export default function TimeEntryFunction({ setLoad, logged }) {
     return(
         <>
             {
-                logged != null ? <TimeEntry setLoad={setLoad} logged={logged} history={history} /> : null
+                logged != null ? <TimeEntry setLoad={setLoad} logged={logged} history={history} showMenu={showMenu} setShowMenu={setShowMenu} /> : null
             }
         </>
     );

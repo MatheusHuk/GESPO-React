@@ -9,15 +9,17 @@ function App() {
 
   const [loading, setLoading] = useState(true);
 
-  //console.log("ENV: ",process.env);
+  const [showMenu, setShowMenu] = useState(false);
+
   const setLoad = (l) => {
     setLoading(l);
   }
+  
   return (
     <>
         <CookiesProvider>
           <Loading load={loading} />
-          <Routes setLoad={setLoad}/>
+          <Routes setLoad={setLoad} showMenu={showMenu} setShowMenu={setShowMenu} />
         </CookiesProvider>
     </>
   );

@@ -144,6 +144,7 @@ export default class HoursProvisioningReal extends React.Component {
         this.props.setLoad(true)
         await this.mount();
         this.props.setLoad(false)
+        this.props.setShowMenu(true)
     }
 
     async createProvisioning() {
@@ -355,7 +356,7 @@ export default class HoursProvisioningReal extends React.Component {
     render() {
         return (
             <>
-                <Viewer setLoad={this.props.setLoad}>
+                <Viewer setLoad={this.props.setLoad} showMenu={this.props.showMenu} setShowMenu={this.props.setShowMenu}>
                     <Toaster
                         show={this.state.showToaster}
                         setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }); }}
