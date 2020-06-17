@@ -31,13 +31,18 @@ export const Button = styled.div`
     margin-bottom: 2VH;
     font-size: 3VH;
     color: ${props => props.selected ? 'black' : 'white'};
-    text-align: center;
-    line-height: 9.5VH;
     padding: 0 0 0 1VW;
     border-radius: 10px 0 0 10px;
     box-shadow: 0 0.5VH 3px black;
     cursor: pointer;
     transition: all 0.5s;
+
+    span{
+        height: max-content;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 
     :hover{
         background-color: ${props => props.selected ? 'white' : '#12075A'}

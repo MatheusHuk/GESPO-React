@@ -15,6 +15,10 @@ export default class TimeEntry extends React.Component {
         super(props);
         this.props = props;
         this.state = {
+            invalid: {
+                show: false,
+                message: ""
+            },
             showFiltros: true,
             showToaster: false,
             toaster: {
@@ -77,6 +81,16 @@ export default class TimeEntry extends React.Component {
             .then(async (res) => {
                 await ProjectService.getAllByEmployeeId(this.props.logged.id)
                     .then(res2 => {
+                        if(res2.data == ""){
+                            this.setState({
+                                ...this.state,
+                                invalid: {
+                                    show: true,
+                                    message: "Você não está alocado em nenhum projeto"
+                                }
+                            })
+                            return;
+                        }
                         console.log("RES2: ", res2.data);
                         this.setState({
                             ...this.state,
@@ -103,27 +117,12 @@ export default class TimeEntry extends React.Component {
             .catch(error => {
                 console.log('Error: ', error);
             })
-            .finally(() => {
-                this.props.setLoad(false);
-            })
+        this.props.setLoad(false);
         this.props.setShowMenu(true);
-        /* if (this.props.logged.permission.id != 1) {
-             this.state.selectDados.funcionarios = [this.props.logged];
-             this.setState({
-                 ...this.state,
-                 newDados: {
-                     ...this.state.newDados,
-                     employee: this.props.logged
-                 }
- 
-             });
-         } */
-        //this.props.setLoad(false);
     }
 
     componentDidUpdate() {
-        console.log('State: ', this.state.newDados);
-        console.log('State.dadosList: ', this.state.dadosList);
+        console.log('State: ', this.state);
     }
 
     handleProjeto(e) {
@@ -369,209 +368,215 @@ export default class TimeEntry extends React.Component {
                         body={this.state.toaster.body}
                     />
                     <Style.Container>
-                        <Style.HeaderContainer>
-                            <Style.HeaderButton
-                                selected={this.state.showFiltros}
-                                onClick={() => { this.setState({ ...this.state, showFiltros: true }) }}
-                            >
-                                <p>Apontamentos</p>
-                            </Style.HeaderButton>
-                            <Style.HeaderButton
-                                selected={!this.state.showFiltros}
-                                onClick={() => { this.setState({ ...this.state, showFiltros: false }) }}
-                            >
-                                <p>Novo Apontamento</p>
-                            </Style.HeaderButton>
-                        </Style.HeaderContainer>
-                        {this.state.showFiltros ?
-                            <Style.MainContainer>
-                                <Style.Filtros>
-                                    <Style.FHeader>Filtros</Style.FHeader>
-                                    <Style.FBody>
-                                        <Form className="formulario">
-                                            <Form.Row className="formulario-row-center">
-                                                <Form.Group as={Col} controlId="formProjeto">
-                                                    <Form.Label>Projeto</Form.Label>
-                                                    <Form.Control as="select" onChange={(event) => { this.handleProjetoFiltro(event) }}>
-                                                        {
-                                                            this.state.selectDados.projetos.map((value, i) => {
-                                                                return (
-                                                                    <option value={i} key={i}>{value.name}</option>
-                                                                )
-                                                            })
-                                                        }
-                                                    </Form.Control>
-                                                </Form.Group>
-
-                                                <Form.Group as={Col} controlId="formFuncionario">
-                                                    <Form.Label>Funcionário</Form.Label>
-                                                    {
-                                                        this.props.logged.permission.id == 1 ?
-                                                            <Form.Control as="select" onChange={(event) => { this.handleFuncionarioFiltro(event) }}>
-                                                                <option value={-1} key={-1} >Todos</option>
+                        {
+                            this.state.invalid.show ? 
+                            <>{this.state.invalid.message}</> :
+                            <>
+                                <Style.HeaderContainer>
+                                    <Style.HeaderButton
+                                        selected={this.state.showFiltros}
+                                        onClick={() => { this.setState({ ...this.state, showFiltros: true }) }}
+                                    >
+                                        <p>Apontamentos</p>
+                                    </Style.HeaderButton>
+                                    <Style.HeaderButton
+                                        selected={!this.state.showFiltros}
+                                        onClick={() => { this.setState({ ...this.state, showFiltros: false }) }}
+                                    >
+                                        <p>Novo Apontamento</p>
+                                    </Style.HeaderButton>
+                                </Style.HeaderContainer>
+                                {this.state.showFiltros ?
+                                    <Style.MainContainer>
+                                        <Style.Filtros>
+                                            <Style.FHeader>Filtros</Style.FHeader>
+                                            <Style.FBody>
+                                                <Form className="formulario">
+                                                    <Form.Row className="formulario-row-center">
+                                                        <Form.Group as={Col} controlId="formProjeto">
+                                                            <Form.Label>Projeto</Form.Label>
+                                                            <Form.Control as="select" onChange={(event) => { this.handleProjetoFiltro(event) }}>
                                                                 {
-                                                                    this.state.selectDados.funcionarios.map((val, i) => {
-                                                                        return (
-                                                                            <>
-                                                                                <option value={i} key={i}>{val.name}</option>
-                                                                            </>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </Form.Control> :
-                                                            <Form.Control type="text" value={this.props.logged.name} readOnly />
-                                                    }
-                                                </Form.Group>
-
-                                                <Form.Group as={Col} controlId="formData">
-                                                    <Form.Label>Data</Form.Label>
-                                                    <Form.Control type="date" onChange={(event) => { this.handleDataFiltro(event) }} />
-                                                </Form.Group>
-
-                                            </Form.Row>
-                                        </Form>
-                                    </Style.FBody>
-                                    <Style.FFooter>
-                                        <Style.BotaoForm onClick={() => { this.filterDados() }}>Filtrar</Style.BotaoForm>
-                                    </Style.FFooter>
-                                </Style.Filtros>
-                                <Style.Apontamento>
-                                    <Style.AHeader>Apontamentos</Style.AHeader>
-                                    <Style.TableDiv>
-                                        <Table striped bordered hover className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Funcionário</th>
-                                                    <th>Projeto</th>
-                                                    <th>Data</th>
-                                                    <th>Horas</th>
-                                                    <th>Observações</th>
-                                                    <th>Ações</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    this.state.dados.map((data, i) => {
-                                                        return (
-                                                            <tr key={i}>
-                                                                <td>{this.formatLongText(data.employee.name)}</td>
-                                                                <td>{data.project.name}</td>
-                                                                <td>{this.parseDate(data.creationDate)}</td>
-                                                                <td>{this.decryptHours(data.amountHours)}</td>
-                                                                <td>{this.formatLongText(data.dsWork)}</td>
-                                                                <td><Style.Icone><FA name="ban" /></Style.Icone></td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                }
-                                            </tbody>
-                                        </Table>
-                                    </Style.TableDiv>
-                                </Style.Apontamento>
-                            </Style.MainContainer>
-                            :
-                            <Style.MainContainer>
-                                <Style.Dados>
-                                    <Style.DHeader>Novo Apontamento</Style.DHeader>
-                                    <Style.DBody>
-                                        <Form className="formulario">
-                                            <Form.Row className="formulario-row">
-                                                <Form.Group as={Col} controlId="formProjeto">
-                                                    <Form.Label>Projeto</Form.Label>
-                                                    <Form.Control size="sm" as="select" onChange={(event) => { this.handleProjeto(event) }}>
-                                                        <option value="-1" >Selecione...</option>
-                                                        {
-                                                            this.state.selectDados.projetos.map((value, i) => {
-                                                                return (
-                                                                    <option value={i} key={i}>{value.name}</option>
-                                                                )
-                                                            })
-                                                        }
-                                                    </Form.Control>
-                                                </Form.Group>
-                                                <Form.Group as={Col} controlId="formProjeto">
-                                                    <Form.Label>Funcionário</Form.Label>
-                                                    {
-                                                        /*this.props.logged.permission.id == 1 ?
-                                                            <Form.Control size="sm" as="select" onChange={(event) => { this.handleFuncionario(event) }}>
-                                                                <option value="-1" >Selecione...</option>
-                                                                {
-                                                                    this.state.selectDados.funcionarios.map((value, i) => {
+                                                                    this.state.selectDados.projetos.map((value, i) => {
                                                                         return (
                                                                             <option value={i} key={i}>{value.name}</option>
                                                                         )
                                                                     })
                                                                 }
-                                                            </Form.Control> : */
-                                                        <Form.Control size="sm" type="text" value={this.props.logged.name} readOnly />
-                                                    }
-                                                </Form.Group>
-                                            </Form.Row>
-                                            <Form.Row>
-                                                <Form.Group as={Col} controlId="formData">
-                                                    <Form.Label>Data</Form.Label>
-                                                    <Form.Control size="sm" type="date" onChange={(event) => { this.handleData(event) }} />
-                                                </Form.Group>
-                                                <Form.Group as={Col} controlId="formHoras">
-                                                    <Form.Label>Horas</Form.Label>
-                                                    <Form.Control size="sm" type="number" onChange={(event) => { this.handleHoras(event) }} />
-                                                </Form.Group>
-                                                <Form.Group as={Col} controlId="formMinutos">
-                                                    <Form.Label>Minutos</Form.Label>
-                                                    <Form.Control size="sm" type="number" onChange={(event) => { this.handleMinutos(event) }} />
-                                                </Form.Group>
-                                                <Form.Group as={Col} controlId="formGerente">
-                                                    <Form.Label>Gerente</Form.Label>
-                                                    <Form.Control size="sm" type="text" value={this.state.newDados.project ? this.state.newDados.project.manager : ""} readOnly />
-                                                </Form.Group>
-                                            </Form.Row>
-                                            <Form.Row>
-                                                <Form.Group as={Col} controlId="formObs">
-                                                    <Form.Label>Observações</Form.Label>
-                                                    <Form.Control size="sm" type="text" onChange={(event) => { this.handleObs(event) }} />
-                                                </Form.Group>
-                                            </Form.Row>
-                                        </Form>
-                                    </Style.DBody>
-                                    <Style.DFooter>
-                                        <Style.BotaoForm onClick={() => { this.addDados() }}>Adicionar</Style.BotaoForm>
-                                        <Style.BotaoForm onClick={() => { this.saveDados() }} disabled={this.state.dadosList.length == 0} >Gravar tudo</Style.BotaoForm>
-                                    </Style.DFooter>
-                                </Style.Dados>
-                                <Style.ApontamentoSmall>
-                                    <Style.AHeader>Apontamentos</Style.AHeader>
-                                    <Style.TableDiv size={1}>
-                                        <Table striped bordered hover className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Funcionário</th>
-                                                    <th>Projeto</th>
-                                                    <th>Data</th>
-                                                    <th>Horas</th>
-                                                    <th>Observações</th>
-                                                    <th>Ações</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    this.state.dadosList.map((data, i) => {
-                                                        return (
-                                                            <tr key={i}>
-                                                                <td>{this.formatLongText(data.employee.name)}</td>
-                                                                <td>{data.project.name}</td>
-                                                                <td>{data.date}</td>
-                                                                <td>{this.decryptHours(data.amountHours)}</td>
-                                                                <td>{this.formatLongText(data.dsWork)}</td>
-                                                                <td><Style.Icone onClick={() => { this.deleteEntry(i) }}><FA name="ban" /></Style.Icone></td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                }
-                                            </tbody>
-                                        </Table>
-                                    </Style.TableDiv>
-                                </Style.ApontamentoSmall>
-                            </Style.MainContainer>
+                                                            </Form.Control>
+                                                        </Form.Group>
+
+                                                        <Form.Group as={Col} controlId="formFuncionario">
+                                                            <Form.Label>Funcionário</Form.Label>
+                                                            {
+                                                                this.props.logged.permission.id == 1 ?
+                                                                    <Form.Control as="select" onChange={(event) => { this.handleFuncionarioFiltro(event) }}>
+                                                                        <option value={-1} key={-1} >Todos</option>
+                                                                        {
+                                                                            this.state.selectDados.funcionarios.map((val, i) => {
+                                                                                return (
+                                                                                    <>
+                                                                                        <option value={i} key={i}>{val.name}</option>
+                                                                                    </>
+                                                                                )
+                                                                            })
+                                                                        }
+                                                                    </Form.Control> :
+                                                                    <Form.Control type="text" value={this.props.logged.name} readOnly />
+                                                            }
+                                                        </Form.Group>
+
+                                                        <Form.Group as={Col} controlId="formData">
+                                                            <Form.Label>Data</Form.Label>
+                                                            <Form.Control type="date" onChange={(event) => { this.handleDataFiltro(event) }} />
+                                                        </Form.Group>
+
+                                                    </Form.Row>
+                                                </Form>
+                                            </Style.FBody>
+                                            <Style.FFooter>
+                                                <Style.BotaoForm onClick={() => { this.filterDados() }}>Filtrar</Style.BotaoForm>
+                                            </Style.FFooter>
+                                        </Style.Filtros>
+                                        <Style.Apontamento>
+                                            <Style.AHeader>Apontamentos</Style.AHeader>
+                                            <Style.TableDiv>
+                                                <Table striped bordered hover className="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Funcionário</th>
+                                                            <th>Projeto</th>
+                                                            <th>Data</th>
+                                                            <th>Horas</th>
+                                                            <th>Observações</th>
+                                                            <th>Ações</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            this.state.dados.map((data, i) => {
+                                                                return (
+                                                                    <tr key={i}>
+                                                                        <td>{this.formatLongText(data.employee.name)}</td>
+                                                                        <td>{data.project.name}</td>
+                                                                        <td>{this.parseDate(data.creationDate)}</td>
+                                                                        <td>{this.decryptHours(data.amountHours)}</td>
+                                                                        <td>{this.formatLongText(data.dsWork)}</td>
+                                                                        <td><Style.Icone><FA name="ban" /></Style.Icone></td>
+                                                                    </tr>
+                                                                )
+                                                            })
+                                                        }
+                                                    </tbody>
+                                                </Table>
+                                            </Style.TableDiv>
+                                        </Style.Apontamento>
+                                    </Style.MainContainer>
+                                    :
+                                    <Style.MainContainer>
+                                        <Style.Dados>
+                                            <Style.DHeader>Novo Apontamento</Style.DHeader>
+                                            <Style.DBody>
+                                                <Form className="formulario">
+                                                    <Form.Row className="formulario-row">
+                                                        <Form.Group as={Col} controlId="formProjeto">
+                                                            <Form.Label>Projeto</Form.Label>
+                                                            <Form.Control size="sm" as="select" onChange={(event) => { this.handleProjeto(event) }}>
+                                                                <option value="-1" >Selecione...</option>
+                                                                {
+                                                                    this.state.selectDados.projetos.map((value, i) => {
+                                                                        return (
+                                                                            <option value={i} key={i}>{value.name}</option>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </Form.Control>
+                                                        </Form.Group>
+                                                        <Form.Group as={Col} controlId="formProjeto">
+                                                            <Form.Label>Funcionário</Form.Label>
+                                                            {
+                                                                /*this.props.logged.permission.id == 1 ?
+                                                                    <Form.Control size="sm" as="select" onChange={(event) => { this.handleFuncionario(event) }}>
+                                                                        <option value="-1" >Selecione...</option>
+                                                                        {
+                                                                            this.state.selectDados.funcionarios.map((value, i) => {
+                                                                                return (
+                                                                                    <option value={i} key={i}>{value.name}</option>
+                                                                                )
+                                                                            })
+                                                                        }
+                                                                    </Form.Control> : */
+                                                                <Form.Control size="sm" type="text" value={this.props.logged.name} readOnly />
+                                                            }
+                                                        </Form.Group>
+                                                    </Form.Row>
+                                                    <Form.Row>
+                                                        <Form.Group as={Col} controlId="formData">
+                                                            <Form.Label>Data</Form.Label>
+                                                            <Form.Control size="sm" type="date" onChange={(event) => { this.handleData(event) }} />
+                                                        </Form.Group>
+                                                        <Form.Group as={Col} controlId="formHoras">
+                                                            <Form.Label>Horas</Form.Label>
+                                                            <Form.Control size="sm" type="number" onChange={(event) => { this.handleHoras(event) }} />
+                                                        </Form.Group>
+                                                        <Form.Group as={Col} controlId="formMinutos">
+                                                            <Form.Label>Minutos</Form.Label>
+                                                            <Form.Control size="sm" type="number" onChange={(event) => { this.handleMinutos(event) }} />
+                                                        </Form.Group>
+                                                        <Form.Group as={Col} controlId="formGerente">
+                                                            <Form.Label>Gerente</Form.Label>
+                                                            <Form.Control size="sm" type="text" value={this.state.newDados.project ? this.state.newDados.project.manager : ""} readOnly />
+                                                        </Form.Group>
+                                                    </Form.Row>
+                                                    <Form.Row>
+                                                        <Form.Group as={Col} controlId="formObs">
+                                                            <Form.Label>Observações</Form.Label>
+                                                            <Form.Control size="sm" type="text" onChange={(event) => { this.handleObs(event) }} />
+                                                        </Form.Group>
+                                                    </Form.Row>
+                                                </Form>
+                                            </Style.DBody>
+                                            <Style.DFooter>
+                                                <Style.BotaoForm onClick={() => { this.addDados() }}>Adicionar</Style.BotaoForm>
+                                                <Style.BotaoForm onClick={() => { this.saveDados() }} disabled={this.state.dadosList.length == 0} >Gravar tudo</Style.BotaoForm>
+                                            </Style.DFooter>
+                                        </Style.Dados>
+                                        <Style.ApontamentoSmall>
+                                            <Style.AHeader>Apontamentos</Style.AHeader>
+                                            <Style.TableDiv size={1}>
+                                                <Table striped bordered hover className="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Funcionário</th>
+                                                            <th>Projeto</th>
+                                                            <th>Data</th>
+                                                            <th>Horas</th>
+                                                            <th>Observações</th>
+                                                            <th>Ações</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            this.state.dadosList.map((data, i) => {
+                                                                return (
+                                                                    <tr key={i}>
+                                                                        <td>{this.formatLongText(data.employee.name)}</td>
+                                                                        <td>{data.project.name}</td>
+                                                                        <td>{data.date}</td>
+                                                                        <td>{this.decryptHours(data.amountHours)}</td>
+                                                                        <td>{this.formatLongText(data.dsWork)}</td>
+                                                                        <td><Style.Icone onClick={() => { this.deleteEntry(i) }}><FA name="ban" /></Style.Icone></td>
+                                                                    </tr>
+                                                                )
+                                                            })
+                                                        }
+                                                    </tbody>
+                                                </Table>
+                                            </Style.TableDiv>
+                                        </Style.ApontamentoSmall>
+                                    </Style.MainContainer>
+                                }
+                            </>
                         }
                     </Style.Container>
                 </Viewer>

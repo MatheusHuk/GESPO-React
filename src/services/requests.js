@@ -37,6 +37,7 @@ export default class Requests {
 
     static put(path, body, isParam) {
         path = body && isParam ? this.buildParams(path, body) : path;
+        console.log("PUT BODY: ",body)
         return axios.put((process.env.REACT_APP_API_URL + path), body, {withCredentials : true})
             .then(res => {
                 return res

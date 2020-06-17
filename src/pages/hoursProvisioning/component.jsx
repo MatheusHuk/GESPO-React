@@ -14,6 +14,10 @@ export default class HoursProvisioningReal extends React.Component {
         super(props)
         this.props = props;
         this.state = {
+            invalid: {
+                show: false,
+                message: ""
+            },
             showFiltros: true,
             showEdit: false,
             showToaster: false,
@@ -30,13 +34,13 @@ export default class HoursProvisioningReal extends React.Component {
             editDados: {
                 project: {},
                 employee: {},
-                creationDate: "2020-01-01",
+                creationDate: "2020-01-20",
                 amountHours: 0
             },
             newDados: {
                 project: {},
                 employee: {},
-                creationDate: "2020-01-01",
+                creationDate: "2020-01-20",
                 amountHours: 0
             },
             selectDados: {
@@ -97,7 +101,9 @@ export default class HoursProvisioningReal extends React.Component {
                                         })
                                     }
                                 })
-                                console.log("Sorting aux:", aux)
+                                console.log("Aux l: ",aux)
+                                aux.sort((a, b) => { return a.id - b.id })
+                                console.log("Aux l 2:", aux)
                             }
                             this.setState({
                                 ...this.state,
@@ -112,20 +118,28 @@ export default class HoursProvisioningReal extends React.Component {
                         .catch(error => {
                             console.log("EE 2", error)
                         })
-                }
-                await CategoryService.getAll()
-                    .then(res => {
-                        this.setState({
-                            ...this.state,
-                            selectDados: {
-                                ...this.state.selectDados,
-                                categories: res.data == "" ? [] : res.data
-                            }
+                    await CategoryService.getAll()
+                        .then(res => {
+                            this.setState({
+                                ...this.state,
+                                selectDados: {
+                                    ...this.state.selectDados,
+                                    categories: res.data == "" ? [] : res.data
+                                }
+                            })
                         })
+                        .catch(error => {
+                            console.log("Cat e", error)
+                        })
+                }else{
+                    this.setState({
+                        ...this.state,
+                        invalid: {
+                            show: true,
+                            message: "Você não está gerindo nenhum projeto"
+                        }
                     })
-                    .catch(error => {
-                        console.log("Cat e", error)
-                    })
+                }
                 this.setState({
                     ...this.state,
                     selectDados: {
@@ -227,7 +241,7 @@ export default class HoursProvisioningReal extends React.Component {
             showEdit: true,
             editDados: {
                 id: data.id,
-                creationDate: "2020-" + (month < 10 ? "0" + month : month) + "-01",
+                creationDate: "2020-" + (month < 10 ? "0" + month : month) + "-20",
                 employee: {
                     ...data.employee,
                     category: data.category
@@ -281,7 +295,7 @@ export default class HoursProvisioningReal extends React.Component {
             ...this.state,
             editDados: {
                 ...this.state.editDados,
-                creationDate: "2020-" + (value < 10 ? "0" + value : value) + "-01"
+                creationDate: "2020-" + (value < 10 ? "0" + value : value) + "-20"
             }
         })
     }
@@ -325,7 +339,7 @@ export default class HoursProvisioningReal extends React.Component {
             ...this.state,
             newDados: {
                 ...this.state.newDados,
-                creationDate: "2020-" + (value < 10 ? "0" + value : value) + "-01"
+                creationDate: "2020-" + (value < 10 ? "0" + value : value) + "-20"
             }
         })
     }
@@ -364,263 +378,273 @@ export default class HoursProvisioningReal extends React.Component {
                         body={this.state.toaster.body}
                     />
                     <Style.Container>
-                        <Style.HeaderContainer>
-                            <Style.HeaderButton
-                                selected={this.state.showFiltros}
-                                onClick={() => { this.setState({ ...this.state, showFiltros: true, showEdit: false }) }}
-                            >
-                                <p>Provisionamentos</p>
-                            </Style.HeaderButton>
-                            <Style.HeaderButton
-                                selected={!this.state.showFiltros && !this.state.showEdit}
-                                onClick={() => { this.setState({ ...this.state, showFiltros: false, showEdit: false }) }}
-                            >
-                                <p>Novo provisionamento</p>
-                            </Style.HeaderButton>
-                            <Style.HeaderEditButton
-                                selected={this.state.showEdit}
-                            >
-                                <p>Editar provisionamento</p>
-                            </Style.HeaderEditButton>
-                        </Style.HeaderContainer>
-                        {this.state.showFiltros ?
-                            <>
-                                <Style.Dados>
-                                    <Style.DHeader> Filtros </Style.DHeader>
-                                    <Style.DBody>
-                                        <Style.DBoxBody>
-                                            <Style.DBigBox>
-                                                <Card.Body className="fundoForm">
-                                                    <Form>
-                                                        <Form.Row>
-                                                            <Form.Group as={Col} controlId="formGridGerente">
-                                                                <Form.Label>Projeto</Form.Label>
-                                                                <Form.Control as="select" onChange={(event) => { this.handleProject(event) }}>
-                                                                    {
-                                                                        this.state.selectDados.projects.map((value, i) => {
-                                                                            return (
-                                                                                <option value={i} key={value.id} >{value.name}</option>
-                                                                            );
-                                                                        })
-                                                                    }
-                                                                </Form.Control>
-                                                            </Form.Group>
-                                                        </Form.Row>
-                                                    </Form>
-                                                </Card.Body>
-                                            </Style.DBigBox>
-                                        </Style.DBoxBody>
-                                    </Style.DBody>
-                                    <Style.DFooter>
-                                        <Style.BotaoForm onClick={() => { console.log("FFF: ", this.state.provisionings) }}>
-                                            Filtrar
-                                        </Style.BotaoForm>
-                                    </Style.DFooter>
-                                </Style.Dados>
-                                <Style.DadosThree>
-                                    <Style.DHeader> Provisionamento de Horas: {this.state.project.name} </Style.DHeader>
-                                    <Style.DBody>
-                                        <Style.DBoxBody>
-                                            <Style.SubContainer>
-                                                {
-                                                    this.state.provisionings.map((month, i) => {
-                                                        return (
-                                                            <Style.Component>
-                                                                <Style.DHeaderTwo>{month.name}</Style.DHeaderTwo>
-                                                                <Style.CBody>
-                                                                    {
-                                                                        month.provisionings.map((prov, i) => {
-                                                                            return (
-                                                                                <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">{prov.employee.name} - {prov.category.dsCategory}</Tooltip>}>
-                                                                                    <Style.ProvButton onClick={() => { this.editProvisioning(prov) }}>
-                                                                                        <Style.ProvSpam>{prov.amountHours}</Style.ProvSpam>
-                                                                                    </Style.ProvButton>
-                                                                                </OverlayTrigger>
-                                                                            );
-                                                                        })
-                                                                    }
-                                                                </Style.CBody>
-                                                            </Style.Component>
-                                                        );
-                                                    })
-                                                }
-                                            </Style.SubContainer>
-                                        </Style.DBoxBody>
-                                    </Style.DBody>
-                                </Style.DadosThree>
-                            </>
-                            : this.state.showEdit ?
+                        {
+                            this.state.invalid.show ? 
+                                <><div style="color:black;">{this.state.invalid.message}</div></> :
                                 <>
-                                    <Style.DadosTwo>
-                                        <Style.DHeader> Editar Provisionamento </Style.DHeader>
-                                        <Style.DBody>
-                                            <Style.DBoxBody>
-                                                <Card.Body className="fundoForm">
-                                                    <Form.Group as={Col} controlId="formGridProjectAction">
-                                                        <Form.Label>Projeto</Form.Label>
-                                                        <Form.Control as="select" value={this.state.editDados.project.name}>
+                                    <Style.HeaderContainer>
+                                        <Style.HeaderButton
+                                            selected={this.state.showFiltros}
+                                            onClick={() => { this.setState({ ...this.state, showFiltros: true, showEdit: false }) }}
+                                        >
+                                            <p>Provisionamentos</p>
+                                        </Style.HeaderButton>
+                                        <Style.HeaderButton
+                                            selected={!this.state.showFiltros && !this.state.showEdit}
+                                            onClick={() => { this.setState({ ...this.state, showFiltros: false, showEdit: false }) }}
+                                        >
+                                            <p>Novo provisionamento</p>
+                                        </Style.HeaderButton>
+                                        <Style.HeaderEditButton
+                                            selected={this.state.showEdit}
+                                        >
+                                            <p>Editar provisionamento</p>
+                                        </Style.HeaderEditButton>
+                                    </Style.HeaderContainer>
+                                    {this.state.showFiltros ?
+                                        <>
+                                            <Style.Dados>
+                                                <Style.DHeader> Filtros </Style.DHeader>
+                                                <Style.DBody>
+                                                    <Style.DBoxBody>
+                                                        <Style.DBigBox>
+                                                            <Card.Body className="fundoForm">
+                                                                <Form>
+                                                                    <Form.Row>
+                                                                        <Form.Group as={Col} controlId="formGridGerente">
+                                                                            <Form.Label>Projeto</Form.Label>
+                                                                            <Form.Control as="select" onChange={(event) => { this.handleProject(event) }}>
+                                                                                {
+                                                                                    this.state.selectDados.projects.map((value, i) => {
+                                                                                        return (
+                                                                                            <option value={i} key={value.id} >{value.name}</option>
+                                                                                        );
+                                                                                    })
+                                                                                }
+                                                                            </Form.Control>
+                                                                        </Form.Group>
+                                                                    </Form.Row>
+                                                                </Form>
+                                                            </Card.Body>
+                                                        </Style.DBigBox>
+                                                    </Style.DBoxBody>
+                                                </Style.DBody>
+                                                <Style.DFooter>
+                                                    <Style.BotaoForm onClick={() => { console.log("FFF: ", this.state.provisionings) }}>
+                                                        Filtrar
+                                                    </Style.BotaoForm>
+                                                </Style.DFooter>
+                                            </Style.Dados>
+                                            <Style.DadosThree>
+                                                <Style.DHeader> Provisionamento de Horas: {this.state.project.name} </Style.DHeader>
+                                                <Style.DBody>
+                                                    <Style.DBoxBodyProv>
+                                                        <Style.SubContainer>
                                                             {
-                                                                this.state.selectDados.projects.map((value, i) => {
+                                                                this.state.provisionings.map((month, i) => {
                                                                     return (
-                                                                        <option value={i} key={value.id} >{value.name}</option>
+                                                                        <Style.Component>
+                                                                            <Style.DHeaderTwo>{month.name}</Style.DHeaderTwo>
+                                                                            <Style.CBody>
+                                                                                {
+                                                                                    month.provisionings.map((prov, i) => {
+                                                                                        return (
+                                                                                            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">{prov.employee.name} - {prov.category.dsCategory}</Tooltip>}>
+                                                                                                <Style.ProvButton onClick={() => { this.editProvisioning(prov) }}>
+                                                                                                    <Style.ProvSpam>{prov.amountHours}</Style.ProvSpam>
+                                                                                                </Style.ProvButton>
+                                                                                            </OverlayTrigger>
+                                                                                        );
+                                                                                    })
+                                                                                }
+                                                                            </Style.CBody>
+                                                                        </Style.Component>
                                                                     );
                                                                 })
                                                             }
-                                                        </Form.Control>
-                                                    </Form.Group>
-                                                </Card.Body>
-                                            </Style.DBoxBody>
-                                            <Style.DBoxBody>
-                                                <Style.DBoxFirst>
-                                                    <Card.Body className="fundoForm">
-                                                        <Form.Group as={Col} controlId="formGridResourceAction">
-                                                            <Form.Label>Recurso</Form.Label>
-                                                            <Form.Control as="select"
-                                                                defaultValue={this.state.editDados.employee.id}
-                                                                onChange={(event) => { this.handleEditResource(event) }}>
-                                                                {
-                                                                    this.state.selectDados.resources.map((v, i) => {
-                                                                        return (
-                                                                            <option value={v.employee.id}>{v.employee.name}</option>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </Form.Control>
-                                                        </Form.Group>
-                                                    </Card.Body>
-                                                </Style.DBoxFirst>
-                                                <Style.DBoxFirst>
-                                                    <Card.Body className="fundoForm">
-                                                        <Form.Group as={Col} controlId="formGridCategory">
-                                                            <Form.Label>Categoria</Form.Label>
-                                                            <Form.Control type="text" value={this.state.editDados.employee.category.dsCategory} readOnly />
-                                                        </Form.Group>
-                                                    </Card.Body>
-                                                </Style.DBoxFirst>
-                                            </Style.DBoxBody>
-                                            <Style.DBoxBody>
-                                                <Style.DBoxFirst>
-                                                    <Card.Body className="fundoForm">
-                                                        <Form.Group as={Col} controlId="formGridCategory">
-                                                            <Form.Label>Horas</Form.Label>
-                                                            <Form.Control type="text" onChange={(event) => { this.handleHoursEdit(event) }} value={this.state.editDados.amountHours} />
-                                                        </Form.Group>
-                                                    </Card.Body>
-                                                </Style.DBoxFirst>
-                                                <Style.DBoxFirst>
-                                                    <Card.Body className="fundoForm">
-                                                        <Form.Group as={Col} controlId="formGridResourceAction">
-                                                            <Form.Label>Mês</Form.Label>
-                                                            <Form.Control as="select" value={parseInt(this.state.editDados.creationDate.split("-")[1])} onChange={(event) => { this.handleEditCreationDate(event) }}>
-                                                                {
-                                                                    this.state.selectDados.months.map((v, i) => {
-                                                                        return (
-                                                                            <>
-                                                                                <option value={(i + 1)}>{v}</option>
-                                                                            </>
+                                                        </Style.SubContainer>
+                                                    </Style.DBoxBodyProv>
+                                                </Style.DBody>
+                                            </Style.DadosThree>
+                                        </>
+                                        : this.state.showEdit ?
+                                            <>
+                                                <Style.DadosTwo>
+                                                    <Style.DHeader> Editar Provisionamento </Style.DHeader>
+                                                    <Style.DBody>
+                                                        <Style.DBoxBody>
+                                                            <Card.Body className="fundoForm">
+                                                                <Form.Group as={Col} controlId="formGridProjectAction">
+                                                                    <Form.Label>Projeto</Form.Label>
+                                                                    <Form.Control as="select" value={this.state.editDados.project.name}>
+                                                                        {
+                                                                            this.state.selectDados.projects.map((value, i) => {
+                                                                                return (
+                                                                                    <option value={i} key={value.id} >{value.name}</option>
+                                                                                );
+                                                                            })
+                                                                        }
+                                                                    </Form.Control>
+                                                                </Form.Group>
+                                                            </Card.Body>
+                                                        </Style.DBoxBody>
+                                                        <Style.DBoxBody>
+                                                            <Style.DBoxFirst>
+                                                                <Card.Body className="fundoForm">
+                                                                    <Form.Group as={Col} controlId="formGridResourceAction">
+                                                                        <Form.Label>Recurso</Form.Label>
+                                                                        <Form.Control as="select"
+                                                                            defaultValue={this.state.editDados.employee.id}
+                                                                            onChange={(event) => { this.handleEditResource(event) }}>
+                                                                            {
+                                                                                this.state.selectDados.resources.map((v, i) => {
+                                                                                    return (
+                                                                                        <option value={v.employee.id}>{v.employee.name}</option>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </Form.Control>
+                                                                    </Form.Group>
+                                                                </Card.Body>
+                                                            </Style.DBoxFirst>
+                                                            <Style.DBoxFirst>
+                                                                <Card.Body className="fundoForm">
+                                                                    <Form.Group as={Col} controlId="formGridCategory">
+                                                                        <Form.Label>Categoria</Form.Label>
+                                                                        <Form.Control type="text" value={this.state.editDados.employee.category.dsCategory} readOnly />
+                                                                    </Form.Group>
+                                                                </Card.Body>
+                                                            </Style.DBoxFirst>
+                                                        </Style.DBoxBody>
+                                                        <Style.DBoxBody>
+                                                            <Style.DBoxFirst>
+                                                                <Card.Body className="fundoForm">
+                                                                    <Form.Group as={Col} controlId="formGridCategory">
+                                                                        <Form.Label>Horas</Form.Label>
+                                                                        <Form.Control type="text" onChange={(event) => { this.handleHoursEdit(event) }} value={this.state.editDados.amountHours} />
+                                                                    </Form.Group>
+                                                                </Card.Body>
+                                                            </Style.DBoxFirst>
+                                                            <Style.DBoxFirst>
+                                                                <Card.Body className="fundoForm">
+                                                                    <Form.Group as={Col} controlId="formGridResourceAction">
+                                                                        <Form.Label>Mês</Form.Label>
+                                                                        <Form.Control as="select" 
+                                                                            defaultValue={parseInt(this.state.editDados.creationDate.split("-")[1])} 
+                                                                            onChange={(event) => { this.handleEditCreationDate(event) }}>
+                                                                            {
+                                                                                this.state.selectDados.months.map((v, i) => {
+                                                                                    return (
+                                                                                        <>
+                                                                                            <option value={(i + 1)}>{v}</option>
+                                                                                        </>
 
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </Form.Control>
-                                                        </Form.Group>
-                                                    </Card.Body>
-                                                </Style.DBoxFirst>
-                                            </Style.DBoxBody>
-                                        </Style.DBody>
-                                        <Style.DFooter>
-                                            <Style.BotaoForm onClick={() => { this.updateProvisioning() }}>
-                                                Gravar
-                                        </Style.BotaoForm>
-                                            <Style.BotaoForm onClick={() => { this.deleteProvisioning() }}>
-                                                Deletar
-                                        </Style.BotaoForm>
-                                        </Style.DFooter>
-                                    </Style.DadosTwo>
-                                </> :
-                                <>
-                                    <Style.DadosTwo>
-                                        <Style.DHeader> Novo Provisionamento </Style.DHeader>
-                                        <Style.DBody>
-                                            <Style.DBoxBody>
-                                                <Style.DBigBox>
-                                                    <Card.Body className="fundoForm">
-                                                        <Form.Group as={Col} controlId="formGridProjectAction">
-                                                            <Form.Label>Projeto</Form.Label>
-                                                            <Form.Control as="select" onChange={(event) => { this.handleNewProject(event) }} >
-                                                                {
-                                                                    this.state.selectDados.projects.map((value, i) => {
-                                                                        return (
-                                                                            <option value={value} key={value.id} >{value.name}</option>
-                                                                        );
-                                                                    })
-                                                                }
-                                                            </Form.Control>
-                                                        </Form.Group>
-                                                    </Card.Body>
-                                                </Style.DBigBox>
-                                            </Style.DBoxBody>
-                                            <Style.DBoxBody>
-                                                <Style.DBoxFirst>
-                                                    <Card.Body className="fundoForm">
-                                                        <Form.Group as={Col} controlId="formGridResourceAction">
-                                                            <Form.Label>Recurso</Form.Label>
-                                                            <Form.Control as="select"
-                                                                defaultValue={this.state.selectDados.resources[0].employee.name}
-                                                                onChange={(event) => { this.handleNewResource(event) }} >
-                                                                {
-                                                                    this.state.selectDados.resources.map((v, i) => {
-                                                                        return (
-                                                                            <option value={v.employee.id}>{v.employee.name}</option>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </Form.Control>
-                                                        </Form.Group>
-                                                    </Card.Body>
-                                                </Style.DBoxFirst>
-                                                <Style.DBoxFirst>
-                                                    <Card.Body className="fundoForm">
-                                                        <Form.Group as={Col} controlId="formGridCategory">
-                                                            <Form.Label>Categoria</Form.Label>
-                                                            <Form.Control type="text" value={this.state.newDados.employee.category.dsCategory || ""} readOnly />
-                                                        </Form.Group>
-                                                    </Card.Body>
-                                                </Style.DBoxFirst>
-                                            </Style.DBoxBody>
-                                            <Style.DBoxBody>
-                                                <Style.DBoxFirst>
-                                                    <Card.Body className="fundoForm">
-                                                        <Form.Group as={Col} controlId="formGridCategory">
-                                                            <Form.Label>Horas</Form.Label>
-                                                            <Form.Control type="number" value={this.state.newDados.amountHours} onChange={(event) => { this.handleNewHoras(event) }} />
-                                                        </Form.Group>
-                                                    </Card.Body>
-                                                </Style.DBoxFirst>
-                                                <Style.DBoxFirst>
-                                                    <Card.Body className="fundoForm">
-                                                        <Form.Group as={Col} controlId="formGridResourceAction">
-                                                            <Form.Label>Mês</Form.Label>
-                                                            <Form.Control as="select" onChange={(event) => { this.handleNewCreationDate(event) }}>
-                                                                {
-                                                                    this.state.selectDados.months.map((v, i) => {
-                                                                        return (
-                                                                            <option value={(i + 1)}>{v}</option>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </Form.Control>
-                                                        </Form.Group>
-                                                    </Card.Body>
-                                                </Style.DBoxFirst>
-                                            </Style.DBoxBody>
-                                        </Style.DBody>
-                                        <Style.DFooter>
-                                            <Style.BotaoForm onClick={() => { this.createProvisioning() }}>
-                                                Gravar
-                                        </Style.BotaoForm>
-                                        </Style.DFooter>
-                                    </Style.DadosTwo>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </Form.Control>
+                                                                    </Form.Group>
+                                                                </Card.Body>
+                                                            </Style.DBoxFirst>
+                                                        </Style.DBoxBody>
+                                                    </Style.DBody>
+                                                    <Style.DFooter>
+                                                        <Style.BotaoForm onClick={() => { this.updateProvisioning() }}>
+                                                            Gravar
+                                                    </Style.BotaoForm>
+                                                        <Style.BotaoForm onClick={() => { this.deleteProvisioning() }}>
+                                                            Deletar
+                                                    </Style.BotaoForm>
+                                                    </Style.DFooter>
+                                                </Style.DadosTwo>
+                                            </> :
+                                            <>
+                                                <Style.DadosTwo>
+                                                    <Style.DHeader> Novo Provisionamento </Style.DHeader>
+                                                    <Style.DBody>
+                                                        <Style.DBoxBody>
+                                                            <Style.DBigBox>
+                                                                <Card.Body className="fundoForm">
+                                                                    <Form.Group as={Col} controlId="formGridProjectAction">
+                                                                        <Form.Label>Projeto</Form.Label>
+                                                                        <Form.Control as="select" onChange={(event) => { this.handleNewProject(event) }} >
+                                                                            {
+                                                                                this.state.selectDados.projects.map((value, i) => {
+                                                                                    return (
+                                                                                        <option value={value} key={value.id} >{value.name}</option>
+                                                                                    );
+                                                                                })
+                                                                            }
+                                                                        </Form.Control>
+                                                                    </Form.Group>
+                                                                </Card.Body>
+                                                            </Style.DBigBox>
+                                                        </Style.DBoxBody>
+                                                        <Style.DBoxBody>
+                                                            <Style.DBoxFirst>
+                                                                <Card.Body className="fundoForm">
+                                                                    <Form.Group as={Col} controlId="formGridResourceAction">
+                                                                        <Form.Label>Recurso</Form.Label>
+                                                                        <Form.Control as="select"
+                                                                            defaultValue={this.state.selectDados.resources[0].employee.name}
+                                                                            onChange={(event) => { this.handleNewResource(event) }} >
+                                                                            {
+                                                                                this.state.selectDados.resources.map((v, i) => {
+                                                                                    return (
+                                                                                        <option value={v.employee.id}>{v.employee.name}</option>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </Form.Control>
+                                                                    </Form.Group>
+                                                                </Card.Body>
+                                                            </Style.DBoxFirst>
+                                                            <Style.DBoxFirst>
+                                                                <Card.Body className="fundoForm">
+                                                                    <Form.Group as={Col} controlId="formGridCategory">
+                                                                        <Form.Label>Categoria</Form.Label>
+                                                                        <Form.Control type="text" value={this.state.newDados.employee.category.dsCategory || ""} readOnly />
+                                                                    </Form.Group>
+                                                                </Card.Body>
+                                                            </Style.DBoxFirst>
+                                                        </Style.DBoxBody>
+                                                        <Style.DBoxBody>
+                                                            <Style.DBoxFirst>
+                                                                <Card.Body className="fundoForm">
+                                                                    <Form.Group as={Col} controlId="formGridCategory">
+                                                                        <Form.Label>Horas</Form.Label>
+                                                                        <Form.Control type="number" value={this.state.newDados.amountHours} onChange={(event) => { this.handleNewHoras(event) }} />
+                                                                    </Form.Group>
+                                                                </Card.Body>
+                                                            </Style.DBoxFirst>
+                                                            <Style.DBoxFirst>
+                                                                <Card.Body className="fundoForm">
+                                                                    <Form.Group as={Col} controlId="formGridResourceAction">
+                                                                        <Form.Label>Mês</Form.Label>
+                                                                        <Form.Control as="select" 
+                                                                            defaultValue={parseInt(this.state.newDados.creationDate.split("-")[1])}
+                                                                            onChange={(event) => { this.handleNewCreationDate(event) }}>
+                                                                            {
+                                                                                this.state.selectDados.months.map((v, i) => {
+                                                                                    return (
+                                                                                        <option value={(i + 1)}>{v}</option>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </Form.Control>
+                                                                    </Form.Group>
+                                                                </Card.Body>
+                                                            </Style.DBoxFirst>
+                                                        </Style.DBoxBody>
+                                                    </Style.DBody>
+                                                    <Style.DFooter>
+                                                        <Style.BotaoForm onClick={() => { this.createProvisioning() }}>
+                                                            Gravar
+                                                    </Style.BotaoForm>
+                                                    </Style.DFooter>
+                                                </Style.DadosTwo>
+                                            </>
+                                    }
                                 </>
                         }
                     </Style.Container>

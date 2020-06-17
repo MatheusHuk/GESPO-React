@@ -198,7 +198,7 @@ export const DadosThree = styled.div`
     width: 80%;
     border-radius: 5px;
     background-color: #2B47AA;
-    top: 20VH;
+    top: 24VH;
     left: 50%;
     margin-bottom: 5%;
     transform: translate(-50%, -50%);
@@ -248,7 +248,7 @@ export const DFooter = styled.div`
 `;
 
 
-export const DBoxBodyFlexRight = styled.div`
+export const DBoxBodyProv = styled.div`
     padding: 0VH 2VW 0 2VW;
     position: relative;
     left: 50%;
@@ -257,6 +257,7 @@ export const DBoxBodyFlexRight = styled.div`
     height: 20%;
     display: flex;
     justify-content: flex-right;
+    overflow: scroll;
 `;
 
 export const DBoxBody = styled.div`
@@ -477,17 +478,18 @@ export const Component = styled.div`
     text-align: left;
     line-height: 2px;
     transition: all 0.5s;
-    padding: 3% 1%;
+    padding: 1.5% 1%;
     box-shadow: 0VH 0.5VH  10px black;
+    margin: 0 2%;
 `;
 
 export const SubContainer = styled.div`
     display: flex;
     justify-content: space-around;
-    width: 100%;
-    height: 50%;
+    height: auto;
     padding-top: 2.5VH;
     padding-bottom: 2.5VH;
+    max-height: 100%;
 `;
 
 export const ProvButton = styled.div`
