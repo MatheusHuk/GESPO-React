@@ -14,17 +14,19 @@ export default function ProjectManagement({ setLoad, showMenu, setShowMenu }){
     return(
         <>
             <Viewer setLoad={setLoad} showMenu={showMenu} setShowMenu={setShowMenu}>
-                <Style.Title>GESPO</Style.Title>
-                <Style.SubTitle>Gestão de custos e projetos</Style.SubTitle>
-                <Style.Container>
-                    <Style.SubContainer>
-                        <Style.Component onClick={() => history.push("/projectManagement/hoursProvisioning") }>Provisionamento de Horas</Style.Component>
-                        <Style.Component onClick={() => history.push("/projectManagement/resourcesAllocation") }>Alocação de recursos</Style.Component>
-                    </Style.SubContainer>
-                    <Style.SubContainer>
-                        <Style.Component class="component" onClick={() => history.push("/projectManagement/goalsDefinition") }>Definição de metas</Style.Component>
-                    </Style.SubContainer>
-                </Style.Container>
+                <Style.MainContainer>
+                    <Style.Title>GESPO</Style.Title>
+                    <Style.SubTitle>Gestão de custos e projetos</Style.SubTitle>
+                    <Style.Container>
+                        <Style.SubContainer>
+                            <Style.Component onClick={() => history.push("/projectManagement/hoursProvisioning") }>Provisionamento de Horas</Style.Component>
+                            <Style.Component onClick={() => history.push("/projectManagement/resourcesAllocation") }>Alocação de recursos</Style.Component>
+                        </Style.SubContainer>
+                        <Style.SubContainer>
+                            <Style.Component class="component" onClick={() => history.push("/projectManagement/goalsDefinition") }>Definição de metas</Style.Component>
+                        </Style.SubContainer>
+                    </Style.Container>
+                </Style.MainContainer>
             </Viewer>
         </>
     );

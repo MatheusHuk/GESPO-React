@@ -1,4 +1,21 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const animation = keyframes`
+    0%{
+        left: 100%
+    }
+    100%{
+        left: 0
+    }
+`;
+
+export const MainContainer = styled.div`
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    animation: ${animation} 0.5s;
+`;
 
 export const Title = styled.div`
     display: flex;

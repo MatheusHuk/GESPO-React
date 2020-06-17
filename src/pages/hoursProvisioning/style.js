@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+
 const animation = keyframes`
     0%{
         left: 100%
@@ -7,6 +8,7 @@ const animation = keyframes`
         left: 0
     }
 `;
+
 export const Container = styled.div`
     padding: 2VH 2VW;
     position: relative;

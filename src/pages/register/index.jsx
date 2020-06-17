@@ -17,18 +17,20 @@ export default function Register({ setLoad, showMenu, setShowMenu }){
     return(
         <>
             <Viewer setLoad={setLoad} showMenu={showMenu} setShowMenu={setShowMenu}>
-            <Style.Title>GESPO</Style.Title>
-                <Style.SubTitle>Gestão de custos e projetos / Cadastros </Style.SubTitle>
-                <Style.Container>
-                    <Style.SubContainer>
-                        <Style.Component class="component" onClick={() => history.push("/register/custCenterRegister") }>Cadastro de centro de custo</Style.Component>
-                        <Style.Component class="component" onClick={() => history.push("/register/projectRegister") }>Cadastro de projetos</Style.Component>
-                    </Style.SubContainer>
-                    <Style.SubContainer class="subcontainer">
-                        <Style.Component class="component" onClick={() => history.push("/register/userRegister") }>Cadastro de usuários</Style.Component>
-                        <Style.Component class="component" onClick={() => history.push("/register/categoryRegister") }>Cadastro de categoria</Style.Component>
-                    </Style.SubContainer>
-                </Style.Container>
+            <Style.MainContainer>
+                <Style.Title>GESPO</Style.Title>
+                    <Style.SubTitle>Gestão de custos e projetos / Cadastros </Style.SubTitle>
+                    <Style.Container>
+                        <Style.SubContainer>
+                            <Style.Component class="component" onClick={() => history.push("/register/custCenterRegister") }>Cadastro de centro de custo</Style.Component>
+                            <Style.Component class="component" onClick={() => history.push("/register/projectRegister") }>Cadastro de projetos</Style.Component>
+                        </Style.SubContainer>
+                        <Style.SubContainer class="subcontainer">
+                            <Style.Component class="component" onClick={() => history.push("/register/userRegister") }>Cadastro de usuários</Style.Component>
+                            <Style.Component class="component" onClick={() => history.push("/register/categoryRegister") }>Cadastro de categoria</Style.Component>
+                        </Style.SubContainer>
+                    </Style.Container>
+                </Style.MainContainer>
             </Viewer>
         </>
     );

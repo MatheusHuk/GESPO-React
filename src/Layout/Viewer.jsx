@@ -1,15 +1,16 @@
 import React from 'react'
 import * as Comp from '../components'
 import './index.css'
+import { Todo } from './style.js'
 
 export default function Viewer({ children, setLoad, showMenu, setShowMenu }){
     return(
         <>
             <Comp.Menu setLoad={setLoad} />
             <Comp.SideMenu showMenu={showMenu} setShowMenu={setShowMenu} />
-            <div class="todo">
+            <Todo showMenu={showMenu}>
                 {children}
-            </div>
+            </Todo>
         </>
     );
 }

@@ -2,12 +2,12 @@ import styled from 'styled-components'
 
 export const SideMenu = styled.div`
     display: fixed;
-    position: relative;
+    position: ${props => props.showMenu ? "relative" : "absolute"};
     width: 20VW;
     height: 100VH;
     background-color: #251680;
     z-index: 998;
-    transition: 0.2s ease-in;
+    transition: 0.3s ease-in;
     left: ${props => props.showMenu ? "0" : "-21%"}
 `;
 
