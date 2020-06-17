@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Cookies, useCookies } from 'react-cookie'
 import { useHistory } from 'react-router-dom'
-import { FormControl, InputGroup, Button } from 'react-bootstrap';
+import { FormControl, InputGroup, Button, Form, Col } from 'react-bootstrap';
 import UserService from '../../services/userService'
 import Toaster from '../../utils/Toaster'
 import './index.css'
 import loginImg from "../../assets/gespo.jpg";
 import './style.scss';
+import * as Style from './style.js'
 
 
 export default function Login({ setLoad, logged, setLogged }) {
@@ -98,26 +99,35 @@ export default function Login({ setLoad, logged, setLogged }) {
 
             <div class="box_login">
                 <div className="base-container">
-                    <div className="content">
-                        <div className="image">
+                    <Style.Content>
+                        <Style.Image>
                             <img src={loginImg} />
-                        </div>
-                        <div className="form">
-                            <div className="form-group">
-                                <label htmlFor="username">Usuário</label>
-                                <input type="text" name="username" placeholder="CPF" onChange={(event) => { handleLogin(event) }} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Senha</label>
-                                <input type="password" name="password" placeholder="Senha" onChange={(event) => { handlePass(event) }} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="footer">
-                        <button onClick={() => { login() }} type="button" class="button_box">
-                            Entrar
-          </button>
-                    </div>
+                        </Style.Image>
+                        <Style.Dados>
+                            <Style.DHeader>Login</Style.DHeader>
+                            <Style.DBody>
+                                <Form>
+                                    <Form.Row>
+                                        <Form.Group as={Col}>
+                                            <Form.Label>Usuário</Form.Label>
+                                            <Form.Control type="text" placeholder="CPF" onChange={(event) => { handleLogin(event) }} />
+                                        </Form.Group>
+                                    </Form.Row>
+                                    <Form.Row>
+                                        <Form.Group as={Col}>
+                                            <Form.Label>Senha</Form.Label>
+                                            <Form.Control type="password" placeholder="Password" onChange={(event) => { handlePass(event) }} />
+                                        </Form.Group>
+                                    </Form.Row>
+                                </Form>
+                            </Style.DBody>
+                            <Style.DFooter>
+                                <Style.BotaoForm onClick={() => { login() }}>
+                                    Entrar
+                                </Style.BotaoForm>
+                            </Style.DFooter>
+                        </Style.Dados>
+                    </Style.Content>
                 </div>
             </div>
         </>
