@@ -48,13 +48,20 @@ export default function Routes({ setLoad }) {
                         logged={logged}
                         setLogged={setLogged} />}
                     exact />
+
                 <Route path="/register/projectRegister" render={(props) =>
                     <Pages.ProjectRegister
                         setLoad={setLoad}
                         logged={logged}
                         setLogged={setLogged}
                     />} exact />
-                <Route path="/register/custCenterRegister" render={(props) => <Pages.CustCenterRegister setLoad={setLoad} />} exact />
+                <Route path="/register/categoryRegister" render={(props) => <Pages.CategoryRegister setLoad={setLoad} />} exact />
+                <Route path="/register/custCenterRegister" render={(props) => 
+                <Pages.CustCenterRegister 
+                    setLoad={setLoad}
+                    logged={logged}
+                    setLogged={setLogged}/>}
+                exact />
             </Switch>
         </BrowserRouter>
     );

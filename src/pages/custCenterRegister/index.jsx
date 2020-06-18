@@ -1,66 +1,24 @@
-import React, { useState } from 'react'
-import Viewer from '../../Layout/Viewer'
-import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
-import "./index.css"
-import * as Style from './style'
+import React, { useEffect } from 'react'
+import CustCenterRegister from './component'
+import { useHistory } from 'react-router-dom'
 
-export default function CustCenterRegister() {
+export default function CustCenterRegisterFunction ({ setLoad, logged, setLogged }){
 
-    const [novo, setNovo] = useState(false);
+    const history = useHistory();
+
+    useEffect(() => {
+        if(logged == null) {
+             history.push("/login")
+         } 
+     })
 
     return (
         <>
-            <Viewer>
-                <Style.Container>
-                    <Style.Dados>
-                        <Style.DHeader>
-                            <Style.DivCreate>
-                                <Style.DivTitle>Cadastrar Centro de Custos</Style.DivTitle>
-                           <Style.BotaoFormCreate onClick={() => { setNovo(!novo) }}>
-                                    {!novo ? 'Novo' : 'Editar'}
-                                </Style.BotaoFormCreate>
-                            </Style.DivCreate>
-                        </Style.DHeader>
-                        <Style.DBody>
-                            <Style.DBoxBody>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
-                                        <Form.Group as={Col} controlId="formGridClientName">
-                                            <Form.Label>Nome do Cliente</Form.Label>
-                                            {
-                                                novo ?
-                                                    <Form.Control type="text" placeholder="" /> :
-                                                    <Form.Control as="select" value="Choose...">
-                                                        <option>Selecione...</option>
-                                                        <option>Projeto 1</option>
-                                                        <option>Projeto 2</option>
-                                                        <option>Projeto 3</option>
-                                                    </Form.Control>
-                                            }
-                                        </Form.Group>
-                                    </Card.Body>
-                                </Style.DBox>
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
-                                        <Form.Group as={Col} controlId="formGridCnpj">
-                                            <Form.Label>CNPJ</Form.Label>
-                                            <Form.Control type="text" placeholder="00.000.000/0000-00" />
-                                        </Form.Group>
-                                    </Card.Body>
-                                </Style.DBox>
-                            </Style.DBoxBody>
-                        </Style.DBody>
-                        <Style.DFooter>
-                            <Style.BotaoForm>
-                                Gravar
-                            </Style.BotaoForm>
-                            <Style.BotaoForm>
-                                Deletar
-                            </Style.BotaoForm>
-                        </Style.DFooter>
-                    </Style.Dados>
-                </Style.Container>
-            </Viewer>
+        
+            {
+                logged != null ? <CustCenterRegister setLoad={setLoad} logged={logged} setLogged={setLogged}/> : null
+            }
+
         </>
-    );
+    )
 }

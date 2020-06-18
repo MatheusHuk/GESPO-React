@@ -25,6 +25,7 @@ export default function Register({ setLoad }){
                     </Style.SubContainer>
                     <Style.SubContainer class="subcontainer">
                         <Style.Component class="component" onClick={() => history.push("/register/userRegister") }>Cadastro de usuários</Style.Component>
+                        <Style.Component class="component" onClick={() => history.push("/register/categoryRegister") }>Cadastro de categoria</Style.Component>
                     </Style.SubContainer>
                 </Style.Container>
             </Viewer>
