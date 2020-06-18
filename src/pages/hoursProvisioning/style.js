@@ -478,9 +478,11 @@ export const Component = styled.div`
     text-align: left;
     line-height: 2px;
     transition: all 0.5s;
-    padding: 1.5% 1%;
+    padding: 10px;
     box-shadow: 0VH 0.5VH  10px black;
     margin: 0 2%;
+    min-height: 20VH;
+    max-height: 60VH;
 `;
 
 export const SubContainer = styled.div`
@@ -490,6 +492,7 @@ export const SubContainer = styled.div`
     padding-top: 2.5VH;
     padding-bottom: 2.5VH;
     max-height: 100%;
+    color: white;
 `;
 
 export const ProvButton = styled.div`

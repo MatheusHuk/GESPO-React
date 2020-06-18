@@ -57,15 +57,17 @@ export default class HoursProvisioningReal extends React.Component {
         console.log("Prov state: ", this.state)
     }
 
-    async mount(){
+    async mount(projectRes){
         await ProjectService.getAllByEmployeeId(this.props.logged.id)
             .then(async (res) => {
                 if (res.data.length > 0) {
                     await HoursProvisioningService.getAllFiltered({
-                        projectId: res.data[0].id
+                        projectId: projectRes ? projectRes.id : res.data[0].id
                     })
                         .then(async (res2) => {
-                            await EmployeeService.getAllByProject({ projectId: res.data[0].id })
+                            await EmployeeService.getAllByProject({ 
+                                projectId: projectRes ? projectRes.id : res.data[0].id 
+                            })
                                 .then(res3 => {
                                     this.setState({
                                         ...this.state,
@@ -101,16 +103,14 @@ export default class HoursProvisioningReal extends React.Component {
                                         })
                                     }
                                 })
-                                console.log("Aux l: ",aux)
                                 aux.sort((a, b) => { return a.id - b.id })
-                                console.log("Aux l 2:", aux)
                             }
                             this.setState({
                                 ...this.state,
                                 provisionings: aux,
                                 newDados: {
                                     ...this.state.newDados,
-                                    project: res.data[0]
+                                    project: projectRes ? projectRes : res.data[0]
                                 }
                             })
                             console.log("RES2: ", res2)
@@ -146,7 +146,7 @@ export default class HoursProvisioningReal extends React.Component {
                         ...this.state.selectDados,
                         projects: res.data == "" ? [] : res.data
                     },
-                    project: res.data == "" ? {} : res.data[0]
+                    project: projectRes ? projectRes : res.data == "" ? {} : res.data[0]
                 })
             })
             .catch(error => {
@@ -252,11 +252,12 @@ export default class HoursProvisioningReal extends React.Component {
         })
     }
 
-    handleProjectFiltro(e) {
-        this.setState({
-            ...this.state,
-            project: this.state.selectDados.projects[e.target.value]
-        })
+    async handleProject(e) {
+        let value = e.target.value
+        let projectRes = this.state.selectDados.projects.find(v => v.id == value)
+        this.props.setLoad(true)
+        await this.mount(projectRes)
+        this.props.setLoad(false)
     }
 
     handleCategory(e) {
@@ -413,11 +414,13 @@ export default class HoursProvisioningReal extends React.Component {
                                                                     <Form.Row>
                                                                         <Form.Group as={Col} controlId="formGridGerente">
                                                                             <Form.Label>Projeto</Form.Label>
-                                                                            <Form.Control as="select" onChange={(event) => { this.handleProject(event) }}>
+                                                                            <Form.Control as="select" 
+                                                                            defaultValue={this.state.project.id}
+                                                                            onChange={(event) => { this.handleProject(event) }}>
                                                                                 {
                                                                                     this.state.selectDados.projects.map((value, i) => {
                                                                                         return (
-                                                                                            <option value={i} key={value.id} >{value.name}</option>
+                                                                                            <option value={value.id} key={i} >{value.name}</option>
                                                                                         );
                                                                                     })
                                                                                 }
@@ -429,11 +432,6 @@ export default class HoursProvisioningReal extends React.Component {
                                                         </Style.DBigBox>
                                                     </Style.DBoxBody>
                                                 </Style.DBody>
-                                                <Style.DFooter>
-                                                    <Style.BotaoForm onClick={() => { console.log("FFF: ", this.state.provisionings) }}>
-                                                        Filtrar
-                                                    </Style.BotaoForm>
-                                                </Style.DFooter>
                                             </Style.Dados>
                                             <Style.DadosThree>
                                                 <Style.DHeader> Provisionamento de Horas: {this.state.project.name} </Style.DHeader>
@@ -441,6 +439,8 @@ export default class HoursProvisioningReal extends React.Component {
                                                     <Style.DBoxBodyProv>
                                                         <Style.SubContainer>
                                                             {
+                                                                this.state.provisionings.length == 0 ?
+                                                                    <>Este projeto não têm nenhum provisionamento</> :
                                                                 this.state.provisionings.map((month, i) => {
                                                                     return (
                                                                         <Style.Component>
@@ -476,15 +476,7 @@ export default class HoursProvisioningReal extends React.Component {
                                                             <Card.Body className="fundoForm">
                                                                 <Form.Group as={Col} controlId="formGridProjectAction">
                                                                     <Form.Label>Projeto</Form.Label>
-                                                                    <Form.Control as="select" value={this.state.editDados.project.name}>
-                                                                        {
-                                                                            this.state.selectDados.projects.map((value, i) => {
-                                                                                return (
-                                                                                    <option value={i} key={value.id} >{value.name}</option>
-                                                                                );
-                                                                            })
-                                                                        }
-                                                                    </Form.Control>
+                                                                    <Form.Control type="text" value={this.state.editDados.project.name} readOnly />
                                                                 </Form.Group>
                                                             </Card.Body>
                                                         </Style.DBoxBody>
@@ -567,15 +559,7 @@ export default class HoursProvisioningReal extends React.Component {
                                                                 <Card.Body className="fundoForm">
                                                                     <Form.Group as={Col} controlId="formGridProjectAction">
                                                                         <Form.Label>Projeto</Form.Label>
-                                                                        <Form.Control as="select" onChange={(event) => { this.handleNewProject(event) }} >
-                                                                            {
-                                                                                this.state.selectDados.projects.map((value, i) => {
-                                                                                    return (
-                                                                                        <option value={value} key={value.id} >{value.name}</option>
-                                                                                    );
-                                                                                })
-                                                                            }
-                                                                        </Form.Control>
+                                                                        <Form.Control type="text" value={this.state.newDados.project.name} readOnly/>
                                                                     </Form.Group>
                                                                 </Card.Body>
                                                             </Style.DBigBox>

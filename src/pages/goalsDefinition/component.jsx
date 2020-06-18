@@ -64,7 +64,6 @@ export default class GoalsDefinition extends React.Component {
         this.props.setLoad(true)
         await ProjectService.getAllByEmployeeId(this.props.logged.id)
             .then(async (res) => {
-                res.data = ""
                 if (res.data != "") {
                     await TasksService.getAllByProjectId({ id: res.data[0].id })
                         .then(async (res2) => {
