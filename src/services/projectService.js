@@ -15,6 +15,33 @@ export default class ProjectService{
         });
     }
 
+
+    static async create(body){
+        return new Promise((resolve, reject) => {
+            Requests.post("/projects", body)
+                .then(res => {
+                    if(res.status >= 200 && res.status < 300){
+                        resolve(res);
+                    }else{
+                        reject(res.status);
+                    }
+                });
+        });
+    }
+
+    static async update(body){
+        return new Promise((resolve, reject) => {
+            Requests.put("/projects", body)
+                .then(res => {
+                    if(res.status >= 200 && res.status < 300){
+                        resolve(res);
+                    }else{
+                        reject(res.status);
+                    }
+                });
+        });
+    }
+
     static async getAllByEmployeeId(id){
         let body = { id: id }
         return new Promise((resolve, reject) => {
