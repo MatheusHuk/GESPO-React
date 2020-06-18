@@ -381,7 +381,7 @@ export default class HoursProvisioningReal extends React.Component {
                     <Style.Container>
                         {
                             this.state.invalid.show ? 
-                                <><div style="color:black;">{this.state.invalid.message}</div></> :
+                                <>{this.state.invalid.message}</> :
                                 <>
                                     <Style.HeaderContainer>
                                         <Style.HeaderButton

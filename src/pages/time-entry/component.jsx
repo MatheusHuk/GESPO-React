@@ -91,7 +91,6 @@ export default class TimeEntry extends React.Component {
                             })
                             return;
                         }
-                        console.log("RES2: ", res2.data);
                         this.setState({
                             ...this.state,
                             dados: res.data == "" ? [] : res.data,
