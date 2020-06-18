@@ -2,13 +2,14 @@ import React from 'react'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
-import CustCenterService from '../../services/CustCenterService'
+import TeamService from '../../services/teamService'
+import CategoryService from '../../services/categoryService'
 import "./index.css"
 import * as Style from './style'
 import FA from 'react-fontawesome'
 import * as ReactBootstrap from "react-bootstrap";
 
-export default class CustCenterRegister extends React.Component {
+export default class TeamRegister extends React.Component {
 
     constructor(props) {
         super(props)
@@ -20,17 +21,16 @@ export default class CustCenterRegister extends React.Component {
                 header: "",
                 body: ""
             },
-            custCenters: [],
-            selectDados: {
-                nameCustCenters: []
-            },
-            newDados: {
-                name: "",
-                cnpj: ""
+            teams: [],
+            selectDados: {                
+                team: []
+            },            
+            newDados: {           
+                name: ""                                    
             },
             editDados: {
                 id: -1,
-                cnpj: ""
+                name: ""
             }
         }
     }
@@ -38,42 +38,86 @@ export default class CustCenterRegister extends React.Component {
     componentDidUpdate() {
         console.log("This.state: ", this.state)
     }
+    
+    async save() {
+        this.props.setLoad(true)
+        await TeamService.create([this.state.newDados])
+            .then(async (res) => {
+                await TeamService.getAll()
+                    .then(async (res2) => {
+                        this.setState({
+                            ...this.state,
+                            showToaster: true,
+                            teams: res2.data = "" ? [] : res2.data,
+                            toaster: {
+                                header: "Sucesso",
+                                body: `O time ${this.state.newDados.name} foi criado com sucesso`,
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        this.setState({
+                            ...this.state,
+                            showToaster: true,
+                            toaster: {
+                                header: "Error",
+                                body: `Erro ao criar time`,
+                            }
+                        })
+                    })
+            })
+            .catch(error => {
+                this.setState({
+                    ...this.state,
+                    showToaster: true,
+                    toaster: {
+                        header: "Error",
+                        body: `Erro ao criar time`,
+                    }
+                })
+            })
+        this.props.setLoad(false)
+    }
 
     async componentDidMount() {
         this.props.setLoad(true)
-        await CustCenterService.getAll()
-            .then(res => {
-                this.setState({
-                    ...this.state,
-                    custCenters: res.data = "" ? [] : res.data,
-                    selectDados: {
-                        nameCustCenters: res.data = "" ? [] : res.data
-                    },
-                    newDados: {
-                        ...this.state.newDados,
-                        custCenter: res.data = "" ? {} : res.data[0]
-                    }
-                })
-            })
-            .catch(error => {
-                console.log("Error: ", error)
-            })
+        await TeamService.getAll()
+            .then(async (res) => {
+                await TeamService.getAll()
+                    .then(async (res2) => {                        
+                                this.setState({
+                                    ...this.state,
+                                    teams: res.data = "" ? [] : res.data,
+                                    selectDados: {
+                                        teams: res.data = "" ? [] : res.data
+                                    },
+                                    newDados: {
+                                        ...this.state.newDados,
+                                        category: res.data = "" ? {} : res.data[0]
+                                    }
+                                })
+                            })
+                    })
+                    .catch(error => {
+                        console.log("Error: ", error)
+                    })            
         this.props.setLoad(false)
     }
 
-    async save() {
+
+    async updateTeam() {
         this.props.setLoad(true)
-        await CustCenterService.create([this.state.newDados])
+        await TeamService.create([this.state.editDados])
             .then(async (res) => {
-                await CustCenterService.getAll()
+                await TeamService.getAll()
                     .then(async (res2) => {
                         this.setState({
                             ...this.state,
                             showToaster: true,
-                            custCenters: res2.data = "" ? [] : res2.data,
+                            teams: res2.data = "" ? [] : res2.data,
                             toaster: {
                                 header: "Sucesso",
-                                body: `O Centro de custo ${this.state.newDados.name} foi criado com sucesso !`,
+                                body: `O time ${this.state.editDados.name} foi atualizado com sucesso !`,
                             }
                         })
                     })
@@ -83,7 +127,7 @@ export default class CustCenterRegister extends React.Component {
                             showToaster: true,
                             toaster: {
                                 header: "Error",
-                                body: `Erro ao criar centro de custo !`,
+                                body: `Erro ao criar time!`,
                             }
                         })
                     })
@@ -94,7 +138,7 @@ export default class CustCenterRegister extends React.Component {
                     showToaster: true,
                     toaster: {
                         header: "Error",
-                        body: `Erro ao criar centro de custo !`,
+                        body: `Erro ao criar time!`,
                     }
                 })
             })
@@ -102,101 +146,21 @@ export default class CustCenterRegister extends React.Component {
     }
 
 
-    async updateCustCenter() {
+    async deleteTeam(id) {
         this.props.setLoad(true)
-        await CustCenterService.create([this.state.newDados])
+        await TeamService.delete({ "id": id })
             .then(async (res) => {
-                await CustCenterService.getAll()
-                    .then(async (res2) => {
-                        this.setState({
-                            ...this.state,
-                            showToaster: true,
-                            custCenters: res2.data = "" ? [] : res2.data,
-                            toaster: {
-                                header: "Sucesso",
-                                body: `O Centro de custo ${this.state.editDados.name} foi atualizado com sucesso !`,
-                            }
-                        })
-                    })
-                    .catch(error => {
-                        this.setState({
-                            ...this.state,
-                            showToaster: true,
-                            toaster: {
-                                header: "Error",
-                                body: `Erro ao atualizar centro de custo !`,
-                            }
-                        })
-                    })
-            })
-            .catch(error => {
-                this.setState({
-                    ...this.state,
-                    showToaster: true,
-                    toaster: {
-                        header: "Error",
-                        body: `Erro ao atualizar centro de custo !`,
-                    }
-                })
-            })
-        this.props.setLoad(false)
-    }
-
-    handleNewCustCenter(e) {
-        this.setState({
-            ...this.state,
-            newDados: {
-                ...this.state.newDados,
-                name: e.target.value
-            }
-        })
-    }
-
-    handleNewCnpj(e) {
-        this.setState({
-            ...this.state,
-            newDados: {
-                ...this.state.newDados,
-                cnpj: e.target.value
-            }
-        })
-    }
-
-    handleEditCustCenter(e) {
-        this.setState({
-            ...this.state,
-            newDados: {
-                ...this.state.editDados,
-                name: e.target.value
-            }
-        })
-    }
-
-    handleEditCnpj(e) {
-        this.setState({
-            ...this.state,
-            newDados: {
-                ...this.state.editDados,
-                cnpj: e.target.value
-            }
-        })
-    }
-
-    async deleteCustCenter(id) {
-        this.props.setLoad(true)
-        await CustCenterService.delete({ "id": id })
-            .then(async (res) => {
-                await CustCenterService.getAll()
+                await TeamService.getAll()
                     .then(res2 => {
                         this.setState({
                             ...this.state,
                             showToaster: true,
                             showGrid: true,
                             showEdit: false,
-                            custCenters: res2.data = "" ? [] : res2.data,
+                            teams: res2.data = "" ? [] : res2.data,
                             toaster: {
                                 header: "Sucesso",
-                                body: `Centro de custo excluído com sucesso !`,
+                                body: `Time excluído com sucesso !`,
                             }
                         })
                     })
@@ -206,7 +170,7 @@ export default class CustCenterRegister extends React.Component {
                             showToaster: true,
                             toaster: {
                                 header: "Error",
-                                body: `Erro ao excluir centro de custo !`,
+                                body: `Erro ao excluir time, pois possui funcionários trabalhando nele !`,
                             }
                         })
                     })
@@ -217,14 +181,35 @@ export default class CustCenterRegister extends React.Component {
                     showToaster: true,
                     toaster: {
                         header: "Error",
-                        body: `Erro ao excluir centro de custo !`,
+                        body: `Erro ao excluir time, pois possui funcionários trabalhando nele !`,
                     }
                 })
             })
         this.props.setLoad(false)
     }
 
-    editCustCenter(data) {
+
+    handleNewTeam(e) {
+        this.setState({
+            ...this.state,
+            newDados: {
+                ...this.state.newDados,
+                name: e.target.value
+            }
+        })
+    }
+
+    handleEditTeam(e) {
+        this.setState({
+            ...this.state,
+            editDados: {
+                ...this.state.editDados,
+                name: e.target.value
+            }
+        })
+    }
+
+    editTeam(data) {
         this.setState({
             ...this.state,
             showEdit: true,
@@ -236,7 +221,6 @@ export default class CustCenterRegister extends React.Component {
     }
 
     render() {
-
         return (
             <>
                 <Viewer setLoad={this.props.setLoad}>
@@ -252,45 +236,44 @@ export default class CustCenterRegister extends React.Component {
                                 selected={this.state.showGrid}
                                 onClick={() => { this.setState({ ...this.state, showGrid: true, showEdit: false }) }}
                             >
-                                <p>Centros de custos</p>
+                                <p>Time</p>
                             </Style.HeaderButton>
                             <Style.HeaderButton
                                 selected={!this.state.showGrid && !this.state.showEdit}
                                 onClick={() => { this.setState({ ...this.state, showGrid: false, showEdit: false }) }}
                             >
-                                <p>Cadastrar centro de custo</p>
+                                <p>Cadastro de time</p>
                             </Style.HeaderButton>
                             <Style.HeaderEditButton
                                 selected={this.state.showEdit}
                             >
-                                <p>Editar centro de custo</p>
+                                <p>Editar Time</p>
                             </Style.HeaderEditButton>
                         </Style.HeaderContainer>
                         {this.state.showGrid ?
                             <Style.DadosGrid>
                                 <Style.DHeader>
-                                    Usuários
+                                    Time
                             </Style.DHeader>
                                 <Style.TableDiv>
                                     <ReactBootstrap.Table striped bordered hover className="table">
                                         <thead>
                                             <tr>
-                                                <th>Nome</th>
-                                                <th>CNPJ</th>
+                                                <th>Time</th>                                                                            
+                                                <th>Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {
-                                                this.state.custCenters.map((value, i) => {
+                                                this.state.teams.map((value, i) => {
                                                     return (
                                                         <tr>
-                                                            <td>{value.name}</td>
-                                                            <td>{value.cnpj}</td>
+                                                            <td>{value.name}</td>                                                       
                                                             <td>
-                                                                <Style.Icone onClick={() => { this.editCustCenter(value) }}>
+                                                                <Style.Icone onClick={() => { this.editTeam(value) }}>
                                                                     <FA name="edit" />
                                                                 </Style.Icone>
-                                                                <Style.Icone onClick={() => { this.deleteCustCenter(value.id) }}>
+                                                                <Style.Icone onClick={() => { this.deleteTeam(value.id) }}>
                                                                     <FA name="ban" />
                                                                 </Style.Icone>
                                                             </td>
@@ -305,71 +288,49 @@ export default class CustCenterRegister extends React.Component {
                             : this.state.showEdit ?
                                 <Style.Dados>
                                     <Style.DHeader>
-                                        <Style.DivCreate>
-                                            <Style.DivTitle>Editar centro de custo</Style.DivTitle>
-                                        </Style.DivCreate>
+                                        Categoria
                                     </Style.DHeader>
                                     <Style.DBody>
                                         <Style.DBoxBody>
                                             <Style.DBox>
                                                 <Card.Body className="fundoForm">
-                                                    <Form.Group as={Col}>
-                                                        <Form.Label>Nome do centro de custo</Form.Label>
-                                                        <Form.Control type="text"
-                                                            defaultValue={this.state.editDados.name}
-                                                            onChange={(event) => { this.handleEditCustCenter(event) }} />
-                                                    </Form.Group>
-                                                </Card.Body>
-                                            </Style.DBox>
-                                            <Style.DBox>
-                                                <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridCnpj">
-                                                        <Form.Label>CNPJ</Form.Label>
+                                                        <Form.Label>Time</Form.Label>
                                                         <Form.Control type="text"
-                                                            defaultValue={this.state.editDados.cnpj}
-                                                            onChange={(event) => { this.handleEditCnpj(event) }} />
+                                                        defaultValue={this.state.editDados.name}
+                                                        onChange={(event) => { this.handleEditTeam(event) }} />
                                                     </Form.Group>
                                                 </Card.Body>
-                                            </Style.DBox>
+                                            </Style.DBox>                                            
                                         </Style.DBoxBody>
                                     </Style.DBody>
                                     <Style.DFooter>
-                                        <Style.BotaoForm onClick={() => { this.updateCustCenter() }}>
+                                        <Style.BotaoForm onClick={() => { this.updateTeam() }}>
                                             Gravar
-                            </Style.BotaoForm>
+                                        </Style.BotaoForm>                                        
                                     </Style.DFooter>
                                 </Style.Dados>
                                 :
                                 <Style.Dados>
                                     <Style.DHeader>
-                                        <Style.DivCreate>
-                                            <Style.DivTitle>Editar centro de custo</Style.DivTitle>
-                                        </Style.DivCreate>
-                                    </Style.DHeader>
+                                        Time 
+                        </Style.DHeader>
                                     <Style.DBody>
                                         <Style.DBoxBody>
                                             <Style.DBox>
                                                 <Card.Body className="fundoForm">
-                                                    <Form.Group as={Col}>
-                                                        <Form.Label>Nome do centro de custo</Form.Label>
-                                                        <Form.Control type="text" onChange={(event) => { this.handleNewCustCenter(event) }} />
-                                                    </Form.Group>
-                                                </Card.Body>
-                                            </Style.DBox>
-                                            <Style.DBox>
-                                                <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridCnpj">
-                                                        <Form.Label>CNPJ</Form.Label>
-                                                        <Form.Control type="text" onChange={(event) => { this.handleNewCnpj(event) }} />
+                                                        <Form.Label>Time</Form.Label>
+                                                        <Form.Control type="text" onChange={(event) => { this.handleNewTeam(event) }} />
                                                     </Form.Group>
                                                 </Card.Body>
-                                            </Style.DBox>
+                                            </Style.DBox>                                                                                    
                                         </Style.DBoxBody>
                                     </Style.DBody>
                                     <Style.DFooter>
                                         <Style.BotaoForm onClick={() => { this.save() }}>
                                             Gravar
-                            </Style.BotaoForm>
+                                        </Style.BotaoForm>
                                     </Style.DFooter>
                                 </Style.Dados>
                         }

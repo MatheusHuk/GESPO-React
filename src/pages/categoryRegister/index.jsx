@@ -1,50 +1,24 @@
-import React, { useState } from 'react'
-import Viewer from '../../Layout/Viewer'
-import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
-import "./index.css"
-import * as Style from './style'
+import React, { useEffect } from 'react'
+import CategoryRegister from './component'
+import { useHistory } from 'react-router-dom'
 
-export default function CategoryRegister() {
+export default function CategoryRegisterFunction ({ setLoad, logged, setLogged }){
 
-    const [novo, setNovo] = useState(false);
+    const history = useHistory();
+
+    useEffect(() => {
+        if(logged == null) {
+             history.push("/login")
+         } 
+     })
 
     return (
         <>
-            <Viewer>
-                <Style.Container>
-                    <Style.Dados>
-                        <Style.DHeader>
-                            <Style.DivCreate>
-                                <Style.DivTitle>Cadastrar de categoria</Style.DivTitle>
-                           <Style.BotaoFormCreate onClick={() => { setNovo(!novo) }}>
-                                    {!novo ? 'Editar' : 'Novo'}
-                                </Style.BotaoFormCreate>
-                            </Style.DivCreate>
-                        </Style.DHeader>
-                        <Style.DBody>
-                            <Style.DBoxBody>
-                                
-                                <Style.DBox>
-                                    <Card.Body className="fundoForm">
-                                        <Form.Group as={Col} controlId="formGridCnpj">
-                                            <Form.Label>Categoria</Form.Label>
-                                            <Form.Control type="text" placeholder="Ex: Desenvolvimento" />
-                                        </Form.Group>
-                                    </Card.Body>
-                                </Style.DBox>
-                            </Style.DBoxBody>
-                        </Style.DBody>
-                        <Style.DFooter>
-                            <Style.BotaoForm>
-                                Gravar
-                            </Style.BotaoForm>
-                            <Style.BotaoForm>
-                                Deletar
-                            </Style.BotaoForm>
-                        </Style.DFooter>
-                    </Style.Dados>
-                </Style.Container>
-            </Viewer>
+        
+            {
+                logged != null ? <CategoryRegister setLoad={setLoad} logged={logged} setLogged={setLogged}/> : null
+            }
+
         </>
-    );
+    )
 }

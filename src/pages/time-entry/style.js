@@ -93,9 +93,10 @@ export const Filtros = styled.div`
     position: relative;
     height: 30%;
     width: auto;
-    border-radius: 17px;
+    border-radius: 10px;
     background-color: #2B47AA;
     color: white;
+    box-shadow: 0VH 0.5VH  5px black;
 `;
 
 export const FHeader = styled.div`
@@ -156,10 +157,11 @@ export const Box = styled.div`
 export const Dados = styled.div`
     padding: 2%;
     position: relative;
-    height: 60%;
+    height: 62%;
     width: 100%;
-    border-radius: 17px;
+    border-radius: 10px;
     background-color: #2B47AA;
+    box-shadow: 0VH 0.5VH  5px black;
 `;
 
 export const DHeader = styled.div`
@@ -240,8 +242,9 @@ export const ApontamentoSmall = styled.div`
     position: relative;
     height: 35%;
     width: 100%;
-    border-radius: 17px;
+    border-radius: 10px;
     background-color: #2B47AA;
+    box-shadow: 0VH 0.5VH  5px black;
 `;
 
 export const Apontamento = styled.div`
@@ -251,8 +254,9 @@ export const Apontamento = styled.div`
     position: relative;
     height: 65%;
     width: 100%;
-    border-radius: 17px;
+    border-radius: 10px;
     background-color: #2B47AA;
+    box-shadow: 0VH 0.5VH  5px black;
 `;
 
 export const AHeader = styled.div`
@@ -360,4 +364,20 @@ export const Icone = styled.div`
     height: 100%;
     text-align: center;
     cursor: pointer;
+`;
+
+export const BotaoForm = styled.button`
+    background-color: transparent !important;
+    color: white !important;
+    height: 100% !important;
+    width: 20%;
+    border: 1px solid white !important;
+    line-height: 50% !important;
+    box-shadow: 0VW 0.3VH 3px black;
+    z-index: 0 !important;
+    margin-left: 1VW;
+
+    :hover{
+        background-color: #251680 !important; 
+    }
 `;

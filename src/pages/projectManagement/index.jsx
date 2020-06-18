@@ -12,7 +12,7 @@ export default function ProjectManagement({ setLoad }){
 
     return(
         <>
-            <Viewer>
+            <Viewer setLoad={setLoad}>
                 <Style.Title>GESPO</Style.Title>
                 <Style.SubTitle>Gestão de custos e projetos</Style.SubTitle>
                 <Style.Container>

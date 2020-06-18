@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import GoalsDefinition from './component'
+import TeamRegister from './component'
 import { useHistory } from 'react-router-dom'
 
-export default function GoalsDefinitionFunction ({ setLoad, logged, setLogged }){
+export default function TeamRegisterFunction ({ setLoad, logged, setLogged }){
 
     const history = useHistory();
 
@@ -13,11 +13,10 @@ export default function GoalsDefinitionFunction ({ setLoad, logged, setLogged })
      })
 
     return (
-        <>
+        <>        
             {
-                logged != null ? <GoalsDefinition setLoad={setLoad} logged={logged} setLogged={setLogged}/> : null
+                logged != null ? <TeamRegister setLoad={setLoad} logged={logged} setLogged={setLogged}/> : null
             }
-
         </>
     )
 }

@@ -10,8 +10,10 @@
     }
   
     .content {
+      position: relative;
       display: flex;
       flex-direction: column;
+      top: 0;
   
       .image {
         margin-top: 5%;
@@ -19,7 +21,7 @@
         width: 21em;
         img {
           width: 50%;
-          height: 50%;
+          height: 100%;
         }
       }
   
@@ -59,7 +61,7 @@
     }
   
     .footer {
-      margin-top: 3em;
+      margin-top: 2%;
     }
   }
 
@@ -68,4 +70,3 @@
     box-shadow: 0px 0px 12px 2px rgba(15, 15, 15, 0.2);
     border-radius: 4px;
 }
-  

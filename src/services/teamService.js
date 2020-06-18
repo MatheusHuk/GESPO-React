@@ -14,4 +14,32 @@ export default class TeamService{
                 });
         });
     }
+
+    static async create(body) {
+        return new Promise((resolve, reject) => {
+            Requests.post("/teams", body)
+                .then(res => {
+                    if (res.status >= 200 && res.status < 300) {
+                        resolve(res);
+                    } else {
+                        reject(res.status);
+                    }
+                });
+        });
+    }
+
+    static async delete(body){
+        return new Promise((resolve, reject) => {
+            Requests.delete("/teams", body)
+                .then(res => {
+                    if(res.status >= 200 && res.status < 300){
+                        resolve(res);
+                    }else{
+                        reject(res.status);
+                    }
+                });
+        });
+    }
+
+
 }

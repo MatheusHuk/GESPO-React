@@ -33,13 +33,18 @@ export default function Routes({ setLoad }) {
                         logged={logged}
                         setLogged={setLogged} />}
                     exact />
-                <Route path="/projectManagement/goalsDefinition" render={(props) => <Pages.GoalsDefinition setLoad={setLoad} />} exact />
                 <Route path="/projectManagement" render={(props) => <Pages.ProjectManagement setLoad={setLoad} />} exact />
                 <Route path="/projectManagement/resourcesAllocation" render={(props) =>
                     <Pages.ResourcesAllocation
                         setLoad={setLoad}
                         logged={logged}
                         setLogged={setLogged} />}
+                    exact />
+                <Route path="/projectManagement/goalsDefinition" render={(props) => 
+                    <Pages.GoalsDefinition 
+                        setLoad={setLoad}
+                        logged={logged}
+                        setLogged={setLogged} />} 
                     exact />
                 <Route path="/register" render={(props) => <Pages.Register setLoad={setLoad} />} exact />
                 <Route path="/register/userRegister" render={(props) =>
@@ -55,13 +60,24 @@ export default function Routes({ setLoad }) {
                         logged={logged}
                         setLogged={setLogged}
                     />} exact />
-                <Route path="/register/categoryRegister" render={(props) => <Pages.CategoryRegister setLoad={setLoad} />} exact />
+                <Route path="/register/categoryRegister" render={(props) =>
+                    <Pages.CategoryRegister
+                    setLoad={setLoad}
+                    logged={logged}
+                    setLogged={setLogged}/>}                     
+                exact />
+                <Route path="/register/teamRegister" render={(props) =>
+                    <Pages.TeamRegister
+                    setLoad={setLoad}
+                    logged={logged}
+                    setLogged={setLogged}/>}                     
+                exact />
                 <Route path="/register/custCenterRegister" render={(props) => 
                 <Pages.CustCenterRegister 
                     setLoad={setLoad}
                     logged={logged}
                     setLogged={setLogged}/>}
-                exact />
+                exact />                
             </Switch>
         </BrowserRouter>
     );
