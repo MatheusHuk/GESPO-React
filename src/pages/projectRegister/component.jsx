@@ -98,7 +98,7 @@ export default class ProjectRegister extends React.Component {
                             projects: res2.data = "" ? [] : res2.data,
                             toaster: {
                                 header: "Sucesso",
-                                body: `Usuário ${this.state.newDados.name} criado com sucesso`,
+                                body: `Projeto ${this.state.newDados.name} criado com sucesso`,
                             }
                         })
                     })
@@ -108,7 +108,7 @@ export default class ProjectRegister extends React.Component {
                             showToaster: true,
                             toaster: {
                                 header: "Error",
-                                body: `Erro ao criar usuário`,
+                                body: `Erro ao criar projeto`,
                             }
                         })
                     })
@@ -119,7 +119,7 @@ export default class ProjectRegister extends React.Component {
                     showToaster: true,
                     toaster: {
                         header: "Error",
-                        body: `Erro ao criar usuário`,
+                        body: `Erro ao criar projeto`,
                     }
                 })
             })
@@ -138,7 +138,7 @@ export default class ProjectRegister extends React.Component {
                             projects: res2.data = "" ? [] : res2.data,
                             toaster: {
                                 header: "Sucesso",
-                                body: `Usuário ${this.state.editDados.name} criado com sucesso`,
+                                body: `Projeto ${this.state.editDados.name} criado com sucesso`,
                             }
                         })
                     })
@@ -148,7 +148,7 @@ export default class ProjectRegister extends React.Component {
                             showToaster: true,
                             toaster: {
                                 header: "Error",
-                                body: `Erro ao criar usuário`,
+                                body: `Erro ao criar projeto`,
                             }
                         })
                     })
@@ -159,7 +159,7 @@ export default class ProjectRegister extends React.Component {
                     showToaster: true,
                     toaster: {
                         header: "Error",
-                        body: `Erro ao criar usuário`,
+                        body: `Erro ao criar projeto`,
                     }
                 })
             })
@@ -376,7 +376,7 @@ export default class ProjectRegister extends React.Component {
                                             <Style.DBigBox>
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridObs">
-                                                        <Form.Label>Observação</Form.Label>
+                                                        <Form.Label>Descrição do projeto</Form.Label>
                                                         <Form.Control type="text"  defaultValue={this.state.editDados.dsProject}
                                                          onChange={(event) => { this.handleEditDescProject(event) }} />
                                                     </Form.Group>
@@ -440,7 +440,7 @@ export default class ProjectRegister extends React.Component {
                                             <Style.DBigBox>
                                                 <Card.Body className="fundoForm">
                                                     <Form.Group as={Col} controlId="formGridObs">
-                                                        <Form.Label>Observação</Form.Label>
+                                                        <Form.Label>Descrição do projeto</Form.Label>
                                                         <Form.Control type="text" onChange={(event) => { this.handleNewDescProject(event) }} />
                                                     </Form.Group>
                                                 </Card.Body>
