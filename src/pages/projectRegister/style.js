@@ -1,5 +1,13 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
+const animation = keyframes`
+    0%{
+        left: 100%
+    }
+    100%{
+        left: 0
+    }
+`;
 
 export const Container = styled.div`
     padding: 2VH 2VW;
@@ -7,6 +15,7 @@ export const Container = styled.div`
     width: 100%;
     height: 100%;
     overflow-y: scroll;
+    animation: ${animation} 0.5s;
 `;
 
 export const Filtros = styled.div`

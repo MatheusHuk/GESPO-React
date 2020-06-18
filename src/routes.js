@@ -85,7 +85,9 @@ export default function Routes({ setLoad, showMenu, setShowMenu }){
                     <Pages.ProjectRegister
                         setLoad={setLoad}
                         logged={logged}
-                        setLogged={setLogged}
+                        setLogged={setLogged}  
+                        showMenu={showMenu}
+                        setShowMenu={setShowMenu}
                     />} exact />
                 <Route path="/register/categoryRegister" render={(props) =>
                     <Pages.CategoryRegister
