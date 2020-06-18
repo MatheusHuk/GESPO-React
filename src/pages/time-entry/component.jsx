@@ -283,7 +283,6 @@ export default class TimeEntry extends React.Component {
             date: filter.data
         })
             .then((resF) => {
-                console.log("ResF: ", resF)
                 this.setState({
                     ...this.state,
                     dados: resF.data == "" ? [] : resF.data
@@ -304,6 +303,18 @@ export default class TimeEntry extends React.Component {
                 toaster: {
                     header: "Erro",
                     body: "Os dados estão incompletos"
+                },
+                showToaster: true
+            });
+            return
+        }
+        console.log("min aux: ",this.state.aux.minutos)
+        if (this.state.aux.minutos > 60){
+            this.setState({
+                ...this.state,
+                toaster: {
+                    header: "Erro",
+                    body: "Minutos não pode ser maior que 60"
                 },
                 showToaster: true
             });
@@ -331,7 +342,15 @@ export default class TimeEntry extends React.Component {
                                 body: "Dados gravados com sucesso"
                             },
                             showToaster: true,
-                            showFiltros: true
+                            showFiltros: true,
+                            dadosList: [],
+                            newDados: {
+                                employee: this.props.logged,
+                                project: null,
+                                date: null,
+                                amountHours: 0,
+                                dsWork: null
+                            }
                         })
                     })
                     .catch(error => {
@@ -346,7 +365,7 @@ export default class TimeEntry extends React.Component {
                     ...this.state,
                     toaster: {
                         header: "Erro",
-                        body: "Algo deu errado"
+                        body: "Erro interno do servidor"
                     },
                     showToaster: true
                 })
@@ -354,7 +373,53 @@ export default class TimeEntry extends React.Component {
             .finally(() => {
                 this.props.setLoad(false);
             })
-        console.log("Grava dados: ", this.state.dadosList);
+    }
+
+    async delete(id){
+        this.props.setLoad(true);
+        await TimeEntryService.delete({ id: id })
+            .then(async (res) => {
+                await TimeEntryService.getAllByUser({ "employeeId": this.props.logged.id })
+                    .then(res => {
+                        this.setState({
+                            ...this.state,
+                            dados: res.data == "" ? [] : res.data,
+                            toaster: {
+                                header: "Sucesso",
+                                body: "Apontamento com sucesso"
+                            },
+                            showToaster: true,
+                            showFiltros: true,
+                            dadosList: [],
+                            newDados: {
+                                employee: this.props.logged,
+                                project: null,
+                                date: null,
+                                amountHours: 0,
+                                dsWork: null
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        console.log('Error: ', error);
+                    })
+                    .finally(() => {
+                        this.props.setLoad(false);
+                    })
+            })
+            .catch(error => {
+                this.setState({
+                    ...this.state,
+                    toaster: {
+                        header: "Erro",
+                        body: "Erro interno do servidor"
+                    },
+                    showToaster: true
+                })
+            })
+            .finally(() => {
+                this.props.setLoad(false);
+            })
     }
 
     render() {
@@ -457,12 +522,12 @@ export default class TimeEntry extends React.Component {
                                                             this.state.dados.map((data, i) => {
                                                                 return (
                                                                     <tr key={i}>
-                                                                        <td>{this.formatLongText(data.employee.name)}</td>
+                                                                        <td>{data.employee.name}</td>
                                                                         <td>{data.project.name}</td>
                                                                         <td>{this.parseDate(data.creationDate)}</td>
                                                                         <td>{this.decryptHours(data.amountHours)}</td>
-                                                                        <td>{this.formatLongText(data.dsWork)}</td>
-                                                                        <td><Style.Icone><FA name="ban" /></Style.Icone></td>
+                                                                        <td>{data.dsWork}</td>
+                                                                        <td><Style.Icone onClick={ () => { this.delete(data.id) } }><FA name="ban" /></Style.Icone></td>
                                                                     </tr>
                                                                 )
                                                             })
@@ -560,11 +625,11 @@ export default class TimeEntry extends React.Component {
                                                             this.state.dadosList.map((data, i) => {
                                                                 return (
                                                                     <tr key={i}>
-                                                                        <td>{this.formatLongText(data.employee.name)}</td>
+                                                                        <td>{data.employee.name}</td>
                                                                         <td>{data.project.name}</td>
                                                                         <td>{data.date}</td>
                                                                         <td>{this.decryptHours(data.amountHours)}</td>
-                                                                        <td>{this.formatLongText(data.dsWork)}</td>
+                                                                        <td>{data.dsWork}</td>
                                                                         <td><Style.Icone onClick={() => { this.deleteEntry(i) }}><FA name="ban" /></Style.Icone></td>
                                                                     </tr>
                                                                 )

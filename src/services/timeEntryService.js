@@ -32,4 +32,13 @@ export default class TimeEntryService{
                 })
         })
     }
+
+    static async delete(body){
+        return new Promise((resolve, reject) => {
+            Requests.delete("/work-schedules", body)
+                .then(res => {
+                    this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
+                })
+        })
+    }
 }
