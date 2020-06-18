@@ -17,7 +17,10 @@ export default class ProjectRegister extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-
+            invalid: {
+                show: false,
+                message: ""
+            },
             showToaster: false,
             showEdit: false,
             showGrid: true,
@@ -109,7 +112,7 @@ export default class ProjectRegister extends React.Component {
                             ...this.state,
                             showToaster: true,
                             toaster: {
-                                header: "Error",
+                                header: "Erro",
                                 body: `Erro ao criar projeto`,
                             }
                         })
@@ -120,7 +123,7 @@ export default class ProjectRegister extends React.Component {
                     ...this.state,
                     showToaster: true,
                     toaster: {
-                        header: "Error",
+                        header: "Erro",
                         body: `Erro ao criar projeto`,
                     }
                 })
@@ -140,7 +143,7 @@ export default class ProjectRegister extends React.Component {
                             projects: res2.data = "" ? [] : res2.data,
                             toaster: {
                                 header: "Sucesso",
-                                body: `Projeto ${this.state.editDados.name} criado com sucesso`,
+                                body: `Projeto ${this.state.editDados.name} atualizado com sucesso`,
                             }
                         })
                     })
@@ -149,7 +152,7 @@ export default class ProjectRegister extends React.Component {
                             ...this.state,
                             showToaster: true,
                             toaster: {
-                                header: "Error",
+                                header: "Erro",
                                 body: `Erro ao criar projeto`,
                             }
                         })
@@ -160,7 +163,7 @@ export default class ProjectRegister extends React.Component {
                     ...this.state,
                     showToaster: true,
                     toaster: {
-                        header: "Error",
+                        header: "Erro",
                         body: `Erro ao criar projeto`,
                     }
                 })
@@ -303,7 +306,7 @@ export default class ProjectRegister extends React.Component {
                                             <tr>
                                                 <th>Nome</th>
                                                 <th>Descrição</th>
-                                                <th></th>
+                                                <th>Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -388,8 +391,8 @@ export default class ProjectRegister extends React.Component {
                                     </Style.DBody>
                                     <Style.DFooter>
                                         <Style.BotaoForm onClick={() => { this.update() }}>
-                                            Update
-                            </Style.BotaoForm>
+                                            Gravar
+                                        </Style.BotaoForm>
                                     </Style.DFooter>
                                 </Style.Dados>
                                 :
@@ -452,7 +455,7 @@ export default class ProjectRegister extends React.Component {
                                     <Style.DFooter>
                                         <Style.BotaoForm onClick={() => { this.save() }}>
                                             Gravar
-                            </Style.BotaoForm>
+                                        </Style.BotaoForm>
                                     </Style.DFooter>
                                 </Style.Dados>
                         }
