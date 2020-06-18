@@ -1,16 +1,44 @@
 import Requests from './requests'
 
-export default class CategoryService{
+export default class CategoryService {
 
-    static verifyStatus(status){
-        return (status >= 200 && status < 300);
+
+    static async getAll(body) {
+        return new Promise((resolve, reject) => {
+            Requests.get("/categories/all", body)
+                .then(res => {
+                    if (res.status >= 200 && res.status < 300) {
+                        resolve(res);
+                    } else {
+                        reject(res.status);
+                    }
+                });
+        });
     }
 
-    static async getAll(){
+
+    static async create(body) {
         return new Promise((resolve, reject) => {
-            Requests.get("/categories/all")
+            Requests.post("/categories", body)
                 .then(res => {
-                    this.verifyStatus(res.status) ? resolve(res) : reject(res.status);
+                    if (res.status >= 200 && res.status < 300) {
+                        resolve(res);
+                    } else {
+                        reject(res.status);
+                    }
+                });
+        });
+    }
+
+    static async delete(body){
+        return new Promise((resolve, reject) => {
+            Requests.delete("/categories", body)
+                .then(res => {
+                    if(res.status >= 200 && res.status < 300){
+                        resolve(res);
+                    }else{
+                        reject(res.status);
+                    }
                 });
         });
     }
