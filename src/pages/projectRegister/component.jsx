@@ -36,18 +36,15 @@ export default class ProjectRegister extends React.Component {
                 name: "",
                 dsProject: "",
                 manager: "",
-                costCenter: {
-
-                }
+                costCenter: {},
+                employees: [this.props.logged]
             },
             editDados: {
                 id: -1,
                 name: "",
                 dsProject: "",
                 manager: "",
-                costCenter: {
-
-                }
+                costCenter: {}
             }
         }
     }
@@ -103,7 +100,7 @@ export default class ProjectRegister extends React.Component {
 
     async save() {
         this.props.setLoad(true)
-        await ProjectService.create([this.state.newDados])
+        await ProjectService.create(this.state.newDados)
             .then(async (res) => {
                 await ProjectService.getAllByEmployeeId(this.props.logged.id)
                     .then(async (res2) => {
@@ -315,32 +312,36 @@ export default class ProjectRegister extends React.Component {
                                             Projetos
                                     </Style.DHeader>
                                         <Style.TableDiv>
-                                            <ReactBootstrap.Table striped bordered hover className="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Nome</th>
-                                                        <th>Descrição</th>
-                                                        <th>Ações</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        this.state.projects.map((value, i) => {
-                                                            return (
-                                                                <tr>
-                                                                    <td>{value.name}</td>
-                                                                    <td>{value.dsProject}</td>
-                                                                    <td>
-                                                                        <Style.Icone onClick={() => { this.editProject(value) }}>
-                                                                            <FA name="edit" />
-                                                                        </Style.Icone>
-                                                                    </td>
-                                                                </tr>
-                                                            )
-                                                        })
-                                                    }
-                                                </tbody>
-                                            </ReactBootstrap.Table>
+                                            {
+                                                this.state.projects.length > 0 ?
+                                                <ReactBootstrap.Table striped bordered hover className="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Nome</th>
+                                                            <th>Descrição</th>
+                                                            <th>Ações</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            this.state.projects.map((value, i) => {
+                                                                return (
+                                                                    <tr>
+                                                                        <td>{value.name}</td>
+                                                                        <td>{value.dsProject}</td>
+                                                                        <td>
+                                                                            <Style.Icone onClick={() => { this.editProject(value) }}>
+                                                                                <FA name="edit" />
+                                                                            </Style.Icone>
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            })
+                                                        }
+                                                    </tbody>
+                                                </ReactBootstrap.Table> :
+                                                <>Você não está alocado em nenhum projeto</>
+                                            }
                                         </Style.TableDiv>
                                     </Style.DadosGrid>
                                     : this.state.showEdit ?

@@ -165,7 +165,7 @@ export default class HoursProvisioningReal extends React.Component {
         this.props.setLoad(true)
         await HoursProvisioningService.create([this.state.newDados])
             .then(async (res) => {
-                await this.mount()
+                await this.mount(this.state.project)
                 this.setState({
                     ...this.state,
                     toaster: {
@@ -189,7 +189,7 @@ export default class HoursProvisioningReal extends React.Component {
         this.props.setLoad(true)
         await HoursProvisioningService.update(this.state.editDados)
             .then(async (res) => {
-                await this.mount();
+                await this.mount(this.state.project);
                 this.setState({
                     ...this.state,
                     toaster: {
@@ -213,7 +213,7 @@ export default class HoursProvisioningReal extends React.Component {
         this.props.setLoad(true)
         await HoursProvisioningService.delete({ "id": this.state.editDados.id })
             .then(async (res) => {
-                await this.mount()
+                await this.mount(this.state.project)
                 this.setState({
                     ...this.state,
                     toaster: {
