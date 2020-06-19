@@ -65,7 +65,9 @@ export default class GoalsDefinition extends React.Component {
         await ProjectService.getAllByEmployeeId(this.props.logged.id)
             .then(async (res) => {
                 if (res.data != "") {
-                    await TasksService.getAllByProjectId({ id: res.data[0].id })
+                    await TasksService.getAllByProjectId({ 
+                        id: res.data[0].id 
+                    })
                         .then(async (res2) => {
                             await CategoryService.getAll()
                                 .then(async (res3) => {
@@ -290,6 +292,33 @@ export default class GoalsDefinition extends React.Component {
         this.props.setLoad(false)
     }
 
+    async handleProject(e){
+        let value = e.target.value
+        let projectRes = this.state.selectDados.projects.find(v => v.id == value)
+        this.props.setLoad(true)
+        await TasksService.getAllByProjectId({
+            id: projectRes.id
+        })
+            .then(async (res) => {
+                this.setState({
+                    ...this.state,
+                    project: projectRes,
+                    tasks: res.data == "" ? [] : res.data
+                })
+            })
+            .catch(error => {
+                this.setState({
+                    ...this.state,
+                    showToaster: true,
+                    toaster: {
+                        header: "Erro",
+                        body: "Erro ao filtrar por projeto"
+                    }
+                })
+            })
+        this.props.setLoad(false)
+    }
+
     handleEditTitle(e){
         this.setState({
             ...this.state,
@@ -449,7 +478,8 @@ export default class GoalsDefinition extends React.Component {
                                                             <Form.Group as={Col} controlId="formGridClientName">
                                                                 <Form.Label>Projeto</Form.Label>
                                                                 <Form.Control as="select"
-                                                                    defaultValue={this.state.project.id}>
+                                                                    defaultValue={this.state.project.id}
+                                                                    onChange={(event) => { this.handleProject(event) }}>
                                                                     {
                                                                         this.state.selectDados.projects.map((value, i) => {
                                                                             return (
@@ -469,44 +499,48 @@ export default class GoalsDefinition extends React.Component {
                                                 <Style.DivCreate>Metas - {this.state.project.name}</Style.DivCreate>
                                             </Style.DHeader>
                                             <Style.TableDiv>
-                                                <ReactBootstrap.Table striped bordered hover className="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Titulo</th>
-                                                            <th>Descrição</th>
-                                                            <th>Categoria</th>
-                                                            <th>Funcionário</th>
-                                                            <th>%</th>
-                                                            <th>Ações</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {
-                                                            this.state.tasks.map((value, i) => {
-                                                                return (
-                                                                    <tr key={i}>
-                                                                        <td>{value.title}</td>
-                                                                        <td>{value.description}</td>
-                                                                        <td>{value.category.dsCategory}</td>
-                                                                        <td>{value.employee.name}</td>
-                                                                        <td>
-                                                                            {value.percentProject}%
-                                                                        <input type="range" min={0} max={100} value={value.percentProject} readOnly />
-                                                                        </td>
-                                                                        <td>
-                                                                            <Style.Icone onClick={() => { this.edit(value) }}>
-                                                                                <FA name="edit" />
-                                                                            </Style.Icone>
-                                                                            <Style.Icone onClick={() => { this.deleteTask(value.id) }}>
-                                                                                <FA name="ban" />
-                                                                            </Style.Icone>
-                                                                        </td>
-                                                                    </tr>
-                                                                )
-                                                            })
-                                                        }
-                                                    </tbody>
-                                                </ReactBootstrap.Table>
+                                                {
+                                                    this.state.tasks.length == 0 ?
+                                                    <>Este projeto não possui nenhuma meta</> :
+                                                    <ReactBootstrap.Table striped bordered hover className="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Titulo</th>
+                                                                <th>Descrição</th>
+                                                                <th>Categoria</th>
+                                                                <th>Funcionário</th>
+                                                                <th>%</th>
+                                                                <th>Ações</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {
+                                                                this.state.tasks.map((value, i) => {
+                                                                    return (
+                                                                        <tr key={i}>
+                                                                            <td>{value.title}</td>
+                                                                            <td>{value.description}</td>
+                                                                            <td>{value.category.dsCategory}</td>
+                                                                            <td>{value.employee.name}</td>
+                                                                            <td>
+                                                                                {value.percentProject}%
+                                                                            <input type="range" min={0} max={100} value={value.percentProject} readOnly />
+                                                                            </td>
+                                                                            <td>
+                                                                                <Style.Icone onClick={() => { this.edit(value) }}>
+                                                                                    <FA name="edit" />
+                                                                                </Style.Icone>
+                                                                                <Style.Icone onClick={() => { this.deleteTask(value.id) }}>
+                                                                                    <FA name="ban" />
+                                                                                </Style.Icone>
+                                                                            </td>
+                                                                        </tr>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </tbody>
+                                                    </ReactBootstrap.Table>
+                                                }
                                             </Style.TableDiv>
                                         </Style.DadosTerceiros>
                                     </>
