@@ -37,7 +37,7 @@ export default class ResourcesAllocation extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log("Res Upd: ", this.state.resource)
+        console.log("Res Upd: ", this.state)
     }
 
     async componentDidMount() {
@@ -47,17 +47,17 @@ export default class ResourcesAllocation extends React.Component {
         this.props.setShowMenu(true);
     }
 
-    async mount(){
+    async mount(projectRes){
         await ProjectService.getAllByEmployeeId(this.props.logged.id)
             .then(async (res) => {
                 if (res.data.length > 0) {
                     await EmployeeService.distinctProject({
-                        projectId: res.data[0].id
+                        projectId: projectRes ? projectRes.id : res.data[0].id
                     })
                         .then(async (res2) => {
                             this.setState({
                                 ...this.state,
-                                project: res.data == "" ? {} : res.data[0],
+                                project: projectRes ? projectRes : res.data == "" ? {} : res.data[0],
                                 resource: res2.data == "" ? {} : res2.data[0],
                                 selectDados: {
                                     ...this.state.selectDados,
@@ -77,7 +77,7 @@ export default class ResourcesAllocation extends React.Component {
                             })
                         })
                     await EmployeeService.getAllByProject({
-                        projectId: res.data[0].id
+                        projectId: projectRes ? projectRes.id : res.data[0].id
                     })
                         .then(async (res3) => {
                             this.setState({
@@ -124,7 +124,7 @@ export default class ResourcesAllocation extends React.Component {
             projectId: this.state.project.id
         }, true)
             .then(async (res) => {
-                await this.mount()
+                await this.mount(this.state.project)
                 this.setState({
                     ...this.state,
                     showToaster: true,
@@ -149,7 +149,7 @@ export default class ResourcesAllocation extends React.Component {
             projectId: this.state.project.id
         })
             .then(async (res) => {
-                await this.mount()
+                await this.mount(this.state.project)
                 this.setState({
                     ...this.state,
                     showToaster: true,
@@ -167,13 +167,12 @@ export default class ResourcesAllocation extends React.Component {
             })
     }
 
-    handleProject(e) {
-        let value = e.target.value;
-        let res = this.state.selectDados.projects.find(v => v.id == value)
-        this.setState({
-            ...this.state,
-            project: res
-        })
+    async handleProject(e) {
+        let value = e.target.value
+        let projectRes = this.state.selectDados.projects.find(v => v.id == value)
+        this.props.setLoad(true)
+        await this.mount(projectRes)
+        this.props.setLoad(false)
     }
 
     handleResource(e) {
@@ -210,7 +209,7 @@ export default class ResourcesAllocation extends React.Component {
                                                 <Form.Group as={Col} controlId="formGridClientName">
                                                     <Form.Label>Projeto</Form.Label>
                                                     <Form.Control as="select"
-                                                        defaultValue={this.state.project}
+                                                        defaultValue={this.state.project.id}
                                                         onChange={(event) => { this.handleProject(event) }}>
                                                         {
                                                             this.state.selectDados.projects.map((value, i) => {
@@ -224,11 +223,6 @@ export default class ResourcesAllocation extends React.Component {
                                             </Card.Body>
                                         </Style.DBigBox>
                                     </Style.DBoxBody>
-                                    <Style.DFooter>
-                                        <Style.BotaoForm>
-                                            Filtrar
-                                        </Style.BotaoForm>
-                                    </Style.DFooter>
                                 </Style.Dados>
                                 <Style.DadosDois>
                                     <Style.DHeader>
