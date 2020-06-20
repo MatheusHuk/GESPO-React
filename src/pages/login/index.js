@@ -60,7 +60,7 @@ export default function Login({ setLoad, logged, setLogged }) {
         UserService.login(state)
             .then((res) => {
                 setLogged(res.data);
-                setCookies("LOGGED", res.data);
+                setCookies("LOGGED", res.data, { sameSite: "Lax" });
                 history.push("/");
             })
             .catch((error) => {

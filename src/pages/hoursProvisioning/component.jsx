@@ -3,6 +3,7 @@ import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import * as Style from './style'
+import { Invalid } from '../style.js'
 import ProjectService from '../../services/projectService'
 import HoursProvisioningService from '../../services/hoursProvisioningService'
 import CategoryService from '../../services/categoryService'
@@ -381,7 +382,7 @@ export default class HoursProvisioningReal extends React.Component {
                     <Style.Container>
                         {
                             this.state.invalid.show ? 
-                                <>{this.state.invalid.message}</> :
+                                <Invalid>{this.state.invalid.message}</Invalid> :
                                 <>
                                     <Style.HeaderContainer>
                                         <Style.HeaderButton
@@ -434,36 +435,39 @@ export default class HoursProvisioningReal extends React.Component {
                                                 </Style.DBody>
                                             </Style.Dados>
                                             <Style.DadosThree>
-                                                <Style.DHeader> Provisionamento de Horas: {this.state.project.name} </Style.DHeader>
+                                                <Style.DHeader> Provisionamento de Horas - {this.state.project.name} </Style.DHeader>
                                                 <Style.DBody>
-                                                    <Style.DBoxBodyProv>
-                                                        <Style.SubContainer>
-                                                            {
-                                                                this.state.provisionings.length == 0 ?
-                                                                    <>Este projeto não têm nenhum provisionamento</> :
-                                                                this.state.provisionings.map((month, i) => {
-                                                                    return (
-                                                                        <Style.Component>
-                                                                            <Style.DHeaderTwo>{month.name}</Style.DHeaderTwo>
-                                                                            <Style.CBody>
-                                                                                {
-                                                                                    month.provisionings.map((prov, i) => {
-                                                                                        return (
-                                                                                            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">{prov.employee.name} - {prov.category.dsCategory}</Tooltip>}>
-                                                                                                <Style.ProvButton onClick={() => { this.editProvisioning(prov) }}>
-                                                                                                    <Style.ProvSpam>{prov.amountHours}</Style.ProvSpam>
-                                                                                                </Style.ProvButton>
-                                                                                            </OverlayTrigger>
-                                                                                        );
-                                                                                    })
-                                                                                }
-                                                                            </Style.CBody>
-                                                                        </Style.Component>
-                                                                    );
-                                                                })
-                                                            }
-                                                        </Style.SubContainer>
-                                                    </Style.DBoxBodyProv>
+                                                    {
+                                                        this.state.provisionings.length == 0 ?
+                                                        <Invalid>Este projeto não têm nenhum provisionamento</Invalid> :
+                                                        <Style.DBoxBodyProv>
+                                                            <Style.SubContainer>
+                                                                {
+                                                                    
+                                                                    this.state.provisionings.map((month, i) => {
+                                                                        return (
+                                                                            <Style.Component>
+                                                                                <Style.DHeaderTwo>{month.name}</Style.DHeaderTwo>
+                                                                                <Style.CBody>
+                                                                                    {
+                                                                                        month.provisionings.map((prov, i) => {
+                                                                                            return (
+                                                                                                <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">{prov.employee.name} - {prov.category.dsCategory}</Tooltip>}>
+                                                                                                    <Style.ProvButton onClick={() => { this.editProvisioning(prov) }}>
+                                                                                                        <Style.ProvSpam>{prov.amountHours}</Style.ProvSpam>
+                                                                                                    </Style.ProvButton>
+                                                                                                </OverlayTrigger>
+                                                                                            );
+                                                                                        })
+                                                                                    }
+                                                                                </Style.CBody>
+                                                                            </Style.Component>
+                                                                        );
+                                                                    })
+                                                                }
+                                                            </Style.SubContainer>
+                                                        </Style.DBoxBodyProv>
+                                                    }
                                                 </Style.DBody>
                                             </Style.DadosThree>
                                         </>

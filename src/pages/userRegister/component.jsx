@@ -6,6 +6,7 @@ import FA from 'react-fontawesome'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
 import "./index.css"
 import * as Style from './style'
+import { Invalid } from '../style.js'
 import CategoryService from '../../services/categoryService'
 import TeamService from '../../services/teamService'
 import EmployeeService from '../../services/employeeService'
@@ -454,7 +455,7 @@ export default class UserRegister extends React.Component {
                     <Style.Container>
                         {
                             this.state.invalid.show ? 
-                            <>{this.state.invalid.message}</> :
+                            <Invalid>{this.state.invalid.message}</Invalid> :
                             <>
                                 <Style.HeaderContainer>
                                     <Style.HeaderButton

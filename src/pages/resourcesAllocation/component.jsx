@@ -5,6 +5,7 @@ import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'reac
 import "./index.css"
 import * as ReactBootstrap from "react-bootstrap";
 import * as Style from './style'
+import { Invalid } from '../style.js'
 import FA from 'react-fontawesome'
 import ProjectService from '../../services/projectService'
 import EmployeeService from '../../services/employeeService'
@@ -207,7 +208,7 @@ export default class ResourcesAllocation extends React.Component {
                     <Style.Container>
                         {
                             this.state.invalid.show ? 
-                            <>{this.state.invalid.message}</> :
+                            <Invalid>{this.state.invalid.message}</Invalid> :
                             <>
                                 <Style.Dados>
                                     <Style.DHeader>

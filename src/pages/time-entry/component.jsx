@@ -4,6 +4,7 @@ import { Button, Col, Form, Table } from 'react-bootstrap'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
 import * as Style from './style'
+import { Invalid } from '../style.js'
 import TimeEntryService from '../../services/timeEntryService'
 import ProjectService from '../../services/projectService'
 import EmployeeService from '../../services/employeeService'
@@ -434,7 +435,7 @@ export default class TimeEntry extends React.Component {
                     <Style.Container>
                         {
                             this.state.invalid.show ? 
-                            <>{this.state.invalid.message}</> :
+                            <Invalid>{this.state.invalid.message}</Invalid> :
                             <>
                                 <Style.HeaderContainer>
                                     <Style.HeaderButton
@@ -504,36 +505,43 @@ export default class TimeEntry extends React.Component {
                                         </Style.Filtros>
                                         <Style.Apontamento>
                                             <Style.AHeader>Apontamentos</Style.AHeader>
-                                            <Style.TableDiv>
-                                                <Table striped bordered hover className="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Funcionário</th>
-                                                            <th>Projeto</th>
-                                                            <th>Data</th>
-                                                            <th>Horas</th>
-                                                            <th>Observações</th>
-                                                            <th>Ações</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {
-                                                            this.state.dados.map((data, i) => {
-                                                                return (
-                                                                    <tr key={i}>
-                                                                        <td>{data.employee.name}</td>
-                                                                        <td>{data.project.name}</td>
-                                                                        <td>{this.parseDate(data.creationDate)}</td>
-                                                                        <td>{this.decryptHours(data.amountHours)}</td>
-                                                                        <td>{data.dsWork}</td>
-                                                                        <td><Style.Icone onClick={ () => { this.delete(data.id) } }><FA name="ban" /></Style.Icone></td>
-                                                                    </tr>
-                                                                )
-                                                            })
-                                                        }
-                                                    </tbody>
-                                                </Table>
-                                            </Style.TableDiv>
+                                            {
+                                                this.state.dados.length == 0 ?
+                                                <Invalid>Este projeto não possui nenhum apontamento</Invalid> :
+                                                <>
+                                                    
+                                                    <Style.TableDiv>
+                                                        <Table striped bordered hover className="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Funcionário</th>
+                                                                    <th>Projeto</th>
+                                                                    <th>Data</th>
+                                                                    <th>Horas</th>
+                                                                    <th>Observações</th>
+                                                                    <th>Ações</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {
+                                                                    this.state.dados.map((data, i) => {
+                                                                        return (
+                                                                            <tr key={i}>
+                                                                                <td>{data.employee.name}</td>
+                                                                                <td>{data.project.name}</td>
+                                                                                <td>{this.parseDate(data.creationDate)}</td>
+                                                                                <td>{this.decryptHours(data.amountHours)}</td>
+                                                                                <td>{data.dsWork}</td>
+                                                                                <td><Style.Icone onClick={ () => { this.delete(data.id) } }><FA name="ban" /></Style.Icone></td>
+                                                                            </tr>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </tbody>
+                                                        </Table>
+                                                    </Style.TableDiv>
+                                                </>
+                                            }
                                         </Style.Apontamento>
                                     </Style.MainContainer>
                                     :

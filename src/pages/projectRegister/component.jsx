@@ -6,6 +6,7 @@ import FA from 'react-fontawesome'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
 import "./index.css"
 import * as Style from './style'
+import { Invalid } from '../style.js'
 import ProjectService from '../../services/projectService'
 import EmployeeService from '../../services/employeeService';
 import CustCenterService from '../../services/CustCenterService'
@@ -285,7 +286,7 @@ export default class ProjectRegister extends React.Component {
                     <Style.Container>
                         {
                             this.state.invalid.show ? 
-                            <>{this.state.invalid.message}</> :
+                            <Invalid>{this.state.invalid.message}</Invalid> :
                             <>
                                 <Style.HeaderContainer>
                                     <Style.HeaderButton
@@ -311,9 +312,9 @@ export default class ProjectRegister extends React.Component {
                                         <Style.DHeader>
                                             Projetos
                                     </Style.DHeader>
-                                        <Style.TableDiv>
-                                            {
-                                                this.state.projects.length > 0 ?
+                                        {
+                                            this.state.projects.length > 0 ?
+                                            <Style.TableDiv>
                                                 <ReactBootstrap.Table striped bordered hover className="table">
                                                     <thead>
                                                         <tr>
@@ -339,10 +340,10 @@ export default class ProjectRegister extends React.Component {
                                                             })
                                                         }
                                                     </tbody>
-                                                </ReactBootstrap.Table> :
-                                                <>Você não está alocado em nenhum projeto</>
-                                            }
-                                        </Style.TableDiv>
+                                                </ReactBootstrap.Table>
+                                            </Style.TableDiv> :
+                                            <Invalid>Você não está alocado em nenhum projeto</Invalid>
+                                        }
                                     </Style.DadosGrid>
                                     : this.state.showEdit ?
                                         <Style.Dados>

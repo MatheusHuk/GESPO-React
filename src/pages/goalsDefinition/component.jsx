@@ -8,8 +8,8 @@ import ProjectService from '../../services/projectService'
 import TasksService from '../../services/tasksService'
 import CategoryService from '../../services/categoryService'
 import EmployeeService from '../../services/employeeService'
-
 import * as Style from './style'
+import { Invalid } from '../style.js'
 
 export default class GoalsDefinition extends React.Component {
 
@@ -444,7 +444,7 @@ export default class GoalsDefinition extends React.Component {
                     <Style.Container>
                         {
                             this.state.invalid.show ? 
-                            <>{this.state.invalid.message}</> :
+                            <Invalid>{this.state.invalid.message}</Invalid> :
                             <>
                                 <Style.HeaderContainer>
                                     <Style.HeaderButton
@@ -498,50 +498,50 @@ export default class GoalsDefinition extends React.Component {
                                             <Style.DHeader>
                                                 <Style.DivCreate>Metas - {this.state.project.name}</Style.DivCreate>
                                             </Style.DHeader>
-                                            <Style.TableDiv>
                                                 {
                                                     this.state.tasks.length == 0 ?
-                                                    <>Este projeto não possui nenhuma meta</> :
-                                                    <ReactBootstrap.Table striped bordered hover className="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Titulo</th>
-                                                                <th>Descrição</th>
-                                                                <th>Categoria</th>
-                                                                <th>Funcionário</th>
-                                                                <th>%</th>
-                                                                <th>Ações</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {
-                                                                this.state.tasks.map((value, i) => {
-                                                                    return (
-                                                                        <tr key={i}>
-                                                                            <td>{value.title}</td>
-                                                                            <td>{value.description}</td>
-                                                                            <td>{value.category.dsCategory}</td>
-                                                                            <td>{value.employee.name}</td>
-                                                                            <td>
-                                                                                {value.percentProject}%
-                                                                            <input type="range" min={0} max={100} value={value.percentProject} readOnly />
-                                                                            </td>
-                                                                            <td>
-                                                                                <Style.Icone onClick={() => { this.edit(value) }}>
-                                                                                    <FA name="edit" />
-                                                                                </Style.Icone>
-                                                                                <Style.Icone onClick={() => { this.deleteTask(value.id) }}>
-                                                                                    <FA name="ban" />
-                                                                                </Style.Icone>
-                                                                            </td>
-                                                                        </tr>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </tbody>
-                                                    </ReactBootstrap.Table>
+                                                    <Invalid>Este projeto não possui nenhuma meta</Invalid> :
+                                                    <Style.TableDiv>
+                                                        <ReactBootstrap.Table striped bordered hover className="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Titulo</th>
+                                                                    <th>Descrição</th>
+                                                                    <th>Categoria</th>
+                                                                    <th>Funcionário</th>
+                                                                    <th>%</th>
+                                                                    <th>Ações</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {
+                                                                    this.state.tasks.map((value, i) => {
+                                                                        return (
+                                                                            <tr key={i}>
+                                                                                <td>{value.title}</td>
+                                                                                <td>{value.description}</td>
+                                                                                <td>{value.category.dsCategory}</td>
+                                                                                <td>{value.employee.name}</td>
+                                                                                <td>
+                                                                                    {value.percentProject}%
+                                                                                <input type="range" min={0} max={100} value={value.percentProject} readOnly />
+                                                                                </td>
+                                                                                <td>
+                                                                                    <Style.Icone onClick={() => { this.edit(value) }}>
+                                                                                        <FA name="edit" />
+                                                                                    </Style.Icone>
+                                                                                    <Style.Icone onClick={() => { this.deleteTask(value.id) }}>
+                                                                                        <FA name="ban" />
+                                                                                    </Style.Icone>
+                                                                                </td>
+                                                                            </tr>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </tbody>
+                                                        </ReactBootstrap.Table>
+                                                        </Style.TableDiv>
                                                 }
-                                            </Style.TableDiv>
                                         </Style.DadosTerceiros>
                                     </>
                                     : this.state.showEdit ?
