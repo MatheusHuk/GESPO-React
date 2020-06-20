@@ -143,6 +143,16 @@ export default class ResourcesAllocation extends React.Component {
     }
 
     async deallocate(id){
+        if(id == this.props.logged.id){
+            this.setState({
+                showToaster: true,
+                toaster: {
+                    header: "Erro",
+                    body: "Você não pode se desalocar do projeto"
+                }
+            })
+            return;
+        }
         this.props.setLoad(true)
         await ProjectService.removeAllocation({
             employeeId: id,
