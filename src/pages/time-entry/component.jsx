@@ -39,7 +39,7 @@ export default class TimeEntry extends React.Component {
             newDados: {
                 employee: this.props.logged,
                 project: null,
-                date: null,
+                creationDate: null,
                 amountHours: 0,
                 dsWork: null
             },
@@ -152,7 +152,7 @@ export default class TimeEntry extends React.Component {
             ...this.state,
             newDados: {
                 ...this.state.newDados,
-                date: e.target.value
+                creationDate: e.target.value
             }
         });
     }
@@ -297,7 +297,7 @@ export default class TimeEntry extends React.Component {
     }
 
     addDados() {
-        if (!this.state.newDados.employee || !this.state.newDados.project || !this.state.newDados.date || this.state.newDados.amountHours == 0) {
+        if (!this.state.newDados.employee || !this.state.newDados.project || !this.state.newDados.creationDate || this.state.newDados.amountHours == 0) {
             this.setState({
                 ...this.state,
                 toaster: {
@@ -347,7 +347,7 @@ export default class TimeEntry extends React.Component {
                             newDados: {
                                 employee: this.props.logged,
                                 project: null,
-                                date: null,
+                                creationDate: null,
                                 amountHours: 0,
                                 dsWork: null
                             }
@@ -386,7 +386,7 @@ export default class TimeEntry extends React.Component {
                             dados: res.data == "" ? [] : res.data,
                             toaster: {
                                 header: "Sucesso",
-                                body: "Apontamento com sucesso"
+                                body: "Apontamento excluído com sucesso"
                             },
                             showToaster: true,
                             showFiltros: true,
@@ -394,7 +394,7 @@ export default class TimeEntry extends React.Component {
                             newDados: {
                                 employee: this.props.logged,
                                 project: null,
-                                date: null,
+                                creationDate: null,
                                 amountHours: 0,
                                 dsWork: null
                             }
@@ -634,7 +634,7 @@ export default class TimeEntry extends React.Component {
                                                                     <tr key={i}>
                                                                         <td>{data.employee.name}</td>
                                                                         <td>{data.project.name}</td>
-                                                                        <td>{data.date}</td>
+                                                                        <td>{data.creationDate}</td>
                                                                         <td>{this.decryptHours(data.amountHours)}</td>
                                                                         <td>{data.dsWork}</td>
                                                                         <td><Style.Icone onClick={() => { this.deleteEntry(i) }}><FA name="ban" /></Style.Icone></td>
