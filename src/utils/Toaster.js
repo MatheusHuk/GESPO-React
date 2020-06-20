@@ -7,6 +7,18 @@ export default class Toaster extends React.Component {
         this.props = props;
     }
 
+    componentDidUpdate(){
+        if(this.props.show){
+            this.resetToaster();
+        }
+    }
+
+    resetToaster(){
+        setTimeout(() => {
+            this.props.setShowToaster(false)
+        }, 5000);
+    }
+
     render() {
         return (
             <Toast 
@@ -17,7 +29,8 @@ export default class Toaster extends React.Component {
                     top: '1VH',
                     right: '1VW',
                     transition: 'all 0.5s',
-                    width: '20VW'
+                    width: '20VW',
+                    zIndex: this.props.show ? '1000' : '0'
                   }}>
                 <Toast.Header>
                     <img

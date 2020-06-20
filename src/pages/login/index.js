@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
+import { Cookies, useCookies } from 'react-cookie'
 import { useHistory } from 'react-router-dom'
-import { FormControl, InputGroup, Button } from 'react-bootstrap';
+import { FormControl, InputGroup, Button, Form, Col } from 'react-bootstrap';
 import UserService from '../../services/userService'
 import Toaster from '../../utils/Toaster'
 import './index.css'
+import loginImg from "../../assets/gespo.jpg";
+import './style.scss';
+import * as Style from './style.js'
+
 
 export default function Login({ setLoad, logged, setLogged }) {
 
@@ -21,14 +26,19 @@ export default function Login({ setLoad, logged, setLogged }) {
 
     const [show, setShow] = useState(false);
 
-    const resetToaster = () => {
-        setTimeout(() => {
-            setShow(false)
-        }, 5000);
-    }
+    const [cookies, setCookies] = useCookies([]);
+
+    const cookie = new Cookies();
 
     useEffect(() => {
-        setLoad(false);
+        setLoad(true);
+        let loggedCookie = cookie.get("LOGGED")
+        if (loggedCookie) {
+            setLogged(loggedCookie)
+            history.push("/")
+        } else {
+            setLoad(false);
+        }
     }, []);
 
     function handleLogin(e) {
@@ -47,29 +57,31 @@ export default function Login({ setLoad, logged, setLogged }) {
 
     async function login() {
         setLoad(true);
-        UserService.login([["cpf", state.cpf], ["password", state.password]])
+        UserService.login(state)
             .then((res) => {
-                setLogged(res);
+                setLogged(res.data);
+                setCookies("LOGGED", res.data, { sameSite: "Lax" });
                 history.push("/");
             })
             .catch((error) => {
                 let erro = "";
-                switch(error){
+                switch (error) {
+                    case 400:
+                        erro = "Cpf ou senha inválidos"; break;
                     case 403:
-                        erro = "Cpf ou senha inválidos";break;
+                        erro = "Cpf ou senha inválidos"; break;
                     case 404:
-                        erro = "Cpf ou senha inválidos";break;
+                        erro = "Cpf ou senha inválidos"; break;
                     case 500:
-                        erro = "Erro interno do servidor";break;
+                        erro = "Erro interno do servidor"; break;
                     default:
-                        erro = "Erro";break;
+                        erro = "Erro"; break;
                 }
                 setToaster({
                     header: "Erro",
                     body: erro
                 });
                 setShow(true);
-                resetToaster();
             })
             .finally(() => {
                 setLoad(false);
@@ -78,38 +90,44 @@ export default function Login({ setLoad, logged, setLogged }) {
 
     return (
         <>
-            <Toaster 
+            <Toaster
                 show={show}
-                setShowToaster={(sit) => {setShow(sit)}}
+                setShowToaster={(sit) => { setShow(sit) }}
                 header={toaster.header}
                 body={toaster.body}
             />
-            <div class="page">
-                <div class="box">
-                    <div class="gespo">GESPO</div>
-                    <div class="label">Login</div>
-                    <InputGroup className="text">
-                        <FormControl
-                            id="log"
-                            aria-label="Default"
-                            aria-describedby="inputGroup-sizing-default"
-                            onChange={(event) => { handleLogin(event) }}
-                            type="text"
-                        />
-                    </InputGroup>
-                    <div class="label">Senha</div>
-                    <InputGroup className="text">
-                        <FormControl
-                            id="log"
-                            aria-label="Default"
-                            aria-describedby="inputGroup-sizing-default"
-                            onChange={(event) => { handlePass(event) }}
-                            type="password"
-                        />
-                    </InputGroup>
-                    <div class="button_box">
-                        <Button onClick={() => { login() }} variant="light">Login</Button>
-                    </div>
+
+            <div class="box_login">
+                <div className="base-container">
+                    <Style.Content>
+                        <Style.Image>
+                            <img src={loginImg} />
+                        </Style.Image>
+                        <Style.Dados>
+                            <Style.DHeader>Login</Style.DHeader>
+                            <Style.DBody>
+                                <Form>
+                                    <Form.Row>
+                                        <Form.Group as={Col}>
+                                            <Form.Label>Usuário</Form.Label>
+                                            <Form.Control type="text" placeholder="CPF" onChange={(event) => { handleLogin(event) }} />
+                                        </Form.Group>
+                                    </Form.Row>
+                                    <Form.Row>
+                                        <Form.Group as={Col}>
+                                            <Form.Label>Senha</Form.Label>
+                                            <Form.Control type="password" placeholder="Password" onChange={(event) => { handlePass(event) }} />
+                                        </Form.Group>
+                                    </Form.Row>
+                                </Form>
+                            </Style.DBody>
+                            <Style.DFooter>
+                                <Style.BotaoForm onClick={() => { login() }}>
+                                    Entrar
+                                </Style.BotaoForm>
+                            </Style.DFooter>
+                        </Style.Dados>
+                    </Style.Content>
                 </div>
             </div>
         </>

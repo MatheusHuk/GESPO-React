@@ -6,13 +6,6 @@
     display: flex;
 }
 
-.gespo {
-    height: auto;
-    width: 100%;
-    font-size: 5VH;
-    text-align: center;
-}
-
 .label {
     width: 100%;
     margin-top: 5VH;
@@ -47,8 +40,26 @@
 }
 
 .button_box{
-    margin-top: 5VH;
-    width: 100%;
-    justify-content: center;
-    display: flex;
+    font-size: 21px;
+    padding: 5px 20px;
+    border: 0;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 3px;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+    
 }
+
+.button_box:hover{
+    background-color: #2386c8;
+}
+
+.button_box:focus{
+    outline: none;
+}
+
+.btn{
+    background-color: red;
+}
+

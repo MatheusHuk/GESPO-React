@@ -14,8 +14,15 @@ export const Menu = styled.div`
 export const Empresa = styled.div`
     width: calc(20VW - 1px);
     height: 7.5VH;
-    background-color: red;
     border-radius: inherit;
+    font-size: 4VH;
+    color: black;
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    flex-direction: column;
 `;
 
 export const ButtonContainer = styled.div`
@@ -38,5 +45,20 @@ export const Button = styled.div`
 
     :hover{
         color: grey;
+    }
+`;
+
+export const Gespo = styled.div`
+    width: 6VH;
+    height: 6VH;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -60%);
+    img{
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        display: block;
     }
 `;
