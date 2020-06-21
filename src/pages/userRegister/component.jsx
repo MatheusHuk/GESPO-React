@@ -580,7 +580,7 @@ export default class UserRegister extends React.Component {
                                                     <Card.Body className="fundoForm">
                                                         <Form.Group as={Col}>
                                                             <Form.Label>Password</Form.Label>
-                                                            <Form.Control type="text"
+                                                            <Form.Control type="password"
                                                             defaultValue={this.state.editDados.password}
                                                             onChange={(event) => { this.handleEditPassword(event) }} />
                                                         </Form.Group>
@@ -699,7 +699,7 @@ export default class UserRegister extends React.Component {
                                                     <Card.Body className="fundoForm">
                                                         <Form.Group as={Col}>
                                                             <Form.Label>Password</Form.Label>
-                                                            <Form.Control type="text" onChange={(event) => { this.handleNewPassword(event) }} />
+                                                            <Form.Control type="password" onChange={(event) => { this.handleNewPassword(event) }} />
                                                         </Form.Group>
                                                     </Card.Body>
                                                 </Style.DBox>
