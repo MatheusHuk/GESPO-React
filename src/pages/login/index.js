@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Cookies, useCookies } from 'react-cookie'
 import { useHistory } from 'react-router-dom'
-import { FormControl, InputGroup, Button, Form, Col } from 'react-bootstrap';
+import FA from 'react-fontawesome'
 import UserService from '../../services/userService'
 import Toaster from '../../utils/Toaster'
 import './index.css'
 import loginImg from "../../assets/GespoLogo.png";
-import back from "../../assets/back.jpg"
-import './style.scss';
-import * as Style from './style.js'
-
+import phone from '../../assets/phone.svg'
+import wave from "../../assets/wave.png"
+import './style.css';
 
 export default function Login({ setLoad, logged, setLogged }) {
 
@@ -91,7 +90,7 @@ export default function Login({ setLoad, logged, setLogged }) {
 
     return (
         <>
-        <Style.Background src={back} />
+        <img className="wave" src={wave} />
             <Toaster
                 show={show}
                 setShowToaster={(sit) => { setShow(sit) }}
@@ -99,37 +98,36 @@ export default function Login({ setLoad, logged, setLogged }) {
                 body={toaster.body}
             />
 
-            <div class="box_login">
-                <div className="base-container">
-                    <Style.Content>
-                        <Style.Image>
-                            <img src={loginImg} />
-                        </Style.Image>
-                        <Style.Dados>
-                            <Style.DHeader>Login</Style.DHeader>
-                            <Style.DBody>
-                                <Form>
-                                    <Form.Row>
-                                        <Form.Group as={Col}>
-                                            <Form.Label>Usuário</Form.Label>
-                                            <Form.Control type="text" placeholder="CPF" onChange={(event) => { handleLogin(event) }} />
-                                        </Form.Group>
-                                    </Form.Row>
-                                    <Form.Row>
-                                        <Form.Group as={Col}>
-                                            <Form.Label>Senha</Form.Label>
-                                            <Form.Control type="password" placeholder="Password" onChange={(event) => { handlePass(event) }} />
-                                        </Form.Group>
-                                    </Form.Row>
-                                </Form>
-                            </Style.DBody>
-                            <Style.DFooter>
-                                <Style.BotaoForm onClick={() => { login() }}>
-                                    Entrar
-                                </Style.BotaoForm>
-                            </Style.DFooter>
-                        </Style.Dados>
-                    </Style.Content>
+            <div className="loginContainer">
+                <div className="img">
+                    <img src={phone} />
+                </div>
+                <div class="login-content">
+                    <div className="form">
+                        <img src={loginImg} />
+                        <h1>Organização é para todos</h1>
+                        <div className="input-div one">
+                            <div className="i">
+                                <FA name="user" />
+                            </div>
+                            <div className="div">
+                                <input placeHolder="CPF" type="text" className="input" 
+                                onChange={(event) => { handleLogin(event) }} />
+                            </div>
+                        </div>
+                        <div className="input-div pass">
+                            <div className="i">
+                                <FA name="lock" />
+                            </div>
+                            <div className="div">
+                                <input placeHolder="Senha" type="password" className="input"
+                                onChange={(event) => { handlePass(event) }} />
+                            </div>
+                        </div>
+                    <div className="btnLogin" onClick={() => { login() }}>
+                        <span>Entrar</span>
+                    </div>
+                    </div>
                 </div>
             </div>
         </>
