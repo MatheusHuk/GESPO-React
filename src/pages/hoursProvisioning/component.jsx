@@ -55,7 +55,8 @@ export default class HoursProvisioningReal extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log("Prov state: ", this.state)
+        console.log("Edit state: ", this.state.editDados)
+        console.log("New state: ", this.state.newDados)
     }
 
     async mount(projectRes){
@@ -93,6 +94,7 @@ export default class HoursProvisioningReal extends React.Component {
                             } else {
                                 res2.data.map((value, i) => {
                                     let m = new Date(value.creationDate).getMonth();
+                                    console.log("C: "+value.creationDate+" | M: "+m);
                                     if (aux.find(u => u.id == m)) {
                                         let obj = aux.find(u => u.id == m)
                                         obj.provisionings.push(value)
@@ -105,6 +107,7 @@ export default class HoursProvisioningReal extends React.Component {
                                     }
                                 })
                                 aux.sort((a, b) => { return a.id - b.id })
+                                console.log("AUX: ",aux)
                             }
                             this.setState({
                                 ...this.state,
@@ -164,7 +167,12 @@ export default class HoursProvisioningReal extends React.Component {
 
     async createProvisioning() {
         this.props.setLoad(true)
-        await HoursProvisioningService.create([this.state.newDados])
+        let date = parseInt(this.state.newDados.creationDate.split("-")[1])+1;
+        date = date > 12 ? 1 : date;
+        await HoursProvisioningService.create([{
+            ...this.state.newDados,
+            creationDate: "2020-"+(date < 10 ? "0"+date : date)+"-20"
+        }])
             .then(async (res) => {
                 await this.mount(this.state.project)
                 this.setState({
@@ -188,7 +196,12 @@ export default class HoursProvisioningReal extends React.Component {
 
     async updateProvisioning() {
         this.props.setLoad(true)
-        await HoursProvisioningService.update(this.state.editDados)
+        let date = parseInt(this.state.editDados.creationDate.split("-")[1])+1;
+        date = date > 12 ? 1 : date;
+        await HoursProvisioningService.update({
+            ...this.state.editDados,
+            creationDate: "2020-"+(date < 10 ? "0"+date : date)+"-20"
+        })
             .then(async (res) => {
                 await this.mount(this.state.project);
                 this.setState({
@@ -236,6 +249,8 @@ export default class HoursProvisioningReal extends React.Component {
 
     editProvisioning(data) {
         let month = new Date(data.creationDate).getMonth() + 1
+        console.log("Month: ",month)
+        console.log('Month CD: ',"2020-" + (month < 10 ? "0" + month : month) + "-20")
         this.setState({
             ...this.state,
             showFiltros: false,
@@ -293,6 +308,7 @@ export default class HoursProvisioningReal extends React.Component {
 
     handleEditCreationDate(e) {
         let value = e.target.value;
+        console.log("Edit value: ",value)
         this.setState({
             ...this.state,
             editDados: {
@@ -337,6 +353,7 @@ export default class HoursProvisioningReal extends React.Component {
 
     handleNewCreationDate(e) {
         let value = e.target.value;
+        console.log("New value: ",value)
         this.setState({
             ...this.state,
             newDados: {
