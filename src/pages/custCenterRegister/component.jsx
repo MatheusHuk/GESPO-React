@@ -6,6 +6,7 @@ import CustCenterService from '../../services/CustCenterService'
 import "./index.css"
 import * as Style from './style'
 import FA from 'react-fontawesome'
+import { Invalid } from '../style.js'
 import * as ReactBootstrap from "react-bootstrap";
 
 export default class CustCenterRegister extends React.Component {
@@ -271,38 +272,42 @@ export default class CustCenterRegister extends React.Component {
                         {this.state.showGrid ?
                             <Style.DadosGrid>
                                 <Style.DHeader>
-                                    Usuários
-                            </Style.DHeader>
-                                <Style.TableDiv>
-                                    <ReactBootstrap.Table striped bordered hover className="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Nome</th>
-                                                <th>CNPJ</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                this.state.custCenters.map((value, i) => {
-                                                    return (
-                                                        <tr>
-                                                            <td>{value.name}</td>
-                                                            <td>{value.cnpj}</td>
-                                                            <td>
-                                                                <Style.Icone onClick={() => { this.editCustCenter(value) }}>
-                                                                    <FA name="edit" />
-                                                                </Style.Icone>
-                                                                <Style.Icone onClick={() => { this.deleteCustCenter(value.id) }}>
-                                                                    <FA name="ban" />
-                                                                </Style.Icone>
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            }
-                                        </tbody>
-                                    </ReactBootstrap.Table>
-                                </Style.TableDiv>
+                                    Centros de Custo
+                                </Style.DHeader>
+                                    {
+                                        this.state.custCenters.length == 0 ?
+                                        <Invalid>Você não possui nenhum centro de custo cadastrado</Invalid> :
+                                        <Style.TableDiv>
+                                            <ReactBootstrap.Table striped bordered hover className="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nome</th>
+                                                        <th>CNPJ</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        this.state.custCenters.map((value, i) => {
+                                                            return (
+                                                                <tr>
+                                                                    <td>{value.name}</td>
+                                                                    <td>{value.cnpj}</td>
+                                                                    <td>
+                                                                        <Style.Icone onClick={() => { this.editCustCenter(value) }}>
+                                                                            <FA name="edit" />
+                                                                        </Style.Icone>
+                                                                        <Style.Icone onClick={() => { this.deleteCustCenter(value.id) }}>
+                                                                            <FA name="ban" />
+                                                                        </Style.Icone>
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                    }
+                                                </tbody>
+                                            </ReactBootstrap.Table>
+                                        </Style.TableDiv>
+                                    }
                             </Style.DadosGrid>
                             : this.state.showEdit ?
                                 <Style.Dados>

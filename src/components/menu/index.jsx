@@ -10,10 +10,10 @@ export default function Menu({ setLoad }){
 
     const [cookies, setCookies, removeCookies] = useCookies([]);
 
-    const logOut = () => {
+    const logOut = async () => {
         setLoad(true)
-        removeCookies("LOGGED")
-        removeCookies("JSESSIONID")
+        await removeCookies("LOGGED")
+        await removeCookies("JSESSIONID")
         history.push("/login")
     }
 
