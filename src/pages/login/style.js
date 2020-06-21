@@ -9,6 +9,17 @@ const anim = keyframes`
     }
 `;
 
+export const Background = styled.div`
+    margin: 0;
+    width: 100VW;
+    height: 100VH;
+    background-image: url(${props => props.src});
+    background-size: cover; 
+    position: absolute;
+    z-index: -1000;
+    filter: blur(5px);
+`
+
 export const Dados = styled.div`
     padding: 5%;
     position: relative;

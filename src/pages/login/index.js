@@ -5,7 +5,8 @@ import { FormControl, InputGroup, Button, Form, Col } from 'react-bootstrap';
 import UserService from '../../services/userService'
 import Toaster from '../../utils/Toaster'
 import './index.css'
-import loginImg from "../../assets/gespo.jpg";
+import loginImg from "../../assets/GespoLogo.png";
+import back from "../../assets/back.jpg"
 import './style.scss';
 import * as Style from './style.js'
 
@@ -90,6 +91,7 @@ export default function Login({ setLoad, logged, setLogged }) {
 
     return (
         <>
+        <Style.Background src={back} />
             <Toaster
                 show={show}
                 setShowToaster={(sit) => { setShow(sit) }}
