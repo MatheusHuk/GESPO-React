@@ -29,7 +29,7 @@ export default function Home({ setLoad, logged, setLogged, showMenu, setShowMenu
                             <Style.Component onClick={() => history.push("/projectManagement") }>Gestão de Projetos</Style.Component>
                         </Style.SubContainer>
                         <Style.SubContainer>
-                            <Style.Component onClick={() => history.push("/dashboards") }>Dashboards</Style.Component>
+                            <Style.Component onClick={() => window.location.href = process.env.REACT_APP_DASHBOARD_URL }>Dashboards</Style.Component>
                             <Style.Component onClick={() => history.push("/timeEntry") }>Apontamento de horas</Style.Component>
                         </Style.SubContainer>
                     </Style.Container>
