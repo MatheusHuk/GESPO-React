@@ -5,7 +5,7 @@ import * as Style from './style'
 
 import './index.css'
 
-export default function Register({ setLoad, showMenu, setShowMenu }){
+export default function Register({ setLoad, showMenu, setShowMenu, logged }){
 
     const history = useHistory();
 
@@ -16,7 +16,7 @@ export default function Register({ setLoad, showMenu, setShowMenu }){
     
     return(
         <>
-            <Viewer setLoad={setLoad} showMenu={showMenu} setShowMenu={setShowMenu}>
+            <Viewer logged={logged} setLoad={setLoad} showMenu={showMenu} setShowMenu={setShowMenu}>
             <Style.MainContainer>
                 <Style.Title>GESPO</Style.Title>
                     <Style.SubTitle>Gestão de custos e projetos / Cadastros </Style.SubTitle>

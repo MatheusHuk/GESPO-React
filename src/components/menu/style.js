@@ -12,7 +12,7 @@ export const Menu = styled.div`
 `;
 
 export const Empresa = styled.div`
-    width: calc(20VW - 1px);
+    width: 20VW;
     height: 7.5VH;
     border-radius: inherit;
     font-size: 4VH;
@@ -28,7 +28,7 @@ export const Empresa = styled.div`
 export const ButtonContainer = styled.div`
     width: auto;
     height: 7.5VH;
-    right: 1VW;
+    right: 0VW;
     display: flex;
     position: absolute;
     justify-content: right;
@@ -36,7 +36,7 @@ export const ButtonContainer = styled.div`
 
 export const Button = styled.div`
     height: 7.5VH;
-    width: 15VW;
+    width: 10VW;
     float: right;
     font-size: 20px;
     text-align: center;
@@ -60,5 +60,21 @@ export const Gespo = styled.div`
         height: 100%;
         margin: 0;
         display: block;
+    }
+`;
+
+export const Name = styled.div`
+    width: 60VW;
+    height: 100%;
+    text-align: center;
+    font-size: 3.5VH;
+    font-family: Times New Roman;
+    padding: 0;
+
+    span{
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        display: inline-block;
     }
 `;

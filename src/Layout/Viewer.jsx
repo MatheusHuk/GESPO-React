@@ -3,7 +3,7 @@ import * as Comp from '../components'
 import './index.css'
 import { Todo } from './style.js'
 
-export default function Viewer({ children, setLoad, showMenu, setShowMenu }){
+export default function Viewer({ children, setLoad, showMenu, setShowMenu, logged }){
     return(
         <>
             <Comp.Menu setLoad={setLoad} />

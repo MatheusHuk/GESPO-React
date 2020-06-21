@@ -276,7 +276,7 @@ export default class ProjectRegister extends React.Component {
     render() {
         return (
             <>
-                <Viewer setLoad={this.props.setLoad} showMenu={this.props.showMenu} setShowMenu={this.props.setShowMenu} >
+                <Viewer logged={this.props.logged} setLoad={this.props.setLoad} showMenu={this.props.showMenu} setShowMenu={this.props.setShowMenu} >
                 <Toaster
                         show={this.state.showToaster}
                         setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }); }}

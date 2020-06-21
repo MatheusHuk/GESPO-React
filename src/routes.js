@@ -44,6 +44,7 @@ export default function Routes({ setLoad, showMenu, setShowMenu }){
                     exact />
                 <Route path="/projectManagement" render={(props) => 
                     <Pages.ProjectManagement 
+                        logged={logged}
                         setLoad={setLoad}
                         showMenu={showMenu}
                         setShowMenu={setShowMenu} />} 
@@ -66,9 +67,8 @@ export default function Routes({ setLoad, showMenu, setShowMenu }){
                     exact />
                 <Route path="/register" render={(props) => 
                     <Pages.Register 
+                        logged={logged}
                         setLoad={setLoad}
-                        showMenu={showMenu}
-                        setShowMenu={setShowMenu}
                         showMenu={showMenu}
                         setShowMenu={setShowMenu} />} 
                     exact />
@@ -91,28 +91,28 @@ export default function Routes({ setLoad, showMenu, setShowMenu }){
                     />} exact />
                 <Route path="/register/categoryRegister" render={(props) =>
                     <Pages.CategoryRegister
-                    setLoad={setLoad}
-                    logged={logged}
-                    setLogged={setLogged}  
-                    showMenu={showMenu}
-                    setShowMenu={setShowMenu} />}                   
-                exact />
+                        setLoad={setLoad}
+                        logged={logged}
+                        setLogged={setLogged}  
+                        showMenu={showMenu}
+                        setShowMenu={setShowMenu} />}                   
+                    exact />
                 <Route path="/register/teamRegister" render={(props) =>
                     <Pages.TeamRegister
-                    setLoad={setLoad}
-                    logged={logged}
-                    setLogged={setLogged}  
-                    showMenu={showMenu}
-                    setShowMenu={setShowMenu} />}                 
-                exact />
+                        setLoad={setLoad}
+                        logged={logged}
+                        setLogged={setLogged}  
+                        showMenu={showMenu}
+                        setShowMenu={setShowMenu} />}                 
+                    exact />
                 <Route path="/register/custCenterRegister" render={(props) => 
-                <Pages.CustCenterRegister 
-                    setLoad={setLoad}
-                    logged={logged}
-                    setLogged={setLogged}
-                    showMenu={showMenu}
-                    setShowMenu={setShowMenu} />}
-                exact />
+                    <Pages.CustCenterRegister 
+                        setLoad={setLoad}
+                        logged={logged}
+                        setLogged={setLogged}
+                        showMenu={showMenu}
+                        setShowMenu={setShowMenu} />}
+                    exact />
             </Switch>
         </BrowserRouter>
     );
