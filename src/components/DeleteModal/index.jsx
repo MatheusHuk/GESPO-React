@@ -14,7 +14,7 @@ export default class DeleteModal extends React.Component{
             <>
                 <Style.Todo>
                     <Style.Container>
-                        <Style.Header>Deseja Excluir: {this.props.message}?</Style.Header>
+                        <Style.Header>{this.props.message}</Style.Header>
                         <Style.Body>
                             <Style.Button onClick={() => { this.props.yes(this.props.obj) }}>Sim</Style.Button>
                             <Style.Button onClick={() => { this.props.no() }}>Não</Style.Button>

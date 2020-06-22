@@ -247,7 +247,7 @@ export default class CustCenterRegister extends React.Component {
             deleteModal:{
                 ...this.state.deleteModal,
                 obj: value.id,
-                message: "Centro de Custo "+value.name
+                message: "Deseja excluir Centro de Custo "+value.name+"?"
             }
         })
     }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
+import DeleteModal from '../../components/DeleteModal'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
 import "./index.css"
 import * as ReactBootstrap from "react-bootstrap";
@@ -20,6 +21,7 @@ export default class ResourcesAllocation extends React.Component {
                 show: false,
                 message: ""
             },
+            showDeleteModal: false,
             showFiltros: true,
             showEdit: false,
             showToaster: false,
@@ -58,6 +60,7 @@ export default class ResourcesAllocation extends React.Component {
                         .then(async (res2) => {
                             this.setState({
                                 ...this.state,
+                                showDeleteModal: false,
                                 project: projectRes ? projectRes : res.data == "" ? {} : res.data[0],
                                 resource: res2.data == "" ? {} : res2.data[0],
                                 selectDados: {
@@ -195,6 +198,18 @@ export default class ResourcesAllocation extends React.Component {
         })
     }
 
+    openModal(value){
+        this.setState({
+            ...this.state,
+            showDeleteModal: true,
+            deleteModal:{
+                ...this.state.deleteModal,
+                obj: value.id,
+                message: "Deseja desalocar: "+value.name+"?"
+            }
+        })
+    }
+
     render() {
         return (
             <>
@@ -292,6 +307,15 @@ export default class ResourcesAllocation extends React.Component {
                                         <Style.DivCreate>Alocações - {this.state.project.name}</Style.DivCreate>
                                     </Style.DHeader>
                                     <Style.TableDiv>
+                                        {
+                                            this.state.showDeleteModal ?
+                                            <DeleteModal 
+                                                message={this.state.deleteModal.message}
+                                                obj={this.state.deleteModal.obj}
+                                                yes={(v) => { this.deallocate(v) }}
+                                                no={() => { this.setState({ ...this.state, showDeleteModal: false})}}
+                                            /> : null
+                                        }
                                         <ReactBootstrap.Table striped bordered hover className="table">
                                             <thead>
                                                 <tr>
@@ -309,7 +333,7 @@ export default class ResourcesAllocation extends React.Component {
                                                                 <td>{data.employee.name}</td>
                                                                 <td>{data.employee.category.dsCategory}</td>
                                                                 <td>{data.employee.team.name}</td>
-                                                                <td><Style.Icone onClick={() => { this.deallocate(data.employee.id) }}><FA name="ban" /></Style.Icone></td>
+                                                                <td><Style.Icone onClick={() => { this.openModal(data.employee) }}><FA name="ban" /></Style.Icone></td>
                                                             </tr>
                                                         )
                                                     })

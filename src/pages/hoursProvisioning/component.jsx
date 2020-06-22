@@ -1,6 +1,7 @@
 import React from 'react'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
+import DeleteModal from '../../components/DeleteModal'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import * as Style from './style'
 import { Invalid } from '../style.js'
@@ -73,6 +74,7 @@ export default class HoursProvisioningReal extends React.Component {
                                 .then(res3 => {
                                     this.setState({
                                         ...this.state,
+                                        showDeleteModal: false,
                                         selectDados: {
                                             ...this.state.selectDados,
                                             resources: res3.data = "" ? [] : res3.data
@@ -386,6 +388,18 @@ export default class HoursProvisioningReal extends React.Component {
         })
     }
 
+    openModal(){
+        this.setState({
+            ...this.state,
+            showDeleteModal: true,
+            deleteModal:{
+                ...this.state.deleteModal,
+                obj: this.state.editDados,
+                message: "Deseja excluir Provisionamento de : "+this.state.editDados.employee.name+"?"
+            }
+        })
+    }
+
     render() {
         return (
             <>
@@ -397,6 +411,15 @@ export default class HoursProvisioningReal extends React.Component {
                         body={this.state.toaster.body}
                     />
                     <Style.Container>
+                        {
+                            this.state.showDeleteModal ?
+                            <DeleteModal 
+                                message={this.state.deleteModal.message}
+                                obj={this.state.deleteModal.obj}
+                                yes={(v) => { this.deleteProvisioning(v) }}
+                                no={() => { this.setState({ ...this.state, showDeleteModal: false})}}
+                            /> : null
+                        }
                         {
                             this.state.invalid.show ? 
                                 <Invalid>{this.state.invalid.message}</Invalid> :
@@ -565,7 +588,7 @@ export default class HoursProvisioningReal extends React.Component {
                                                         <Style.BotaoForm onClick={() => { this.updateProvisioning() }}>
                                                             Gravar
                                                     </Style.BotaoForm>
-                                                        <Style.BotaoForm onClick={() => { this.deleteProvisioning() }}>
+                                                        <Style.BotaoForm onClick={() => { this.openModal() }}>
                                                             Deletar
                                                     </Style.BotaoForm>
                                                     </Style.DFooter>

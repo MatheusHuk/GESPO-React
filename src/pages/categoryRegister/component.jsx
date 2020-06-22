@@ -232,7 +232,7 @@ export default class CategoryRegister extends React.Component {
             deleteModal:{
                 ...this.state.deleteModal,
                 obj: value.id,
-                message: "Categoria "+value.dsCategory
+                message: "Deseja excluir Categoria "+value.dsCategory+"?"
             }
         })
     }

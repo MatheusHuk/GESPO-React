@@ -458,7 +458,7 @@ export default class UserRegister extends React.Component {
             deleteModal:{
                 ...this.state.deleteModal,
                 obj: value.id,
-                message: "Usuário "+value.name,
+                message: "Deseja excluir Usuário "+value.name+"?",
                 yes: this.deleteUser
             }
         })

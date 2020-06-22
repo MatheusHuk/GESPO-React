@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
+import DeleteModal from '../../components/DeleteModal'
 import FA from 'react-fontawesome'
 import * as ReactBootstrap from "react-bootstrap";
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
@@ -21,6 +22,7 @@ export default class GoalsDefinition extends React.Component {
                 show:false,
                 message: ""
             },
+            showDeleteModal: false,
             showGrid: true,
             showEdit: false,
             showToaster: false,
@@ -262,6 +264,7 @@ export default class GoalsDefinition extends React.Component {
                             showGrid: true,
                             showEdit: false,
                             showToaster: true,
+                            showDeleteModal: false,
                             toaster: {
                                 header: "Sucesso",
                                 body: "Meta excluída com sucesso"
@@ -431,6 +434,18 @@ export default class GoalsDefinition extends React.Component {
         })
     }
 
+    openModal(value){
+        this.setState({
+            ...this.state,
+            showDeleteModal: true,
+            deleteModal:{
+                ...this.state.deleteModal,
+                obj: value.id,
+                message: "Deseja excluir Meta: "+value.title+"?"
+            }
+        })
+    }
+
     render() {
         return (
             <>
@@ -442,6 +457,15 @@ export default class GoalsDefinition extends React.Component {
                         body={this.state.toaster.body}
                     />
                     <Style.Container>
+                        {
+                            this.state.showDeleteModal ?
+                            <DeleteModal 
+                                message={this.state.deleteModal.message}
+                                obj={this.state.deleteModal.obj}
+                                yes={(v) => { this.deleteTask(v) }}
+                                no={() => { this.setState({ ...this.state, showDeleteModal: false})}}
+                            /> : null
+                        }
                         {
                             this.state.invalid.show ? 
                             <Invalid>{this.state.invalid.message}</Invalid> :
@@ -530,7 +554,7 @@ export default class GoalsDefinition extends React.Component {
                                                                                     <Style.Icone onClick={() => { this.edit(value) }}>
                                                                                         <FA name="edit" />
                                                                                     </Style.Icone>
-                                                                                    <Style.Icone onClick={() => { this.deleteTask(value.id) }}>
+                                                                                    <Style.Icone onClick={() => { this.openModal(value) }}>
                                                                                         <FA name="ban" />
                                                                                     </Style.Icone>
                                                                                 </td>

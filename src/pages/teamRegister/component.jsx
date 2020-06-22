@@ -237,7 +237,7 @@ export default class TeamRegister extends React.Component {
             deleteModal:{
                 ...this.state.deleteModal,
                 obj: value.id,
-                message: "Time "+value.name
+                message: "Deseja excluir Time "+value.name+"?"
             }
         })
     }

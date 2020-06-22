@@ -3,6 +3,7 @@ import FA from 'react-fontawesome'
 import { Button, Col, Form, Table } from 'react-bootstrap'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
+import DeleteModal from '../../components/DeleteModal'
 import * as Style from './style'
 import { Invalid } from '../style.js'
 import TimeEntryService from '../../services/timeEntryService'
@@ -20,6 +21,7 @@ export default class TimeEntry extends React.Component {
                 show: false,
                 message: ""
             },
+            showDeleteModal: false,
             showFiltros: true,
             showToaster: false,
             toaster: {
@@ -389,6 +391,7 @@ export default class TimeEntry extends React.Component {
                                 header: "Sucesso",
                                 body: "Apontamento excluído com sucesso"
                             },
+                            showDeleteModal: false,
                             showToaster: true,
                             showFiltros: true,
                             dadosList: [],
@@ -423,6 +426,18 @@ export default class TimeEntry extends React.Component {
             })
     }
 
+    openModal(value){
+        this.setState({
+            ...this.state,
+            showDeleteModal: true,
+            deleteModal:{
+                ...this.state.deleteModal,
+                obj: value.id,
+                message: "Deseja excluir Apontamento de "+value.employee.name+"?"
+            }
+        })
+    }
+
     render() {
         return (
             <>
@@ -434,6 +449,15 @@ export default class TimeEntry extends React.Component {
                         body={this.state.toaster.body}
                     />
                     <Style.Container>
+                        {
+                            this.state.showDeleteModal ?
+                            <DeleteModal 
+                                message={this.state.deleteModal.message}
+                                obj={this.state.deleteModal.obj}
+                                yes={(v) => { this.delete(v) }}
+                                no={() => { this.setState({ ...this.state, showDeleteModal: false})}}
+                            /> : null
+                        }
                         {
                             this.state.invalid.show ? 
                             <Invalid>{this.state.invalid.message}</Invalid> :
@@ -533,7 +557,7 @@ export default class TimeEntry extends React.Component {
                                                                                 <td>{this.parseDate(data.creationDate)}</td>
                                                                                 <td>{this.decryptHours(data.amountHours)}</td>
                                                                                 <td>{data.dsWork}</td>
-                                                                                <td><Style.Icone onClick={ () => { this.delete(data.id) } }><FA name="ban" /></Style.Icone></td>
+                                                                                <td><Style.Icone onClick={ () => { this.openModal(data) } }><FA name="ban" /></Style.Icone></td>
                                                                             </tr>
                                                                         )
                                                                     })
