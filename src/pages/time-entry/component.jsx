@@ -254,8 +254,9 @@ export default class TimeEntry extends React.Component {
     }
 
     parseDate(date) {
-        let d = new Date(parseInt(date));
-        return (d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear())
+        //let d = new Date(parseInt(date));
+        //return (d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear())
+        return date[2]+"/"+date[1]+"/"+date[0]
     }
 
     deleteEntry(key) {
