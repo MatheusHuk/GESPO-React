@@ -68,7 +68,7 @@ export const Name = styled.div`
     height: 100%;
     text-align: center;
     font-size: 3.5VH;
-    font-family: Times New Roman;
+    font-weight: bold;
     padding: 0;
 
     span{

@@ -105,7 +105,7 @@ export default function Login({ setLoad, logged, setLogged }) {
                 <div class="login-content">
                     <div className="form">
                         <img src={loginImg} />
-                        <h1>Organização é para todos</h1>
+                        <h1>Nunca foi tão simples</h1>
                         <div className="input-div one">
                             <div className="i">
                                 <FA name="user" />
