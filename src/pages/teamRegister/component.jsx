@@ -1,6 +1,7 @@
 import React from 'react'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
+import DeleteModal from '../../components/DeleteModal'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
 import TeamService from '../../services/teamService'
 import CategoryService from '../../services/categoryService'
@@ -15,6 +16,12 @@ export default class TeamRegister extends React.Component {
         super(props)
         this.props = props;
         this.state = {
+            showDeleteModal: false,
+            deleteModal: {
+                obj: {},
+                message: "",
+                yes: this.deleteUser
+            },
             showToaster: false,
             showEdit: false,
             showGrid: true,
@@ -156,6 +163,7 @@ export default class TeamRegister extends React.Component {
                     .then(res2 => {
                         this.setState({
                             ...this.state,
+                            showDeleteModal: false,
                             showToaster: true,
                             showGrid: true,
                             showEdit: false,
@@ -222,6 +230,18 @@ export default class TeamRegister extends React.Component {
         })
     }
 
+    openModal(value){
+        this.setState({
+            ...this.state,
+            showDeleteModal: true,
+            deleteModal:{
+                ...this.state.deleteModal,
+                obj: value.id,
+                message: "Time "+value.name
+            }
+        })
+    }
+
     render() {
         return (
             <>
@@ -233,6 +253,15 @@ export default class TeamRegister extends React.Component {
                         body={this.state.toaster.body}
                     />
                     <Style.Container>
+                        {
+                            this.state.showDeleteModal ?
+                            <DeleteModal 
+                                message={this.state.deleteModal.message}
+                                obj={this.state.deleteModal.obj}
+                                yes={(v) => { this.deleteTeam(v) }}
+                                no={() => { this.setState({ ...this.state, showDeleteModal: false})}}
+                            /> : null
+                        }
                         <Style.HeaderContainer>
                             <Style.HeaderButton
                                 selected={this.state.showGrid}
@@ -275,7 +304,7 @@ export default class TeamRegister extends React.Component {
                                                                 <Style.Icone onClick={() => { this.editTeam(value) }}>
                                                                     <FA name="edit" />
                                                                 </Style.Icone>
-                                                                <Style.Icone onClick={() => { this.deleteTeam(value.id) }}>
+                                                                <Style.Icone onClick={() => { this.openModal(value) }}>
                                                                     <FA name="ban" />
                                                                 </Style.Icone>
                                                             </td>

@@ -1,6 +1,7 @@
 import React from 'react'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
+import DeleteModal from '../../components/DeleteModal'
 import * as ReactBootstrap from "react-bootstrap";
 import FA from 'react-fontawesome'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
@@ -19,6 +20,12 @@ export default class UserRegister extends React.Component {
             invalid: {
                 show: false,
                 message: ""
+            },
+            showDeleteModal: false,
+            deleteModal: {
+                obj: {},
+                message: "",
+                yes: this.deleteUser
             },
             showToaster: false,
             showEdit: false,
@@ -201,6 +208,7 @@ export default class UserRegister extends React.Component {
     }
 
     async deleteUser(id){
+        console.log("DELETE ID: ",id)
         this.props.setLoad(true)
         await EmployeeService.delete({ "id": id })
             .then(async (res) => {
@@ -208,6 +216,7 @@ export default class UserRegister extends React.Component {
                     .then(res2 => {
                         this.setState({
                             ...this.state,
+                            showDeleteModal: false,
                             showToaster: true,
                             showGrid: true,
                             showEdit: false,
@@ -442,10 +451,23 @@ export default class UserRegister extends React.Component {
         })
     }
 
+    openModal(value){
+        this.setState({
+            ...this.state,
+            showDeleteModal: true,
+            deleteModal:{
+                ...this.state.deleteModal,
+                obj: value.id,
+                message: "Usuário "+value.name,
+                yes: this.deleteUser
+            }
+        })
+    }
+
     render() {
         return (
             <>
-                <Viewer logged={this.props.logged} setLoad={this.props.setLoad} showMenu={this.props.showMenu} setShowMenu={this.props.setShowMenu}>
+                <Viewer logged={this.props.logged} setLoad={this.props.setLoad} showMenu={this.props.showMenu} setShowMenu={this.props.setShowMenu}>]
                     <Toaster
                         show={this.state.showToaster}
                         setShowToaster={(sit) => { this.setState({ ...this.state, showToaster: sit }); }}
@@ -453,6 +475,15 @@ export default class UserRegister extends React.Component {
                         body={this.state.toaster.body}
                     />
                     <Style.Container>
+                        {
+                            this.state.showDeleteModal ?
+                            <DeleteModal 
+                                message={this.state.deleteModal.message}
+                                obj={this.state.deleteModal.obj}
+                                yes={(v) => { this.deleteUser(v) }}
+                                no={() => { this.setState({ ...this.state, showDeleteModal: false})}}
+                            /> : null
+                        }
                         {
                             this.state.invalid.show ? 
                             <Invalid>{this.state.invalid.message}</Invalid> :
@@ -500,11 +531,11 @@ export default class UserRegister extends React.Component {
                                                                     <td>{value.email}</td>
                                                                     <td>{value.office}</td>
                                                                     <td>
-                                                                        <Style.Icone onClick={() => { this.editUser(value) }}>
-                                                                            <FA name="edit" />
+                                                                        <Style.Icone>
+                                                                            <FA name="edit" onClick={() => { this.editUser(value) }}/>
                                                                         </Style.Icone>
-                                                                        <Style.Icone onClick={() => { this.deleteUser(value.id) }}>
-                                                                            <FA name="ban" />
+                                                                        <Style.Icone>
+                                                                            <FA name="ban" onClick={() => { this.openModal(value) }}/>
                                                                         </Style.Icone>
                                                                     </td>
                                                                 </tr>

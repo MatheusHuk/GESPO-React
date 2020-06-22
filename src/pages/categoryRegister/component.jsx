@@ -1,6 +1,7 @@
 import React from 'react'
 import Viewer from '../../Layout/Viewer'
 import Toaster from '../../utils/Toaster'
+import DeleteModal from '../../components/DeleteModal'
 import { FormControl, FormGroup, FormLabel, Form, Col, Button, Card } from 'react-bootstrap';
 import CategoryService from '../../services/categoryService'
 import TeamService from '../../services/teamService'
@@ -158,6 +159,7 @@ export default class CategoryRegister extends React.Component {
                     .then(res2 => {
                         this.setState({
                             ...this.state,
+                            showDeleteModal: false,
                             showToaster: true,
                             showGrid: true,
                             showEdit: false,
@@ -223,6 +225,18 @@ export default class CategoryRegister extends React.Component {
         })
     }    
 
+    openModal(value){
+        this.setState({
+            ...this.state,
+            showDeleteModal: true,
+            deleteModal:{
+                ...this.state.deleteModal,
+                obj: value.id,
+                message: "Categoria "+value.dsCategory
+            }
+        })
+    }
+
     render() {
         return (
             <>
@@ -234,6 +248,15 @@ export default class CategoryRegister extends React.Component {
                         body={this.state.toaster.body}
                     />
                     <Style.Container>
+                        {
+                            this.state.showDeleteModal ?
+                            <DeleteModal 
+                                message={this.state.deleteModal.message}
+                                obj={this.state.deleteModal.obj}
+                                yes={(v) => { this.deleteCategory(v) }}
+                                no={() => { this.setState({ ...this.state, showDeleteModal: false})}}
+                            /> : null
+                        }
                         <Style.HeaderContainer>
                             <Style.HeaderButton
                                 selected={this.state.showGrid}
@@ -276,7 +299,7 @@ export default class CategoryRegister extends React.Component {
                                                                 <Style.Icone onClick={() => { this.editCategory(value) }}>
                                                                     <FA name="edit" />
                                                                 </Style.Icone>
-                                                                <Style.Icone onClick={() => { this.deleteCategory(value.id) }}>
+                                                                <Style.Icone onClick={() => { this.openModal(value) }}>
                                                                     <FA name="ban" />
                                                                 </Style.Icone>
                                                             </td>
