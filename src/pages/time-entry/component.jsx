@@ -499,7 +499,7 @@ export default class TimeEntry extends React.Component {
                                                         <Form.Group as={Col} controlId="formFuncionario">
                                                             <Form.Label>Funcionário</Form.Label>
                                                             {
-                                                                this.props.logged.permission.id == 1 ?
+                                                                this.props.logged.office.permission.id == 1 ?
                                                                     <Form.Control as="select" onChange={(event) => { this.handleFuncionarioFiltro(event) }}>
                                                                         <option value={-1} key={-1} >Todos</option>
                                                                         {

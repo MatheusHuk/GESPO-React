@@ -3,7 +3,7 @@ import Viewer from '../../Layout/Viewer'
 import {useHistory} from 'react-router-dom'; 
 import * as Style from './style';
 
-export default function ProjectManagement({ setLoad, showMenu, setShowMenu }){
+export default function ProjectManagement({ setLoad, showMenu, setShowMenu, logged }){
     const history = useHistory();
 
     useEffect(() => {
@@ -13,7 +13,7 @@ export default function ProjectManagement({ setLoad, showMenu, setShowMenu }){
 
     return(
         <>
-            <Viewer setLoad={setLoad} showMenu={showMenu} setShowMenu={setShowMenu}>
+            <Viewer logged={logged} setLoad={setLoad} showMenu={showMenu} setShowMenu={setShowMenu}>
                 <Style.MainContainer>
                     <Style.Title>GESPO</Style.Title>
                     <Style.SubTitle>Gestão de custos e projetos</Style.SubTitle>

@@ -31,7 +31,8 @@ export default class ProjectRegister extends React.Component {
             },
             projects: [],
             selectDados: {
-                nameCustCenters: []
+                nameCustCenters: [],
+                managers: []
             },
             newDados: {
                 name: "",
@@ -70,21 +71,32 @@ export default class ProjectRegister extends React.Component {
                             })
                             return;
                         }
-                        this.setState({
-                            ...this.state,
-                            projects: res.data = "" ? [] : res.data,
-                            selectDados: {
+                        await EmployeeService.getManagers()
+                            .then(async (res3) => {
+                                if(res3.data == ""){
+                                    this.setState({
+                                        ...this.state,
+                                        invalid: {
+                                            show: true,
+                                            message: "Você não possui nenhum Gestor cadastrado"
+                                        }
+                                    })
+                                    return;
+                                }
+                                this.setState({
+                                    ...this.state,
+                                    projects: res.data = "" ? [] : res.data,
+                                    selectDados: {
+                                        nameCustCenters: res2.data = "" ? [] : res2.data,
+                                        managers: res3.data == "" ? [] : res3.data
+                                    },
+                                    newDados: {
+                                        ...this.state.newDados,
 
-                                nameCustCenters: res2.data = "" ? [] : res2.data
-                            },
-                            newDados: {
-                                ...this.state.newDados,
-
-                                costCenter: res2.data = "" ? {} : res2.data[0]
-                            }
-                        })
-
-
+                                        costCenter: res2.data = "" ? {} : res2.data[0]
+                                    }
+                                })
+                            })
                     })
                     .catch(error => {
                         console.log("Error: ", error)
@@ -192,11 +204,12 @@ export default class ProjectRegister extends React.Component {
 
 
     handleNewManager(e) {
+        let res = this.state.selectDados.managers.find(v => v.id == e.target.value)
         this.setState({
             ...this.state,
             newDados: {
                 ...this.state.newDados,
-                manager: e.target.value
+                manager: res
             }
         })
     }
@@ -233,11 +246,13 @@ export default class ProjectRegister extends React.Component {
     }
 
     handleEditManager(e) {
+        let res = this.state.selectDados.managers.find(v => v.id == e.target.value)
+        console.log("EDIT M: ",res)
         this.setState({
             ...this.state,
             editDados: {
                 ...this.state.editDados,
-                manager: e.target.value
+                manager: res
             }
         })
     }
@@ -320,6 +335,7 @@ export default class ProjectRegister extends React.Component {
                                                         <tr>
                                                             <th>Nome</th>
                                                             <th>Descrição</th>
+                                                            <th>Gerente</th>
                                                             <th>Ações</th>
                                                         </tr>
                                                     </thead>
@@ -330,6 +346,7 @@ export default class ProjectRegister extends React.Component {
                                                                     <tr>
                                                                         <td>{value.name}</td>
                                                                         <td>{value.dsProject}</td>
+                                                                        <td>{value.manager.name}</td>
                                                                         <td>
                                                                             <Style.Icone onClick={() => { this.editProject(value) }}>
                                                                                 <FA name="edit" />
@@ -363,8 +380,15 @@ export default class ProjectRegister extends React.Component {
 
                                                             <Form.Group as={Col} controlId="formGridManager">
                                                                 <Form.Label>Gerente Responsável</Form.Label>
-                                                                <Form.Control type="text"  defaultValue={this.state.editDados.manager}
-                                                                onChange={(event) => { this.handleEditManager(event) }}>
+                                                                <Form.Control as="select" defaultValue={this.state.editDados.manager.id}
+                                                                    onChange={(event) => { this.handleEditManager(event) }}>
+                                                                    {
+                                                                        this.state.selectDados.managers.map((value, i) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            );
+                                                                        })
+                                                                    }
                                                                 </Form.Control>
                                                             </Form.Group>
 
@@ -428,7 +452,15 @@ export default class ProjectRegister extends React.Component {
 
                                                             <Form.Group as={Col} controlId="formGridManager">
                                                                 <Form.Label>Gerente Responsável</Form.Label>
-                                                                <Form.Control type="text" onChange={(event) => { this.handleNewManager(event) }}>
+                                                                <Form.Control as="select"
+                                                                    onChange={(event) => { this.handleNewManager(event) }}>
+                                                                    {
+                                                                        this.state.selectDados.managers.map((value, i) => {
+                                                                            return (
+                                                                                <option value={value.id}>{value.name}</option>
+                                                                            );
+                                                                        })
+                                                                    }
                                                                 </Form.Control>
                                                             </Form.Group>
 
