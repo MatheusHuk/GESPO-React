@@ -12,20 +12,22 @@ export default function Home({ setLoad, logged, setLogged, showMenu, setShowMenu
         return logged.office.permission.id == 1
     }
 
+    const canRegister = () => {
+        if(logged == undefined) return
+        return logged.office.permission.id == 2
+    }
+
     const canManage = () => {
         if(logged == undefined) return
         return logged.office.permission.id == 3
-    }
-
-    const canRegister = () => {
-        if(logged == undefined) return
-        return logged.office.permission.id == 4
     }
     
     useEffect(() => {
         setLoad(true);
         if(logged == null){
             history.push("/login");
+        }else if(logged.office.permission.id == 4){
+            history.push("/timeEntry")
         }else{
             setShowMenu(false);
         }
