@@ -24,6 +24,7 @@ export default function Register({ setLoad, showMenu, setShowMenu, logged }){
                         <Style.SubContainer>
                             <Style.Component class="component" onClick={() => history.push("/register/custCenterRegister") }>Cadastro de centro de custo</Style.Component>
                             <Style.Component class="component" onClick={() => history.push("/register/projectRegister") }>Cadastro de projetos</Style.Component>
+                            <Style.Component class="component" onClick={() => history.push("/register/officeRegister") }>Cadastro de cargos</Style.Component>
                         </Style.SubContainer>
                         <Style.SubContainer class="subcontainer">
                             <Style.Component class="component" onClick={() => history.push("/register/userRegister") }>Cadastro de usuários</Style.Component>

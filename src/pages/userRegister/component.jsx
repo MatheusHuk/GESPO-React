@@ -11,6 +11,7 @@ import { Invalid } from '../style.js'
 import CategoryService from '../../services/categoryService'
 import TeamService from '../../services/teamService'
 import EmployeeService from '../../services/employeeService'
+import OfficeService from '../../services/officeService'
 
 export default class UserRegister extends React.Component {
 
@@ -37,7 +38,8 @@ export default class UserRegister extends React.Component {
             employees: [],
             selectDados: {
                 categories: [],
-                teams: []
+                teams: [],
+                offices: []
             },
             newDados: {
                 name: "",
@@ -45,11 +47,7 @@ export default class UserRegister extends React.Component {
                 dtBirth: "2020-01-01",
                 email: "",
                 password: "",
-                hourValue: 0,
-                office: "",
-                permission: {
-                    id: 2
-                }
+                hourValue: 0                
             },
             editDados: {
                 id: -1,
@@ -58,11 +56,7 @@ export default class UserRegister extends React.Component {
                 dtBirth: "2020-01-01",
                 email: "",
                 password: "",
-                hourValue: 0,
-                office: "",
-                permission: {
-                    id: 2
-                }
+                hourValue: 0                
             }
         }
     }
@@ -97,22 +91,40 @@ export default class UserRegister extends React.Component {
                             })
                             return;
                         }
+                        await OfficeService.getAll()
+                    .then(async (res3) => {
+                        if(res3.data == ""){
+                            this.setState({
+                                ...this.state,
+                                invalid: {
+                                    show: true,
+                                    message: "Você não tem nenhum cargo cadastrado"
+                                }
+                            })
+                            return;
+                        }
                         await EmployeeService.getAll()
-                            .then(res3 => {
+                            .then(res4 => {
                                 this.setState({
                                     ...this.state,
-                                    employees: res3.data = "" ? [] : res3.data,
+                                    employees: res4.data = "" ? [] : res4.data,
                                     selectDados: {
                                         categories: res.data = "" ? [] : res.data,
-                                        teams: res2.data = "" ? [] : res2.data
+                                        teams: res2.data = "" ? [] : res2.data,
+                                        offices: res3.data = "" ? [] : res3.data
                                     },
                                     newDados: {
                                         ...this.state.newDados,
                                         category: res.data = "" ? {} : res.data[0],
-                                        team: res2.data = "" ? {} : res2.data[0]
+                                        team: res2.data = "" ? {} : res2.data[0],
+                                        office: res3.data = "" ? [] : res3.data
                                     }
                                 })
                             })
+                        })
+                        })
+                        .catch(error => {
+                            console.log("Error: ", error)
                     })
                     .catch(error => {
                         console.log("Error: ", error)
@@ -308,11 +320,12 @@ export default class UserRegister extends React.Component {
     }
 
     handleNewOffice(e) {
+        let res = this.state.selectDados.offices.find(v => v.id == e.target.value)
         this.setState({
             ...this.state,
             newDados: {
                 ...this.state.newDados,
-                office: e.target.value
+                office: res
             }
         })
     }
@@ -400,11 +413,12 @@ export default class UserRegister extends React.Component {
     }
 
     handleEditOffice(e) {
+        let res = this.state.selectDados.offices.find(v => v.id == e.target.value)
         this.setState({
             ...this.state,
             editDados: {
                 ...this.state.editDados,
-                office: e.target.value
+                office: res
             }
         })
     }
@@ -578,12 +592,22 @@ export default class UserRegister extends React.Component {
                                                 </Style.DBox>
                                                 <Style.DBox>
                                                     <Card.Body className="fundoForm">
-                                                        <Form.Group as={Col}>
+
+                                                        <Form.Group as={Col} controlId="formGridCategory">
                                                             <Form.Label>Cargo</Form.Label>
-                                                            <Form.Control type="text"
-                                                            defaultValue={this.state.editDados.office}
-                                                            onChange={(event) => { this.handleEditOffice(event) }} />
+                                                            <Form.Control as="select"
+                                                                defaultValue={this.state.editDados.office.id}
+                                                                onChange={(event) => { this.handleEditOffice(event) }}>
+                                                                {
+                                                                    this.state.selectDados.offices.map((value, i) => {
+                                                                        return (
+                                                                            <option value={value.id}>{value.name}</option>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </Form.Control>
                                                         </Form.Group>
+
                                                     </Card.Body>
                                                 </Style.DBox>
                                             </Style.DBoxBody>
@@ -703,10 +727,23 @@ export default class UserRegister extends React.Component {
                                                 </Style.DBox>
                                                 <Style.DBox>
                                                     <Card.Body className="fundoForm">
-                                                        <Form.Group as={Col}>
+
+                                                        <Form.Group as={Col} controlId="formGridOffice">
                                                             <Form.Label>Cargo</Form.Label>
-                                                            <Form.Control type="text" onChange={(event) => { this.handleNewOffice(event) }} />
+                                                            <Form.Control as="select"
+                                                                defaultValue={this.state.newDados.office.id}
+                                                                onChange={(event) => { this.handleNewOffice(event) }}>
+                                                                {
+                                                                    this.state.selectDados.offices.map((value, i) => {
+                                                                        return (
+                                                                            <option value={value.id}>{value.name}</option>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </Form.Control>
                                                         </Form.Group>
+
+
                                                     </Card.Body>
                                                 </Style.DBox>
                                             </Style.DBoxBody>
