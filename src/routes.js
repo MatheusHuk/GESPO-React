@@ -113,6 +113,14 @@ export default function Routes({ setLoad, showMenu, setShowMenu }){
                         showMenu={showMenu}
                         setShowMenu={setShowMenu} />}
                     exact />
+                <Route path="/register/officeRegister" render={(props) =>
+                    <Pages.OfficeRegister
+                        setLoad={setLoad}
+                        logged={logged}
+                        setLogged={setLogged}  
+                        showMenu={showMenu}
+                        setShowMenu={setShowMenu} />}                 
+                    exact />                   
             </Switch>
         </BrowserRouter>
     );
