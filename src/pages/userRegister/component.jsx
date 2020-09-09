@@ -539,10 +539,12 @@ export default class UserRegister extends React.Component {
                                                 <tbody>
                                                     {
                                                         this.state.employees.map((value, i) => {
+                                                            console.log("R3: ",value.office)
                                                             return (
                                                                 <tr>
                                                                     <td>{value.name}</td>
                                                                     <td>{value.email}</td>
+                                                                    <td>{value.office ? value.office.name : ""}</td>
                                                                     <td>
                                                                         <Style.Icone>
                                                                             <FA name="edit" onClick={() => { this.editUser(value) }}/>

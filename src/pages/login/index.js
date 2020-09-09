@@ -111,7 +111,7 @@ export default function Login({ setLoad, logged, setLogged }) {
                                 <FA name="user" />
                             </div>
                             <div className="div">
-                                <input placeHolder="CPF" type="text" className="input" 
+                                <input placeholder="CPF" type="text" className="input" 
                                 onChange={(event) => { handleLogin(event) }} />
                             </div>
                         </div>

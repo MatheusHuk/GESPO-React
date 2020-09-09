@@ -79,4 +79,17 @@ export default class EmployeeService{
                 });
         });
     }
+
+    static async getManagers(body){
+        return new Promise((resolve, reject) => {
+            Requests.get("/user/manager", body)
+                .then(res => {
+                    if(res.status >= 200 && res.status < 300){
+                        resolve(res)
+                    }else{
+                        reject(res.status)
+                    }
+                })
+        })
+    }
 }
