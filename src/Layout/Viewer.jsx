@@ -14,12 +14,12 @@ export default function Viewer({ children, setLoad, showMenu, setShowMenu, logge
                         logged.office.permission.id == 1 ?
                             <Comp.SideMenu showMenu={showMenu} setShowMenu={setShowMenu} /> :
                         logged.office.permission.id == 2 ?
-                            <Comp.SideMenu showMenu={showMenu} setShowMenu={setShowMenu} /> :
+                            <Comp.RegisterSideMenu showMenu={showMenu} setShowMenu={setShowMenu} /> :
                         logged.office.permission.id == 3 ?
-                            <Comp.SideMenu showMenu={showMenu} setShowMenu={setShowMenu} /> :
+                            <Comp.GestorSideMenu showMenu={showMenu} setShowMenu={setShowMenu} /> :
                             null
                     }
-                    <Todo showMenu={logged.office.permission.id > 3 ? false : showMenu}>
+                    <Todo showMenu={logged.office.permission.id == 4 ? false : showMenu}>
                         {children}
                     </Todo>
                 </>
